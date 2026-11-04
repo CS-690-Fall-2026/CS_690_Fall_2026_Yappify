@@ -1,81 +1,52 @@
-# Yappify
+# AGENTS.md - Yappify Coding Agent Instructions
 
-**Yappify** is a short-form audio-sharing application developed for **CS 690**. Similar to a short-form video feed, Yappify focuses on audio: users can publish short recordings and browse clips from other creators without leaving the feed.
+These instructions apply to AI coding assistants working anywhere in the Yappify repository.
 
-## Features
+## Project and technology
 
-- Upload and publish audio clips with captions and tags.
-- Browse a feed and play audio posts directly in the feed.
-- Like and unlike posts, with persistent like counts.
-- Follow creators and view their audio posts on their profiles.
+Yappify is a CS 690 short-form audio-sharing application. Its core features are publishing audio clips with captions and tags, playing clips in a feed, liking/unliking posts, and following creators and viewing their profiles. Comments are optional and the first feature to cut if needed. Advanced recommendations, direct messaging, and live streaming are out of scope.
 
-## Tech stack
+- **Frontend:** React, TypeScript, and Vite (`frontend/`). Use Playwright for frontend/end-to-end tests.
+- **Backend:** Python and FastAPI (`backend/`). Use pytest for backend tests.
+- Preserve the existing architecture, naming conventions, dependencies, and API contracts. Do not introduce another framework or large dependency without approval.
 
-| Layer | Technology | Tests |
-| --- | --- | --- |
-| Frontend | React, TypeScript, Vite | Playwright |
-| Backend | Python, FastAPI | pytest |
+## Mandatory approval workflow
 
-## Prerequisites
+**Before editing, creating, deleting, renaming, or formatting any file:**
 
-- Node.js and npm (a current Node.js LTS version is recommended)
-- Python 3.10+ and pip
-- git
+1. Read the relevant code and documentation without modifying files.
+2. Show a concise implementation plan identifying the files to change, the intended changes, any risks, and the tests to run.
+3. **Stop and wait for explicit user approval.** Do not treat a task request itself as approval to start editing.
+4. After approval, make only the approved changes. If the scope changes, present a revised plan and wait for new approval.
+5. Report the files changed, tests run, results, and any tests that could not be run. Never claim a test passed unless it was executed successfully.
 
-## Installation
+This requirement applies even to small fixes and documentation edits. Read-only inspection and planning are allowed before approval.
 
-From the repository root:
+## Tests
 
-```bash
-# Install frontend packages
-cd frontend
-npm install
-npx playwright install
-cd ..
+To run tests, run `python -m pytest` in `backend/` and `npx playwright test` in `frontend/`. Run it after approved code changes when the environment supports it. If either suite needs running services, use the repository's existing Playwright/server configuration; do not silently reconfigure infrastructure.
 
-# Create a Python virtual environment
-python -m venv .venv
+## Protected files and directories
 
-# Activate it (macOS/Linux)
-source .venv/bin/activate
-# On Windows PowerShell, use: .venv\Scripts\Activate.ps1
+**Do not modify, create replacements for, delete, rename, or auto-format these paths unless the user explicitly authorizes the specific change in the approved plan:**
 
-# Install backend dependencies (including pytest)
-python -m pip install -r backend/requirements.txt
-```
+- `AGENTS.md` - standing agent instructions.
+- `README.md` - project setup and usage documentation.
+- `.github/` - workflows and repository automation.
+- `frontend/package-lock.json` and other dependency lockfiles - dependency resolution.
+- `.env`, `.env.*`, and any secrets, credentials, or private keys - configuration and sensitive data.
+- `.venv/`, `node_modules/`, `dist/`, `build/`, `coverage/`, `playwright-report/`, `test-results/`, and `__pycache__/` - local dependencies and generated artifacts.
+- `.gitignore` - files ignored by git
 
-## Run the application locally
+Never print, copy into source code, commit, or disclose secrets. Do not commit generated output or local environment files.
 
-Start the backend in one terminal (with the virtual environment active):
+## Coding expectations
 
-```bash
-cd backend
-uvicorn main:app --reload
-```
+- Keep changes small, directly related to the approved task, and compatible with the current frontend/backend interfaces.
+- Use typed TypeScript for frontend changes and idiomatic Python/FastAPI for backend changes.
+- Add or update appropriate Playwright or pytest tests for behavior changes, within the approved scope.
+- Do not remove or weaken tests to obtain a passing result.
+- Avoid unrelated refactoring, dependency upgrades, schema changes, and changes to authentication, deployment, or CI unless specifically approved.
+- Respect the project scope and prioritize reliable audio playback and persistence.
 
-Start the frontend in a second terminal:
-
-```bash
-cd frontend
-npm run dev
-```
-
-By default, Vite serves the frontend at `http://localhost:5173` and Uvicorn serves the API at `http://localhost:8000`. 
-
-## Run tests
-
-1. **Backend:** `python -m pytest` from `backend/`.
-2. **Frontend:** `npx playwright test` from `frontend/`.
-
-The command reports failure if either suite fails. Playwright browser tests may also require the frontend and backend servers to be running, depending on the Playwright configuration; configure Playwright's `webServer` option if you want tests to start the servers automatically.
-
-## Project goals
-
-- Allow users to load the next audio clip in under one second.
-- Target at least **90% uptime** after deployment.
-
-## Team
-
-- **Joshua George** - Backend and authentication integration
-- **Ben Shuster** - Frontend, interface design, accessibility, and SEO
-- **Luke Hill** - DevOps, CI/CD, deployment, and quality assurance
+If these instructions conflict with an explicit user request, present the conflict in the plan and request approval before proceeding.
