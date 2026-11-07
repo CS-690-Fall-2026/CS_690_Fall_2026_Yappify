@@ -47,3 +47,253 @@ Cross-cutting
 
 
 
+## Gap Check Review — S-1
+
+AI Tool: Claude
+Model: Sonnet 5.5
+Story: S-1 — Record an Audio Clip
+
+### Classification Key
+
+- Already Answered: The design document already
+  answers the question. Identify the section.
+- Real Gap: The document does not fully answer
+  the question. Identify the decision or open
+  question added to Section 8.
+
+Blocking Questions
+
+Q1 — Maximum recording duration
+
+Classification: Real Gap (Unanswered)
+
+Explanation: Section 8 identifies the maximum recording duration as an unresolved question. No specific limit has been established.
+
+Section 8 Reference: Existing Open Question 1.
+
+Q2 — Interrupted recording behavior
+
+Classification: Real Gap (Partially Answered)
+
+Explanation: Section 7 addresses microphone failures and requires the application to report an error instead of presenting an invalid recording as completed. The document does not specify whether an interrupted recording should be recovered or discarded.
+
+Section 8 Reference: Existing Open Question 2. Section 7 establishes the expected error behavior.
+
+State Machine and Interface
+
+Q3 — Recording state transitions
+
+Classification: Real Gap (Partially Answered)
+
+Explanation: Section 4 defines four recording states, and Section 6 establishes the transitions for successfully starting and stopping a recording. The document does not establish all permitted transitions or explain what happens when recording is restarted from the completed or error state.
+
+Section 8 Reference: Sections 4 and 6 establish the basic states and successful transitions. Add a decision or open question about the remaining transitions.
+
+Q4 — Stop called from invalid states
+
+Classification: Real Gap (Partially Answered)
+
+Explanation: Section 6 states that stopping is permitted only while the recording status is "recording". The document does not specify whether calling Stop in another state produces a RecordingStateError or another response.
+
+Section 8 Reference: Section 6 defines the precondition. Add a decision defining invalid-state error handling.
+
+Q5 — Record pressed while already recording
+
+Classification: Real Gap (Partially Answered)
+
+Explanation: Section 7 establishes that pressing Record during an active recording must not create another recording session. The document does not specify whether the application disables the Record button, ignores the action, or throws an error.
+
+Section 8 Reference: Section 7 establishes the expected outcome. Add a decision specifying how the application handles the repeated action.
+
+Q6 — Ownership of recording state
+
+Classification: Real Gap (Unanswered)
+
+Explanation: Section 5 identifies recording status, audio data, and errors. The document does not establish which component or service manages these values.
+
+Section 8 Reference: Add a decision about recording state management.
+
+Q7 — Error state and retry behavior
+
+Classification: Real Gap (Partially Answered)
+
+Explanation: Section 4 defines an error state, and Section 7 establishes that microphone failures must produce an error. The document does not specify how users recover from errors or start another recording attempt.
+
+Section 8 Reference: Sections 4 and 7 establish error reporting. Add a decision or open question about error recovery.
+
+Q8 — Overlapping recording errors
+
+Classification: Real Gap (Partially Answered)
+
+Explanation: Section 4 defines PermissionDeniedError, RecordingStateError, and RecordingDeviceError. These cover several failure categories. The document does not establish which error takes priority when multiple problems occur.
+
+Section 8 Reference: Section 4 identifies the error types. Add a decision about error classification and priority.
+
+Q9 — Recording duration measurement
+
+Classification: Real Gap (Unanswered)
+
+Explanation: Section 5 defines durationSeconds as a finite, nonnegative number. It does not specify how recording duration is measured.
+
+Section 8 Reference: Add a decision about duration measurement.
+
+Q10 — Zero-duration recordings
+
+Classification: Real Gap (Unanswered)
+
+Explanation: Section 5 permits nonnegative recording durations. The document does not establish whether an empty recording should be accepted as a completed clip or rejected.
+
+Section 8 Reference: Add a decision about minimum recording duration.
+
+Permissions and Device
+
+Q11 — Microphone permission timing
+
+Classification: Real Gap (Partially Answered)
+
+Explanation: Section 6 requires microphone permission before recording begins. AC-1 also assumes that permission has already been granted. The document does not specify when the application requests permission.
+
+Section 8 Reference: Sections 6 and 9 establish the permission requirement. Add a decision about permission request timing.
+
+Q12 — Previously denied permissions
+
+Classification: Real Gap (Partially Answered)
+
+Explanation: Section 7 states that recording must not start when microphone permission is denied and that the application must display an error. The document does not describe how users should recover when the browser prevents another permission request.
+
+Section 8 Reference: Section 7 establishes the initial failure behavior. Add a decision about permission recovery.
+
+Q13 — Microphone selection
+
+Classification: Real Gap (Unanswered)
+
+Explanation: The design document does not establish which microphone to use when multiple devices are available or whether users can select one.
+
+Section 8 Reference: Add a decision or open question about microphone selection.
+
+Q14 — Microphone stream cleanup
+
+Classification: Real Gap (Unanswered)
+
+Explanation: Section 6 establishes how recording stops successfully. It does not establish when microphone resources must be released after stopping, encountering an error, or leaving the recording screen.
+
+Section 8 Reference: Add a decision about microphone cleanup.
+
+Format and Audio
+
+Q15 — Recording MIME type and codec
+
+Classification: Real Gap (Unanswered)
+
+Explanation: Section 5 includes mimeType as a data field. The document does not identify the required recording format or establish how differences in browser compatibility should be handled.
+
+Section 8 Reference: Add an open question about recording formats and codecs.
+
+Q16 — Audio quality requirements
+
+Classification: Real Gap (Unanswered)
+
+Explanation: The document does not define audio quality requirements such as bitrate, sample rate, or channel configuration.
+
+Section 8 Reference: Add a decision or open question about audio quality settings.
+
+Q17 — Maximum file size or memory
+
+Classification: Real Gap (Unanswered)
+
+Explanation: Section 8 leaves the recording duration limit unresolved. The document does not establish a separate file-size or memory restriction.
+
+Section 8 Reference: Add an open question about file-size and memory limits.
+
+UI and Behavior
+
+Q18 — Recording screen and controls
+
+Classification: Real Gap (Partially Answered)
+
+Explanation: Section 2 requires users to start and stop recordings. Section 9 establishes that these actions take place on the recording screen. The document does not specify the screen's location or how the controls change depending on recording state.
+
+Section 8 Reference: Sections 2 and 9 establish the basic interaction. Add a decision about the recording interface.
+
+Q19 — User-facing error messages
+
+Classification: Real Gap (Partially Answered)
+
+Explanation: Section 4 identifies three error types, and Section 7 requires an error to be displayed when microphone access fails. The document does not establish the exact messages or other feedback presented to users.
+
+Section 8 Reference: Sections 4 and 7 establish error categories and reporting. Add a decision about user-facing error messages.
+
+Q20 — Playback controls
+
+Classification: Real Gap (Partially Answered)
+
+Explanation: Sections 2 and 8 establish that successful recordings must provide a playback control. AC-1 also requires the completed recording to appear with playback available. The document does not specify whether the interface should include play, pause, seek, or other controls.
+
+Section 8 Reference: Sections 2, 8, and 9 establish the playback requirement. Add a decision defining the playback controls.
+
+Q21 — Discarding or re-recording
+
+Classification: Real Gap (Unanswered)
+
+Explanation: Section 3 excludes editing and trimming. These restrictions do not establish whether completed recordings can be discarded or replaced with a new recording.
+
+Section 8 Reference: Add a decision or open question about completed recording management.
+
+Q22 — Recording persistence and storage
+
+Classification: Real Gap (Unanswered)
+
+Explanation: The document does not specify where completed recordings are stored or whether they remain available after navigation or reloading.
+
+Section 8 Reference: Add an open question about storage and persistence.
+
+Q23 — Navigation during recording
+
+Classification: Real Gap (Unanswered)
+
+Explanation: The document does not define what happens when a user navigates away, backgrounds the application, or locks their device while recording.
+
+Section 8 Reference: Add an open question about navigation and recording interruptions. This is related to Existing Open Question 2.
+
+Q24 — Integration with other stories
+
+Classification: Real Gap (Partially Answered)
+
+Explanation: Section 3 establishes that recording and publishing are separate operations. The document does not specify how recorded clips will be passed to other features or whether they share a common data structure.
+
+Section 8 Reference: Section 3 establishes the separation of recording and publishing. Add an open question about integration with Yappify's other audio features.
+
+Cross-Cutting Questions
+
+Q25 — Supported browsers and platforms
+
+Classification: Real Gap (Unanswered)
+
+Explanation: The design document defines a browser-based recording interface. It does not establish which browsers and devices must be supported.
+
+Section 8 Reference: Add an open question about platform compatibility.
+
+Q26 — Privacy, security, and consent
+
+Classification: Real Gap (Partially Answered)
+
+Explanation: Section 6 requires microphone permission before recording can begin. This establishes one permission requirement. The document does not specify additional privacy, security, consent, or recording retention policies.
+
+Section 8 Reference: Section 6 establishes microphone permission. Add an open question about other privacy and security requirements.
+
+Q27 — Testing scope and mocks
+
+Classification: Real Gap (Partially Answered)
+
+Explanation: Section 9 identifies the AC-1 acceptance test and its proposed test name. The document does not specify how microphone access should be simulated or how the edge cases should be tested.
+
+Section 8 Reference: Section 9 establishes the primary acceptance test. Add a decision about the testing approach and test fixtures.
+
+Q28 — Interview evidence and user context
+
+Classification: Real Gap (Partially Answered)
+
+Explanation: Section 1 references E-12 and E-13 and explains that a participant recorded a voice message while walking because typing was inconvenient. The document does not establish whether this context creates additional requirements such as hands-free recording or recording in noisy environments.
+
+Section 8 Reference: Section 1 identifies the supporting evidence. Add an open question about additional requirements derived from interview evidence.
+
