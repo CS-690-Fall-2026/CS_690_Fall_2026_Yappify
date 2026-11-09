@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 # Yappify — Provenance Ledger
 
 ## Entry 1
@@ -16,8 +15,7 @@
 **evidence:** S-1, AC-1, E-12, E-13
 
 **risk:** The maximum recording duration, recording format, and handling of interrupted recordings are still unresolved. The proposed file paths also need to be confirmed before implementation begins.
-=======
-## Entry 1
+## Entry 2
 
 artifact: contents of frontend/src, frontend/docs, and frontend/dev-server.mjs, at commit ccced50b6427c707bd818bf09b3c27a0ebadf634
 tool: Antigravity, Gemini 3.8 Flash, 11/9/26
@@ -26,4 +24,3 @@ review: Read the prompts for cmd access in antigravity, and verify that the comm
 checks: ran the tests in frontend/tests and validated the tests for the changes made pass and the remaining tests were skipped
 evidence: docs/design/S-1.md, frontend/tests/ac-01-record.spec.ts
 risk: Frontend will need additional updates once the backend is implemented.
->>>>>>> 9bbfc8f0c40614bad4a88d0538a76404b00c12c8
