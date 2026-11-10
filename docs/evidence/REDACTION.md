@@ -11,6 +11,7 @@ other identifying details in your notes or evidence log."
 | INT-04 speaker 2 | Participant B |
 | INT-04 interviewer | Interviewer |
 | INT-02 participant | Participant |
+| INT-03 participant | Participant C |
 | professor named as a referral | a professor |
 | second professor named as a referral | another professor |
 
