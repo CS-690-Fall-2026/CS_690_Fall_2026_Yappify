@@ -1,6 +1,6 @@
 # Yappify — Provenance Ledger
 
-Scope: Milestone 1 (Deliverables 5–9). Entries 1–4 record the 6b test-harness work and its evidence; entries 5–6 record the S-1 plan and the S-1 frontend implementation contributed by teammates. Format per handout Deliverable 8: artifact, tool, prompts, review, checks, evidence, risk.
+Scope: Milestone 1 (Deliverables 2–9). Entries 1–4 record the 6b test-harness work and its evidence; entries 5–6 the S-1 plan and frontend implementation; entries 7–11 the Vite wiring, interview, AGENTS.md and README changes; entries 12–13 the earlier interview-derived deliverables (2d list and evidence log) from session `01a1a9b4`; entry 14 the interview transcript (2c) from session `01a1a334`. Format per handout Deliverable 8: artifact, tool, prompts, review, checks, evidence, risk.
 
 ## Entry 1
 
@@ -73,9 +73,10 @@ artifact: project repository (Deliverable 6a) — org `https://github.com/CS-690
 
 tool: `git` (clone), the `gh` CLI, filesystem `find`, Canvas API reads, and Google Drive search.
 
-prompts: One prompt. Summary: operator request to pull the existing git repo before harness
-  writing. Path: `prompts/04-harness-and-repo.md` (Message A supplies the org URL); the earlier
-  summary is also kept at `prompts/03-repo-discovery.md`.
+prompts: Two operator messages. Summary: pull the existing git repo before harness writing, then
+  supply its location. Paths: the long instruction is the second block of
+  `prompts/02-canvas-testing-slides.md`; the org URL message is Message A of
+  `prompts/04-harness-and-repo.md`. `prompts/03-repo-discovery.md` is a pointer, not a copy.
 
 review: The repository was found. The earlier search was a negative result and was incomplete
   because the course org name was unknown; `gh repo list CS-690-Fall-2026 --limit 100` returned
@@ -125,9 +126,11 @@ artifact: 6b test harness — committed at `945971ee137873230ba2029856f757f5990f
 tool: omp agent session, model `bifrost/opencode-go/deepseek-v4.1-flash`, used 2026-11-08;
   npm 11.20.0; `@playwright/test` ^1.56.
 
-prompts: One prompt block: build the 6b test harness after pulling the repo. Path:
-  `prompts/04-harness-and-repo.md` — Message A (org URL), Message B ("Do you think we should use
-  ts effect?"), and the earlier operator request from this session, all verbatim.
+prompts: Two operator messages, in order: the long request to build the 6b harness after pulling
+  the repo (second block of `prompts/02-canvas-testing-slides.md`), then the repository org URL
+  (Message A of `prompts/04-harness-and-repo.md`). The later question "Do you think we should use
+  ts effect?" was asked after the harness commit and changed nothing; it is recorded in
+  `prompts/06-effect-question.md`.
 
 review: Read `README.md`, `AGENTS.md`, `docs/design/S-1.md`, `docs/design/S-7.md`,
   `docs/design/S-1-gap-check.md`, `docs/design/S-7-gap-check.md`. Used the proposed test names
@@ -265,3 +268,49 @@ review: reviewed README.md to verify it included the required standing instructi
 checks: manual review
 evidence: README.md
 risk: None
+## Entry 12
+
+artifact: `docs/evidence/compliments-and-predictions.md` (5,085 B) — Deliverable 2d: 1 compliment row (C-1, `INT-01:P65`) and 7 prediction rows (PR-1…PR-7, `INT-01:P21`, `P29`, `P33`, `P55`, `P57`, `P67`, `P68`), plus an exclusion section and the "why the compliment section has one row" explanation. Rulings it is generated from: `docs/evidence/DECISIONS.md` (D-001…D-010, closed); the file was later uploaded to Drive (`20:24:08`, file id `14dsx-NDF9xlWe7IXbfHto-1aV3hElgKG`).
+
+tool: omp assistant session `01a1a9b4-b289-756a-9cda-2695ca3ead41`, provider bifrost, model id `bifrost/opencode-go/deepseek-v4.1-flash`; date of use 2026-11-05 (review loop `03:25:18` → `19:36:51Z`).
+
+prompts: `prompts/prompt-06-handout-and-2d-and-ledger.txt` and `prompts/prompt-07-own-interview.txt`. The per-item questions were `ask` items, not model prompts; their text, options and answers are in `docs/evidence/DECISIONS.md` D-001…D-010 and `docs/evidence/PROVENANCE-TOOLS.md` §5 rows 3-6…3-23.
+
+review: Ten items were presented one at a time, each with its source paragraph quoted verbatim and a recommended option; option A was ruled on every one — D-001 citation scheme, D-002 `INT-01:P21`, D-003 `P29`, D-004 `P33`, D-005 `P55`, D-006 `P57`, D-007 `P65`, D-008 `P67`, D-009 `P68`, D-010 bulk exclusion. The P21 item was asked at `18:55:54.169`, cancelled at `18:58:29.498`, re-asked at `18:59:47.738` and answered A at `19:02:56.566`; the cancelled attempt carried no content and only the re-asked answer is recorded. Across the ten items nothing was corrected and nothing was rejected: every ruling is A, and `docs/evidence/DECISIONS.md` contains no rejected draft and no change of mind. The file was generated from those rulings rather than written independently, and each quotation was checked back against the cited paragraph.
+
+checks: `write` -> `Successfully wrote 5085 bytes to CS690-M1/compliments-and-predictions.md` (19:35:26). Quote verification (`eval`, 19:35:52) against `docs/evidence/INT-04-paragraph-map.md` (69 turns): `rows: 8 | all quotes verbatim in cited paragraph: True | unique sources: 8`, `compliments: 1 predictions: 7`; every row `found=True` — C-1 P65 13:43, PR-1 P21 03:57, PR-2 P29 06:46, PR-3 P33 07:16, PR-4 P55 11:10, PR-5 P57 11:45, PR-6 P67 13:52, PR-7 P68 14:02. Upload verified at `20:24:36`: file id `14dsx-NDF9xlWe7IXbfHto-1aV3hElgKG`, `Markdown compliments-and-predictions.md … 5 KB`.
+
+evidence: INT-01:P21, P29, P33, P55, P57, P65, P67, P68 — all eight marked NOT EVIDENCE in the deliverable, so the list traces to paragraphs but supplies no evidence ID.
+
+risk: Speaker attribution for the male turns rests on question/answer structure, not voice biometrics, so a sentence attributed to Participant A could belong to Luke; the one visibly misattributed row, `P45`, was left uncorrected by ruling D-010 and is unused here, but the same defect may exist in a used row undetected, because nothing in the verification checks who spoke. Completeness of the eight-row set is also unverified: the log proves quote fidelity and unique sources, not that the exclusion set missed nothing.
+
+## Entry 13
+
+artifact: `docs/evidence/evidence-log.md` (5,909 B) — Deliverable 3: 18 `E` entries (`E-1`…`E-18`), 4 `A` entries (`A-1`…`A-4`), 3 `Q` entries (`Q-1`…`Q-3`), over four interviews (`INT-01` and `INT-02` Ben, `INT-03` Joshua, `INT-04` Luke). Supporting maps: `docs/evidence/INT-04-paragraph-map.md` (69 rows), `docs/evidence/INT-03-paragraph-map.md` (12 rows), `docs/evidence/drive/INT-01-ben-notes.txt` (27 paragraphs), `docs/evidence/drive/INT-02-ben-notes.txt` (112 paragraphs). Rulings: `docs/evidence/DECISIONS.md` D-012…D-033, closed.
+
+tool: omp assistant session `01a1a9b4-b289-756a-9cda-2695ca3ead41`, provider bifrost, model id `bifrost/opencode-go/deepseek-v4.1-flash`; `browser-harness` (Brave CDP daemon) for the Drive reads; date of use 2026-11-05 (loop `20:25:25` → `22:23:08`).
+
+prompts: `prompts/prompt-06-handout-and-2d-and-ledger.txt` (the human-in-the-loop method), `prompts/prompt-09-drive-and-evidence-log.txt` (the instruction that started this deliverable, user turn at `19:58:02`), and `prompts/prompt-10-upload-evidence-log.txt` (the Drive upload).
+
+review: 26 items were ruled across D-012–D-033. Option A was taken on every item except two, where the student corrected the content instead of choosing: D-030 (the proposed Q-2 was withdrawn and recorded as `E-18`, from the student's own words "This evidence shows that people send messages to both group chats and one-to-one") and D-031 (the proposed Q-3 was withdrawn and recorded as `A-4`, carrying the student's own scope definition "Except when specified, audio clips is not referring to full songs but can refer to short clips of music"). Nothing was rejected. D-011 settled the interview ID before the loop opened: the student's own interview is `INT-04`, because a teammate's notes already hold `INT-01`. Each entry was presented with its source paragraphs quoted, and the log was generated from the rulings rather than written independently.
+
+checks: Generation (`bash`, `22:21:59`) wrote `evidence/evidence-log.md` (5,909 B on disk). Counts (`awk`, `22:23:08`) -> `A 4`, `Q 3`, `E 18`; owners `Luke 5 / Joshua 2 / Ben 18`. Citation verification ran twice: pass 1 (`22:22:17`) resolved `INT-02` 99, `INT-03` 12, `INT-04` 69 but `INT-01` 0 — E-1…E-6 reported `MISSING paragraph INT-01 P04…P20` because the INT-01 map had been renamed to INT-04; E-7…E-18 `OK`. Pass 2 (`22:22:28`) reparsed from the downloaded notes — `INT-01 paras 27 ['P01'…'P27']`, `INT-02 paras 99` with `missing ['P100'…'P112']` — and printed matching quote fragments for `E-1 P04 OK` … `E-6 P20 OK` plus `Q1a P14 OK`, `Q2a P10 OK`. Every cited paragraph in the log resolves: INT-01 27, INT-02 99 of 112, INT-03 12, INT-04 69.
+
+evidence: E-1…E-18, A-1…A-4, Q-1…Q-3 (`evidence/evidence-log.md`); the paragraph sources are INT-01:P04/P06/P14/P16/P18/P20, INT-02:P13/P15/P19/P40/P42/P48/P52/P58–P63/P65/P89, INT-03:P05/P08/P11, INT-04:P18/P21/P46/P56.
+
+risk: INT-02 paragraphs `P100`–`P112` did not parse in the verification pass — a formatting problem, not missing text — and no entry cites them, so the coverage claim rests on 99 of 112 paragraphs. `E-12` cites the range `INT-02:P58–P63` and `E-18` cites two interviews (`INT-02:P63`; `INT-03:P08`), so neither satisfies the one-paragraph rule used elsewhere; both are deliberate and recorded in D-021 and D-030. Attribution of the male turns in INT-04 is structural (question/answer order), not voice-based, so `INT-04:P21` and `P56` inherit that uncertainty. Fragment matching is substring-based against the transcript text: pass 1 verified quoted fragments for `E-7`…`E-18` against their cited paragraphs and returned OK for all twelve, and pass 2 verified `E-1`…`E-6` after repairing the parser that had keyed on the renamed map, so a claim whose quote is correct but whose paraphrase adds an unsupported clause still passes. The `19:58:02` instruction is saved as `prompts/prompt-09-drive-and-evidence-log.txt`, and the later upload instruction as `prompts/prompt-10-upload-evidence-log.txt`, so the handout's prompts-file requirement is met for this entry.
+## Entry 14
+
+artifact: `docs/evidence/transcript/interview_transcript.md` (8,872 B, 83 lines, 69 timed turns) plus the raw machine output `docs/evidence/transcript/tx_small/*.{json,tsv,srt,txt,vtt}`. Supporting audio decodes (`full16k.wav`, `win_out/win.srt`, `~/tmp/diar2.json`, `~/tmp/turns.json`) remain outside the repository.
+
+tool: omp assistant session `01a1a334-5974-700e-bcf1-a3a821db7205`, provider bifrost, model id `bifrost/opencode-go/deepseek-v4.1-flash` (upstream release version not recorded); tools driven from it: `openai-whisper` CLI (`large-v3`, then `small.en`), `ffmpeg`/`ffprobe`, `sherpa-onnx` in `~/tmp/.venv-diar`, `tailscale file get`. Date of use 2026-11-03.
+
+prompts: `prompts/prompt-01-taildrop-audio-check.txt` and `prompts/prompt-03-transcribe-interview.txt` (the two that direct this artifact); `prompts/prompt-02-taildrop-time-window.txt` narrowed the search that located the audio.
+
+review: Human-in-the-loop review, described by the student: the agent submitted evidence recommendations for each part of the transcript with the cited transcript text quoted, and the student reviewed the full content and made the final choices. The resulting rulings are recorded in `docs/evidence/DECISIONS.md`.
+
+checks: `tailscale file get .` -> rc=0, file `2026_10_31_17_39_59_1_yappify_interview.mp3` 13,815,235 B; `ffprobe …` -> `duration=863.452188`, `bit_rate=127999`; `whisper …mp3 --model large-v3 …` -> killed at the 3600 s ceiling, `tx/` empty; `whisper …mp3 --model small.en --language en --fp16 False --output_dir tx_small` -> completed in ~5.5 min, 5 output files on disk; `grep -cE '^[0-9]{2}:[0-9]{2} ' interview_transcript.md` -> 69.
+
+evidence: Deliverable 2c (raw notes with interview and paragraph IDs). The transcript now backs INT-04 in the evidence log, which cites `INT-04:P18`, `P21`, `P46`, `P56`.
+
+risk: Speaker labels are heuristic (per-turn F0 bands plus question/answer structure), not voice biometrics; the male turns (Luke vs Participant A) are the weakest and the file itself marks unverifiable wording with `[?]`. Whether `small.en` mis-transcribed any word that a later evidence entry depends on is unverified — no audio spot-check against `large-v3` exists for the full recording, only for the 00:45–01:35 window (`win_out/win.srt`).

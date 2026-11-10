@@ -1,0 +1,1 @@
+Read the milestone 1 handout which is not only on canvas but also in the google drive. It should be similar to Assignment 3. I need to complete 2d. I would like to complete it in the same manner as the human in the loop method I used for that assignment. Separately, I will also need a providence log of my AI usage and all tools used. A side agent can work on that.

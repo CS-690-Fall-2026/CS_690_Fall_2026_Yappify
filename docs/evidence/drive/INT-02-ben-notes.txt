@@ -1,0 +1,449 @@
+P01
+00:00:06.370 --> 00:00:12.189
+Benjamin Z. Shuster: Alright, let me check that the transcript is working.
+
+P02
+00:00:13.490 --> 00:00:17.350
+Participant: I see, like, the little icon next to the recording button.
+
+P03
+00:00:17.740 --> 00:00:19.439
+Participant: It says transcription is on.
+
+P04
+00:00:20.120 --> 00:00:21.540
+Benjamin Z. Shuster: Okay, awesome.
+
+P05
+00:00:22.900 --> 00:00:28.990
+Benjamin Z. Shuster: So, this is a quick interview for CS690.
+
+P06
+00:00:29.570 --> 00:00:37.109
+Benjamin Z. Shuster: So just for a bit of context, we are planning a application that we're going to develop, and just wanted to get the user feedback.
+
+P07
+00:00:37.340 --> 00:00:42.899
+Benjamin Z. Shuster: Our first question is, can you describe the last time that you tried to find an audio clip?
+
+P08
+00:00:44.620 --> 00:00:48.270
+Participant: The last time I tried to find an audio clip was the…
+
+P09
+00:00:48.500 --> 00:00:51.380
+Participant: research I was doing in Dovetail.
+
+P10
+00:00:51.520 --> 00:00:54.970
+Participant: Like, a week ab-back? A week or so ago?
+
+P11
+00:00:56.240 --> 00:00:58.870
+Participant: Do you want, like, more details on that? I don't know.
+
+P12
+00:00:59.510 --> 00:01:03.479
+Benjamin Z. Shuster: I think as much detail as you are willing to and able to share.
+
+P13
+00:01:04.080 --> 00:01:17.900
+Participant: Yeah, we were doing some user participant interviews, and we had, meetings on Teams, and then we used the transcription feature to port them over to Dovetail, and
+
+P14
+00:01:17.900 --> 00:01:26.579
+Participant: You could use the audio clips, or you could use the, like, video clips along with the audio, depending on what you were doing and where that information was going.
+
+P15
+00:01:28.410 --> 00:01:47.440
+Participant: And we were able to access the audio clips both through Google Drive, which is where they're originally uploaded, and, through Dovetail, which, like, allows you to separate the video from the audio if you just need to listen and make sure you're hearing the right things for the transcription. Because sometimes Dovetail's transcription is wrong, and you need to fix it.
+
+P16
+00:01:49.620 --> 00:01:50.560
+Benjamin Z. Shuster: Alright.
+
+P17
+00:01:50.910 --> 00:02:04.470
+Benjamin Z. Shuster: Next question, what is your preferred method of consuming content? Like, audio, video, video games, podcasts, etc. And, also, why would it be your preferred method of consuming content?
+
+P18
+00:02:06.060 --> 00:02:11.969
+Participant: I used to be a big Instagram Reels person, but then I started doomscrolling a little too much.
+
+P19
+00:02:12.300 --> 00:02:22.259
+Participant: So then I moved to YouTube Shorts, which actually de-incentivizes me because the content's kind of bad, but I need something to pass the time. So I think right now.
+
+P20
+00:02:22.360 --> 00:02:23.750
+Participant: my biggest…
+
+P21
+00:02:24.760 --> 00:02:36.499
+Participant: unfortunate choice is LinkedIn, and I scroll LinkedIn, and I look at the videos, like, little, like, reels version of LinkedIn that they have, and look at the posts and stuff.
+
+P22
+00:02:40.200 --> 00:02:41.940
+Benjamin Z. Shuster: Oh, boy. I know.
+
+P23
+00:02:43.120 --> 00:02:48.069
+Benjamin Z. Shuster: I'm not proud of it. I think I'm also similar, and I'm not proud of it either.
+
+P24
+00:02:48.070 --> 00:02:49.350
+Participant: Oh my goodness.
+
+P25
+00:02:49.780 --> 00:03:02.929
+Benjamin Z. Shuster: Alright, can you tell me about some of the most used audio, music, and podcast apps that you've used? Like, sites, tools, apps, and why you use that specific app or tool for audio, music, and podcasts?
+
+P26
+00:03:03.430 --> 00:03:05.730
+Participant: Like, just listening to music, and things like that?
+
+P27
+00:03:05.730 --> 00:03:07.829
+Benjamin Z. Shuster: Just any kind of audio in general.
+
+P28
+00:03:08.280 --> 00:03:13.550
+Participant: Yeah, I recently moved to SoundCloud because I… At the time.
+
+P29
+00:03:13.870 --> 00:03:17.939
+Participant: Spotify kind of sucked. I didn't want to pay for a student premium.
+
+P30
+00:03:18.130 --> 00:03:21.439
+Participant: And I didn't want to just deal with, like.
+
+P31
+00:03:21.680 --> 00:03:24.569
+Participant: Not being able to look at playlist previews.
+
+P32
+00:03:25.100 --> 00:03:28.370
+Participant: Apparently that's changed, but I'm still on SoundCloud.
+
+P33
+00:03:28.630 --> 00:03:34.470
+Participant: I don't pay for their pro version, but I really liked the ability that I was able to import all my music.
+
+P34
+00:03:36.030 --> 00:03:44.759
+Participant: I don't listen to podcasts or audiobooks or anything of that nature. I really should, but it's just not something in my realm of content to consume.
+
+P35
+00:03:45.140 --> 00:03:54.339
+Participant: So mostly just SoundCloud for listening to music, and I know it also, like, directly supports artists better than Spotify does, and, like, pays them a little better.
+
+P36
+00:03:54.490 --> 00:03:58.210
+Participant: So I feel better about using the app more than, Spotify.
+
+P37
+00:04:00.490 --> 00:04:01.640
+Benjamin Z. Shuster: Okay.
+
+P38
+00:04:02.390 --> 00:04:10.570
+Benjamin Z. Shuster: What did you do the last time that you wanted to share a short audio clip with a friend, and was it a good experience?
+
+P39
+00:04:11.840 --> 00:04:16.630
+Participant: Yeah, I got a Instagram Reel from a friend.
+
+P40
+00:04:16.970 --> 00:04:23.769
+Participant: And I wanted to share that with someone else. And then I realized that over Discord, you can't use embeds.
+
+P41
+00:04:23.930 --> 00:04:34.649
+Participant: Properly, because, I don't know, they, like, blocked it for some reason. So, I ended up looking online for, like, a URL extender that, like, allows you to embed the clip as a full video clip.
+
+P42
+00:04:34.980 --> 00:04:41.549
+Participant: And now I've just been sharing those, like, embed shorteners, depending on what content it is, like TikTok. Usually TikTok or Instagram Reels.
+
+P43
+00:04:41.810 --> 00:04:44.980
+Participant: And, I'll share it with my friends that way.
+
+P44
+00:04:48.690 --> 00:04:51.950
+Benjamin Z. Shuster: Alright, next question.
+
+P45
+00:04:52.220 --> 00:04:58.030
+Benjamin Z. Shuster: Do you have a preferred length for the content you consume, and why?
+
+P46
+00:04:58.860 --> 00:05:00.219
+Participant: a preferred link?
+
+P47
+00:05:00.700 --> 00:05:10.520
+Benjamin Z. Shuster: length? Like, do you like 2-hour, full-on movies? Do you like, you know, 30-second short clips? Something in the middle, 20-minute mockumentaries?
+
+P48
+00:05:11.240 --> 00:05:24.929
+Participant: I used to be, like, really bad with my attention span, so it was like, it had to be less than a minute. Like, content entirely. Since I've migrated away from Instagram, I've moved toward LinkedIn. I kind of like…
+
+P49
+00:05:25.570 --> 00:05:28.709
+Participant: Longer posts that are more detailed.
+
+P50
+00:05:29.010 --> 00:05:37.910
+Participant: And usually there are, like, articles, or, like, people ranting about something, or just anything that gives more detail that isn't AI-generated, obviously.
+
+P51
+00:05:38.200 --> 00:05:40.439
+Participant: So I think, like…
+
+P52
+00:05:40.790 --> 00:05:51.360
+Participant: in terms of, like, actual time, maybe I'd say… say around, like, two and a half minutes, three minutes. Like, about the length of a song is kind of, like, now where my attention span sits for…
+
+P53
+00:05:51.630 --> 00:05:52.500
+Participant: content.
+
+P54
+00:05:53.230 --> 00:05:54.840
+Benjamin Z. Shuster: Like, just a few minutes.
+
+P55
+00:05:54.840 --> 00:05:56.110
+Participant: Yeah, just a few minutes.
+
+P56
+00:05:56.270 --> 00:05:56.940
+Benjamin Z. Shuster: Okay.
+
+P57
+00:05:57.700 --> 00:06:03.570
+Benjamin Z. Shuster: When was the last time that you sent an audio clip or a voice clip to a friend?
+
+P58
+00:06:04.670 --> 00:06:13.879
+Participant: I think it was also a week ago. Some of my friends went to Boston, and I was really excited, and I couldn't text.
+
+P59
+00:06:14.720 --> 00:06:18.510
+Participant: Or, well, it was really hard for me to text while walking, so I just recorded a video clip.
+
+P60
+00:06:18.680 --> 00:06:21.250
+Participant: While I was walking. Or voice clips, sorry.
+
+P61
+00:06:21.930 --> 00:06:25.239
+Participant: To express my excitement and how good they looked in their outfits.
+
+P62
+00:06:26.450 --> 00:06:29.459
+Benjamin Z. Shuster: So what's that, like, to an individual or a group chat?
+
+P63
+00:06:29.460 --> 00:06:31.290
+Participant: It was, iMessage group chat.
+
+P64
+00:06:31.980 --> 00:06:41.740
+Benjamin Z. Shuster: Okay, and did you have any specific kind of type or situation where you think you would normally be sending those clips or audio snippets?
+
+P65
+00:06:42.910 --> 00:06:52.419
+Participant: I think it's mostly when I have a lot to say, and I just cannot be bothered to text. I usually don't like sending voice clips… myself.
+
+P66
+00:06:52.550 --> 00:07:01.569
+Participant: Just because I'm like, ugh, I don't want to spend the time listening to this. Like, again, like, I'm not a big audiobook person. But obviously, in, like, certain scenarios where I feel like
+
+P67
+00:07:01.690 --> 00:07:06.069
+Participant: I'm not in the right… Mood or setting to text.
+
+P68
+00:07:06.170 --> 00:07:14.230
+Participant: I'll record a… I'll record a voice clip. Like, for example, if I'm intoxicated, I'm not gonna be texting because my texting's atrocious. I will send voice clips.
+
+P69
+00:07:17.210 --> 00:07:27.340
+Benjamin Z. Shuster: So I think you actually also just answered the next question, which is, have you sent voice notes or audio clips when using a standard messaging app like iMessage?
+
+P70
+00:07:27.480 --> 00:07:29.999
+Benjamin Z. Shuster: Is there anything else that you'd want to, like, add to that?
+
+P71
+00:07:32.310 --> 00:07:42.479
+Participant: I like iMessage clips over Discord voice clips, just because I think iMessage clips just have a better intuitive, like, feel than Discord. Discord feels a little clunky.
+
+P72
+00:07:42.820 --> 00:07:43.630
+Participant: That's it.
+
+P73
+00:07:44.270 --> 00:07:48.959
+Benjamin Z. Shuster: Huh. Well, I'm curious, is it, like the thing where you click and hold on the send button and it records?
+
+P74
+00:07:50.100 --> 00:07:55.659
+Participant: Yes. Wait, actually, let me pull it up myself and double check. I don't want to give you the wrong information.
+
+P75
+00:07:59.280 --> 00:08:01.699
+Participant: Yeah, there's, like, a little,
+
+P76
+00:08:02.280 --> 00:08:05.909
+Participant: button, to the right of before the send button.
+
+P77
+00:08:06.030 --> 00:08:10.250
+Participant: And you can, like, just click on it before you send something, and it'll automatically start recording.
+
+P78
+00:08:10.930 --> 00:08:11.880
+Benjamin Z. Shuster: Oh, okay.
+
+P79
+00:08:13.280 --> 00:08:15.510
+Benjamin Z. Shuster: So, two more questions.
+
+P80
+00:08:15.830 --> 00:08:21.030
+Benjamin Z. Shuster: First, there is, in the past, when you have decided not to send an audio clip.
+
+P81
+00:08:21.300 --> 00:08:24.620
+Benjamin Z. Shuster: Do you have, like, a reason why you'd choose not to do so?
+
+P82
+00:08:26.780 --> 00:08:31.549
+Participant: I think it's just, like, personal preference. I also feel more…
+
+P83
+00:08:32.470 --> 00:08:37.490
+Participant: liable for what I say when I, like, say it out loud, then versus over text.
+
+P84
+00:08:37.990 --> 00:08:42.779
+Participant: And I think, like, Texting allows you, obviously, a lot of
+
+P85
+00:08:43.140 --> 00:08:46.160
+Participant: Liability as well, but also allows you the freedom to…
+
+P86
+00:08:46.460 --> 00:08:48.930
+Participant: Look at what you're saying before you…
+
+P87
+00:08:49.080 --> 00:08:51.850
+Participant: Send it, and then you can, like, edit it if you want to, but…
+
+P88
+00:08:52.160 --> 00:08:56.130
+Participant: You usually have the privilege of, like, looking at your words in their entirety.
+
+P89
+00:08:56.240 --> 00:09:09.430
+Participant: Before sending out a message. Whereas with, like, voice notes and voice clips, it's like, oh, well, I said it, I can't undo it, and it's there, so I either have to record the entire thing again, or just hope they don't make a big deal about it.
+
+P90
+00:09:09.970 --> 00:09:13.139
+Benjamin Z. Shuster: Oh yeah, I guess there's no real, like, edit button for an audio clip.
+
+P91
+00:09:13.360 --> 00:09:14.050
+Participant: Yeah.
+
+P92
+00:09:15.360 --> 00:09:25.269
+Benjamin Z. Shuster: So, last question is, do you have any suggestions for other people that my group can talk to that might have similar perspectives, different perspectives on recording audio clips?
+
+P93
+00:09:26.200 --> 00:09:28.339
+Participant: I'm recording audio clips.
+
+P94
+00:09:28.590 --> 00:09:29.960
+Participant: Low key.
+
+P95
+00:09:29.960 --> 00:09:32.160
+Benjamin Z. Shuster: If you do have them, you could just, like, text them to me.
+
+P96
+00:09:32.420 --> 00:09:36.280
+Participant: Yeah, yeah, no, Professor a professor… has been doing…
+
+P97
+00:09:36.520 --> 00:09:41.010
+Participant: Stop, okay, but that's only specifically because he's doing things with deaf students and music?
+
+P98
+00:09:41.330 --> 00:09:41.929
+Benjamin Z. Shuster: Yeah, he goes…
+
+P99
+00:09:41.930 --> 00:09:44.079
+Participant: Kinda in the realm of what you're doing.
+
+P100
+00:09:44.240 --> 00:09:46.440
+Benjamin Z. Shuster: Oh yeah, him and, Mark…
+
+P101
+00:09:46.840 --> 00:09:49.539
+Benjamin Z. Shuster: What's his name? I forgot his last name.
+
+P102
+00:09:49.770 --> 00:09:50.740
+Participant: Yeah, yeah.
+
+P103
+00:09:52.660 --> 00:09:53.600
+Benjamin Z. Shuster: Christopher?
+
+P104
+00:09:54.150 --> 00:09:54.510
+Participant: Great.
+
+P105
+00:09:55.000 --> 00:09:56.949
+Benjamin Z. Shuster: another professor, another professor, yeah.
+
+P106
+00:09:56.950 --> 00:09:57.770
+Participant: There you go.
+
+P107
+00:09:58.020 --> 00:09:59.450
+Benjamin Z. Shuster: Okay, thank you.
+
+P108
+00:09:59.770 --> 00:10:02.749
+Participant: You know the guy who did the theremin? Oh my gosh, I forgot what his name is.
+
+P109
+00:10:03.660 --> 00:10:06.860
+Participant: The mu- the funky music guy we had for 485.
+
+P110
+00:10:06.860 --> 00:10:08.419
+Benjamin Z. Shuster: Oh yeah, the one who sinks to birds.
+
+P111
+00:10:08.420 --> 00:10:10.510
+Participant: Yes, the one who sings to birds, him.
+
+P112
+00:10:10.900 --> 00:10:14.210
+Benjamin Z. Shuster: Okay, I'm gonna stop the recording now.
+
+

@@ -2,6 +2,8 @@
 
 Entry: `## Entry 2`
 
+Session: omp CLI session (model `bifrost/opencode-go/deepseek-v4.1-flash`), 2026-11-08.
+
 Verbatim, in the order sent:
 
 ```
