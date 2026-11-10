@@ -323,3 +323,34 @@ checks: `tailscale file get .` -> rc=0, file `2026_10_31_17_39_59_1_yappify_inte
 evidence: Deliverable 2c (raw notes with interview and paragraph IDs). The transcript now backs INT-04 in the evidence log, which cites `INT-04:P18`, `P21`, `P46`, `P56`.
 
 risk: Speaker labels are heuristic (per-turn F0 bands plus question/answer structure), not voice biometrics; the male turns (Luke vs Participant A) are the weakest and the file itself marks unverifiable wording with `[?]`. Whether `small.en` mis-transcribed any word that a later evidence entry depends on is unverified — no audio spot-check against `large-v3` exists for the full recording, only for the 00:45–01:35 window (`win_out/win.srt`).
+
+## Entry 16
+
+artifact: docs/design/S-7.md
+tool: ChatGPT, 11/8/26
+prompts: prompts/S-7-design.txt
+review: I reviewed the S-7 design document to make sure it followed the assignment requirements. I checked that it included the problem, scope, non-goals, interface, data, rules, edge cases, decisions, open questions, and acceptance test. I also checked that the requirements matched the S-7 user story about uploading an existing audio file.
+checks: Manually reviewed the design document against the assignment instructions and AC-7. No implementation tests were run during the design stage.
+evidence: S-7, AC-7, E-8, E-16, A-4
+risk: The supported audio formats, maximum clip duration, and rules for uploading copyrighted audio are still unresolved.
+
+## Entry 17
+
+artifact: docs/design/S-1-gap-check.md
+tool: Claude, Sonnet 5.5, 11/8/26
+prompts: prompts/S-1-gap-check.txt
+review: I reviewed the 28 questions Claude generated and compared them with the S-1 design document. I classified the questions as real gaps, separating those that were partially answered from those that were unanswered. I also identified which sections of the design document addressed parts of the questions and what decisions still needed clarification.
+checks: Manually reviewed the 28 questions against docs/design/S-1.md. No implementation tests were run for this review.
+evidence: S-1, AC-1, E-12, E-13
+risk: The maximum recording duration, interrupted recording behavior, recording format, and storage requirements are still unresolved.
+
+## Entry 18
+
+artifact: docs/design/S-7-gap-check.md
+tool: Claude, Sonnet 5.5, 11/8/26
+prompts: prompts/S-7-gap-check.txt
+review: I reviewed the 29 questions Claude generated and compared them with the S-7 design document. I identified which questions were partially answered and which were unanswered. I also checked which sections provided partial answers and documented the decisions or open questions that still need clarification.
+checks: Manually reviewed the 29 questions against docs/design/S-7.md. No implementation tests were run for this review.
+evidence: S-7, AC-7, E-8, E-16, A-4
+risk: Supported audio formats, maximum clip duration, upload validation, and music licensing requirements are still unresolved.
+
