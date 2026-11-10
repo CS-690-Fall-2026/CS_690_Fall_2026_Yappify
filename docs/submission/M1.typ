@@ -11,7 +11,7 @@
   #v(0.8em)
   Joshua George · Ben Shuster · Luke Hill \
   Repository: #link("https://github.com/CS-690-Fall-2026/CS_690_Fall_2026_Yappify") \
-  Commit: `5d4dbd2`
+  Commit: `f743259231836d846c5900de8ad727bfa39976cb`
 ]
 
 = Table of contents
