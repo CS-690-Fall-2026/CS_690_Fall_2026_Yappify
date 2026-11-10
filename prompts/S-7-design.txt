@@ -1,0 +1,19 @@
+Using the S-7 user story and its acceptance criterion AC-7, create a design document for the Yappify audio upload feature.
+
+User Story S-7: As an audio creator, I want to upload an existing audio file so that I can share audio I already have without recording it again.
+
+The design document should include these nine sections:
+
+1. Problem and supporting evidence
+2. Scope
+3. Non-goals
+4. Interface, including function signatures, input and output types, and errors
+5. Data
+6. Rules, including preconditions, postconditions, and invariants
+7. Edge cases
+8. Settled decisions and open questions
+9. Acceptance tests, including AC-7 and its test name
+
+Use evidence IDs E-8, E-16, and assumption A-4. Do not invent additional interview evidence or make decisions about requirements that have not been settled.
+
+Keep the document within two pages, use clear language, and make the requirements specific enough for a developer to implement without guessing. For any unresolved requirement, include it as an open question rather than inventing an answer.
