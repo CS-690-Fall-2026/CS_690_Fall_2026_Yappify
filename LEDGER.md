@@ -68,7 +68,7 @@ artifact: project repository (Deliverable 6a) — org `https://github.com/CS-690
 repo `https://github.com/CS-690-Fall-2026/CS_690_Fall_2026_Yappify` (public, updated
 `2026-11-07T20:33:38Z`), cloned to
 `/home/TacticalTaco/school/CS690/group-project` at HEAD
-`a57fa391505a2928782873feda30c808527fa827`, commit message "Update S-1 and S-7 design docs",
+`2f5af108ba38e123d9aa5df25df64e2c481e4d09`, commit message "Update S-1 and S-7 design docs",
 commit time `2026-11-07T15:33:28-05:00`.
 
 tool: `git` (clone), the `gh` CLI, filesystem `find`, Canvas API reads, and Google Drive search.
@@ -86,7 +86,7 @@ folder, and in Canvas conversations.
 checks: As supplied, and not re-run by the provenance-scribe agent:
 
 - `gh repo list CS-690-Fall-2026 --limit 100` — exactly one repo, `CS_690_Fall_2026_Yappify`
-- `git clone` to `/home/TacticalTaco/school/CS690/group-project` — HEAD `a57fa391505a2928
+- `git clone` to `/home/TacticalTaco/school/CS690/group-project` — HEAD `2f5af101505a2928
 782873feda30c808527fa827`
 - Earlier, superseded search: `find ~ ...` — no yappify repo; `gh repo list --limit 100` — no
   candidate; `gh repo list md685-njit` — only assignment and lecture repositories;
@@ -98,15 +98,14 @@ evidence: Deliverable 6a (repository: `README.md`, `AGENTS.md`, `docs/design/`,
 
 risk: The earlier negative result was wrong, so the other negative results from that same search
 session (invitations, Drive search, Canvas conversations) are not evidence of absence. The
-clone is at `a57fa39`; that commit's time (`2026-11-07T15:33:28-05:00`, i.e. 20:33:28Z) is ten
+clone is at `2f5af10`; that commit's time (`2026-11-07T15:33:28-05:00`, i.e. 20:33:28Z) is ten
 seconds before the repo's recorded update `2026-11-07T20:33:38Z`. The remote was checked on
-2026-11-08: `git ls-remote origin HEAD refs/heads/*` returned `a57fa391505a2928782873feda30c
-  808527fa827` for both `HEAD` and `refs/heads/main`, so the remote has not advanced past the
+2026-11-08: `git ls-remote origin HEAD refs/heads/*` returned `2f5af108ba38e123d9aa5df25df64e2c481e4d09` for both `HEAD` and `refs/heads/main`, so the remote has not advanced past the
 clone.
 
 ## Entry 4
 
-artifact: 6b test harness — committed at `945971ee137873230ba2029856f757f5990f4a84`
+artifact: 6b test harness — committed at `e84089ca56e3091fa91bca4cdbc2de5e9e40ec16`
 ("add tests for AC-1 and AC-7", 2026-11-08 15:08:27 -05:00), under
 `/home/TacticalTaco/school/CS690/group-project/frontend`: `.gitignore` (new, 5 lines),
 `package-lock.json`, `package.json`, `playwright.config.ts`, `tests/ac-01-record.spec.ts`,
@@ -149,12 +148,12 @@ checks: `npm install --no-audit --no-fund` in `frontend` (3 packages); `npx play
 skipped. Failure: `page.goto: net::ERR_CONNECTION_REFUSED at http://localhost:5173/` in
 `test_ac1_record_and_stop_displays_playback`. Skipped:
 `test_ac7_valid_audio_upload_displays_playback`, reason "AC-7 skipped: S-7 is the story not
-built in Milestone 1 (handout 6b)". Committed as `945971ee137873230ba2029856f757f5990f4a84`,
-2026-11-08 15:08:27 -05:00, subject "add tests for AC-1 and AC-7", on top of `a57fa39`, with
+built in Milestone 1 (handout 6b)". Committed as `e84089ca56e3091fa91bca4cdbc2de5e9e40ec16`,
+2026-11-08 15:08:27 -05:00, subject "add tests for AC-1 and AC-7", on top of `2f5af10`, with
 seven files: `frontend/.gitignore` (new, 5 lines), `frontend/package-lock.json`,
 `frontend/package.json`, `frontend/playwright.config.ts`,
 `frontend/tests/ac-01-record.spec.ts`, `frontend/tests/ac-07-upload.spec.ts`,
-`frontend/tests/fixtures/tone.wav` (480,044 bytes). HEAD is now `945971e`. Fixture checks, run
+`frontend/tests/fixtures/tone.wav` (480,044 bytes). HEAD is now `e84089c`. Fixture checks, run
 2026-11-08 and not re-run by the provenance-scribe agent:
 
 - `ffprobe` → `pcm_s16le`, 48000 Hz, 1 channel, duration 1.000000 before regeneration and
@@ -172,7 +171,7 @@ fixtures/tone.wav`, confirming the per-file override reaches Chromium; `npm test
 http://localhost:5173/` and AC-7 still skipped.
 
 evidence: AC-1 (story S-1), AC-7 (story S-7); handout Deliverables 6b and 6e; commit
-`945971ee137873230ba2029856f757f5990f4a84` (Deliverable 8 requires the SHA of every
+`e84089ca56e3091fa91bca4cdbc2de5e9e40ec16` (Deliverable 8 requires the SHA of every
 AI-assisted commit).
 
 risk: No frontend application exists, so the suite is red by design and is not passing. AC-7's
@@ -181,7 +180,7 @@ risk: No frontend application exists, so the suite is red by design and is not p
 open question 2 is settled, otherwise the fixture is not a valid AC-7 Given; the fixture is WAV
 only, so a final `SUPPORTED_AUDIO_FORMATS` that excludes WAV would also invalidate it; the
 469 KiB fixture is no longer at risk of being dropped as generated output, since it is committed
-in `945971e`. `frontend/.gitignore` now exists and covers `node_modules/`, `dist/`, `coverage/`,
+in `e84089c`. `frontend/.gitignore` now exists and covers `node_modules/`, `dist/`, `coverage/`,
 `playwright-report/`, `test-results/`. The root `README.md` currently gives two test commands,
 not the single command Deliverable 6a asks for. Recorded clip length is Record-to-Stop, not the
 5-second fixture length, so no duration assertion is possible; the fixture only guarantees the
@@ -205,7 +204,7 @@ risk: The maximum recording duration, recording format, and handling of interrup
 
 ## Entry 6
 
-artifact: contents of frontend/src, frontend/docs, and frontend/dev-server.mjs, at commit ccced50b6427c707bd818bf09b3c27a0ebadf634
+artifact: contents of frontend/src, frontend/docs, and frontend/dev-server.mjs, at commit 7611e754f7ea3ed80c2b2b6ad17de8e43ba8bf56
 tool: Antigravity, Gemini 3.8 Flash, 11/9/26
 prompts: prompts/S-01.md
 review: Read the prompts for cmd access in antigravity, and verify that the commands executed match the expected outcomes.
