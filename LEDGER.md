@@ -226,3 +226,42 @@ checks: Before the fix, with `node dev-server.mjs` running: `curl -I /main.js` r
 evidence: AC-1 (story S-1); handout Deliverables 6b, 6e, 6a (single test command).
 
 risk: Not committed at the time of writing, so no SHA can be named yet; `npm run build` and a type check were not run; `src/main.ts` and `src/components/AudioRecorderVanilla.ts` are now dead code; dependency versions resolved by npm are not pinned beyond the lockfile; the suite is green only for AC-1, and AC-7 remains skipped.
+
+## Entry 8
+
+artifact: Interview 2
+prompts: Look at interview 2 and number the paragraphs in each set of notes P01, P02
+review: used an online diff tool to check only the paragraph numbering changes.
+checks: manual review
+evidence: Interview 2
+risk: None
+
+## Entry 9
+
+artifact: Interview 1
+prompts: Look at interview 1 and number the paragraphs in each set of notes P01, P02
+review: used an online diff tool to check only the paragraph numbering changes.
+checks: manual review
+evidence: Interview 1
+risk: None
+
+
+## Entry 10
+
+artifact: AGENTS.md
+prompts: Make a AGENTS.md
+Include standing instructions for your AI coding tool. At a minimum: the language and framework, the test command, the files and folders the agent must not change, and the rule that it shows a plan and waits for approval before editing.
+review: reviewed AGENTS.md to verify it included the required standing instructions.
+checks: manual review
+evidence: Milestone 1 step 6A
+risk: None
+
+## Entry 11
+
+artifact: README.md
+prompts: prompts/readme.md
+Include standing instructions for your AI coding tool. At a minimum: the language and framework, the test command, the files and folders the agent must not change, and the rule that it shows a plan and waits for approval before editing.
+review: reviewed README.md to verify it included the required standing instructions.
+checks: manual review
+evidence: README.md
+risk: None
