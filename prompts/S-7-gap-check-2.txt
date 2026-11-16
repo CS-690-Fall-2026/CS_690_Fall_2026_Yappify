@@ -1,0 +1,3 @@
+Read docs/design/S-7.md. You are the engineer who must build this.
+
+List every question you would have to guess the answer to. Do not answer them.
