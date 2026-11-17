@@ -1,137 +1,85 @@
 # AGENTS.md - Yappify Coding Agent Instructions
 
 These instructions apply to AI coding assistants working anywhere in the Yappify repository.
-
 ## Project and technology
-
-Yappify is a CS 690 short-form audio-sharing application. Its core features are publishing audio clips with captions and tags, playing clips in a feed, liking/unliking posts, and following creators and viewing their profiles. Comments are optional and the first feature to cut if needed. Advanced recommendations, direct messaging, and live streaming are out of scope.
-
-- **Frontend:** React 19, TypeScript, and Vite (`frontend/`). Use Playwright for end-to-end/acceptance tests.
-- **Backend:** Python and FastAPI (`backend/`, when scaffolded). Use `pytest` for backend tests.
-- Preserve the existing architecture, naming conventions, dependencies, and API contracts. Do not introduce another framework or large dependency without approval.
-
+Yappify is a CS 690 short-form audio-sharing application. Core features: publishing audio clips with captions and tags, feed playback, likes/unlikes, following creators, and creator profiles. Comments are optional and first to cut. Advanced recommendations, messaging, and live streaming are out of scope.
+- **Frontend:** React 19, TypeScript, Vite (`frontend/`); Playwright for acceptance tests.
+- **Backend:** Python, FastAPI (`backend/`, once scaffolded); pytest for backend tests.
+- Preserve existing architecture, conventions, dependencies, and API contracts. No new frameworks or large dependencies without approval.
 ## Repository layout
-
 ```text
 CS_690_Fall_2026_Yappify/
-├── AGENTS.md                  # Coding agent rules and workflow (this file)
-├── LEDGER.md                  # Task-by-task execution and verification log (1 entry per task)
-├── README.md                  # Project setup and usage documentation
+├── AGENTS.md                 # Agent instructions
+├── LEDGER.md                 # Task execution and verification log
+├── README.md                 # Setup and usage
 ├── docs/
-│   ├── backlog.md             # Prioritized task and story backlog
-│   ├── traceability.md        # Mapping between user stories, acceptance criteria, plans, and tests
-│   ├── design/                # Sprint specs, architecture, and gap-check docs (e.g., S-1.md, S-7.md)
-│   ├── evidence/              # Interview notes, transcripts, decisions, and provenance logs
-│   ├── plans/                 # Approved task/sprint implementation plans (e.g., S-1-plan.md)
-│   └── submission/            # Course submission deliverables
+│   ├── backlog.md            # Prioritized backlog
+│   ├── traceability.md       # Stories, ACs, plans, tests
+│   ├── design/               # Sprint specifications
+│   ├── evidence/             # Interviews and decisions
+│   ├── plans/                # Approved implementation plans
+│   └── submission/           # Course deliverables
 ├── frontend/
-│   ├── docs/                  # Frontend AC specifications (e.g., AC-01-RECORD.md)
+│   ├── docs/                 # Frontend AC specifications
 │   ├── src/
-│   │   ├── audio/             # Audio recording, encoding, and playback modules
-│   │   ├── components/        # UI components
-│   │   ├── App.tsx            # Root application component
-│   │   └── main.tsx           # Application entry point
-│   ├── tests/                 # Existing frontend Playwright specs & fixtures (e.g., ac-01-record.spec.ts)
-│   ├── dev-server.mjs         # Custom local dev server helper
-│   ├── package.json           # Frontend scripts and dependencies
-│   ├── package-lock.json      # Locked frontend dependency tree
-│   ├── playwright.config.ts   # Playwright test configuration
-│   └── vite.config.ts         # Vite build/dev configuration
-├── prompts/                   # Reusable prompt templates for agent workflows
+│   │   ├── audio/            # Recording and playback
+│   │   ├── components/       # UI components
+│   │   ├── App.tsx
+│   │   └── main.tsx
+│   ├── tests/                 # Playwright tests and fixtures
+│   ├── dev-server.mjs
+│   ├── package.json
+│   ├── package-lock.json
+│   ├── playwright.config.ts
+│   └── vite.config.ts
+├── prompts/                  # Agent prompt templates
 └── tests/
-    └── acceptance/            # Canonical acceptance test suites derived from ACs
 ```
-
 ## Exact commands (fresh clone)
+Execute and verify each documented command on a fresh clone before claiming it works. Record failures and missing prerequisites. Re-verify affected commands whenever dependencies or setup change.
+**Frontend (`frontend/`):**
+1. Install: `cd frontend && npm ci && npx playwright install chromium`
+2. Run app: `cd frontend && npm run dev`
+3. Production: `cd frontend && npm run build && npm run preview`
+4. Tests: `cd frontend && npm test`
+`npm test` runs Playwright via `package.json`. **Coverage:** No coverage script currently exists in `frontend/package.json`. Do not run or claim frontend coverage until a runner/script is added, documented, and verified on a fresh clone.
+**Backend (`backend/`, once scaffolded):**
 
-Every command below is intended to work from a clean clone of the repository. Whenever setup scripts or dependencies change, re-verify all four steps on a fresh clone before marking the setup task complete.
-
-### Frontend (`frontend/`)
-
-1. **Install dependencies and Playwright browser:**
-   ```bash
-   cd frontend && npm ci && npx playwright install chromium
-   ```
-2. **Run the app:**
-   ```bash
-   cd frontend && npm run dev
-   ```
-   *(Production build & preview: `cd frontend && npm run build && npm run preview`)*
-3. **Run the tests:**
-   ```bash
-   cd frontend && npm test
-   ```
-   *(Executes `playwright test` via `package.json`.)*
-4. **Run coverage:**
-   ```bash
-   cd frontend && npm run coverage
-   ```
-   > **Note:** `frontend/package.json` does not currently define a `"coverage"` script or coverage runner. Before claiming coverage works on a fresh clone, add a `"coverage"` script (e.g., Vitest with `@vitest/coverage-v8` or Playwright V8 coverage collection) and verify `npm run coverage` from a clean install.
-
-### Backend (`backend/` — once scaffolded)
-
-1. **Install dependencies:**
-   ```bash
-   cd backend && python -m venv .venv && source .venv/bin/activate && pip install -r requirements.txt
-   ```
-2. **Run the app:**
-   ```bash
-   cd backend && uvicorn app.main:app --reload
-   ```
-3. **Run the tests:**
-   ```bash
-   cd backend && python -m pytest
-   ```
-4. **Run coverage:**
-   ```bash
-   cd backend && python -m pytest --cov=app --cov-report=term-missing
-   ```
-
+1. Install: `cd backend && python -m venv .venv && source .venv/bin/activate && pip install -r requirements.txt`
+2. Run app: `cd backend && uvicorn app.main:app --reload`
+3. Tests: `cd backend && python -m pytest`
+4. Coverage: `cd backend && python -m pytest --cov=app --cov-report=term-missing`
+Backend commands are provisional until scaffolding exists. Verify each on a fresh clone before claiming success.
 ## Mandatory approval workflow
-
 **Before editing, creating, deleting, renaming, or formatting any file:**
-
-1. Read the relevant code and documentation without modifying files (check `docs/design/`, `docs/plans/`, `docs/traceability.md`, and `LEDGER.md` first).
-2. Show a concise implementation plan identifying the files to change, the intended changes, any risks, and the tests to run.
-3. **Stop and wait for explicit user approval.** Do not treat a task request itself as approval to start editing.
-4. After approval, make only the approved changes. If the scope changes, present a revised plan and wait for new approval.
-5. Report the files changed, tests run, results, and any tests that could not be run. Never claim a test passed unless it was executed successfully.
-
-This requirement applies even to small fixes and documentation edits. Read-only inspection and planning are allowed before approval.
-
+1. Read relevant code and documentation, especially `docs/design/`, `docs/plans/`, `docs/traceability.md`, and `LEDGER.md`, without modifying files.
+2. Present a concise plan listing files, changes, risks, and tests.
+3. **Stop and wait for explicit user approval.** A task request alone is not approval.
+4. Make only approved changes. Obtain new approval if scope changes.
+5. Report files changed, exact tests run, results, and unexecuted tests. Never claim unexecuted tests passed.
+This applies to small fixes and documentation edits. Read-only inspection and planning require no approval.
 ## Testing rules
-
-- **Source of truth:** Tests come from the acceptance criteria (`docs/design/`, `docs/traceability.md`, `frontend/docs/`), **not** from reading or mirroring existing implementation code.
-- **Immutability of acceptance tests:** **Never** edit, delete, skip (`test.skip` / `.only`), or weaken a test or assertion in `tests/acceptance/` (or `frontend/tests/ac-*.spec.ts`) to make a test pass. If an acceptance test fails, fix the application code—not the test.
-- **Completion gate:** Always run the full test command (`cd frontend && npm test`, plus `cd backend && python -m pytest` once `backend/` exists) and confirm all tests pass **before** reporting any task as done.
-
+- **Source of truth:** Derive tests from acceptance criteria in `docs/design/`, `docs/traceability.md`, and `frontend/docs/`, not existing implementation code.
+- **Acceptance-test immutability:** Never edit, delete, skip (`test.skip` / `.only`), or weaken tests/assertions in `frontend/tests/ac-*.spec.ts` to make them pass. Fix application code instead.
+- **Completion gate:** Run `cd frontend && npm test` and, once backend exists, `cd backend && python -m pytest`. Confirm all tests pass before reporting completion.
 ## Git and ledger rules
-
-- **One task per commit:** Make exactly one atomic git commit per task. Do not bundle multiple tasks into one commit or split a single task across unrelated commits.
-- **Commit message format:** Every commit message must include both the **task number** and the **AC ID** (e.g., `Task 4 (AC-02): add feed audio playback controls`).
-- **One ledger entry per task:** Append exactly one entry to `LEDGER.md` per completed task, recording the task number, AC ID, summary of changes, exact test/coverage commands run and their results, and the commit hash/message.
-
+- **One task per commit:** Exactly one atomic git commit per task; do not combine or split unrelated work.
+- **Commit format:** Include task number and AC ID, e.g., `Task 4 (AC-02): add feed audio playback controls`.
+- **Ledger:** Append exactly one `LEDGER.md` entry per completed task with task number, AC ID, summary, exact test/coverage commands and results, and commit hash/message.
 ## Protected files and directories
+**Do not modify, replace, delete, rename, or auto-format these paths without explicit authorization for the specific change in the approved plan:**
+- `AGENTS.md`, `README.md` — agent instructions and documentation.
+- `frontend/tests/ac-*.spec.ts` — acceptance tests.
+- `.github/`, `.gitignore` — automation and Git configuration.
+- `frontend/package-lock.json` and other lockfiles — dependency resolution.
+- `.env`, `.env.*`, secrets, credentials, and private keys — sensitive configuration.
+- `.venv/`, `node_modules/`, `dist/`, `build/`, `coverage/`, `playwright-report/`, `test-results/`, `__pycache__/` — generated artifacts.
 
-**Do not modify, create replacements for, delete, rename, or auto-format these paths unless the user explicitly authorizes the specific change in the approved plan:**
-
-- `AGENTS.md` — standing agent instructions.
-- `README.md` — project setup and usage documentation.
-- `tests/acceptance/` and `frontend/tests/ac-*.spec.ts` — acceptance tests derived from ACs.
-- `.github/` — workflows and repository automation.
-- `frontend/package-lock.json` and other dependency lockfiles — dependency resolution.
-- `.env`, `.env.*`, and any secrets, credentials, or private keys — configuration and sensitive data.
-- `.venv/`, `node_modules/`, `dist/`, `build/`, `coverage/`, `playwright-report/`, `test-results/`, and `__pycache__/` — local dependencies and generated artifacts.
-- `.gitignore` — files ignored by git.
-
-Never print, copy into source code, commit, or disclose secrets. Do not commit generated output or local environment files.
-
+Never disclose or commit secrets, generated output, or local environment files.
 ## Coding expectations
-
-- Keep changes small, directly related to the approved task, and compatible with the current frontend/backend interfaces.
-- Use typed TypeScript for frontend changes and idiomatic Python/FastAPI for backend changes.
-- Add or update unit/integration tests for behavior changes within the approved scope without altering acceptance tests.
-- Avoid unrelated refactoring, dependency upgrades, schema changes, and changes to authentication, deployment, or CI unless specifically approved.
-- Respect the project scope and prioritize reliable audio playback and persistence.
-
-If these instructions conflict with an explicit user request, present the conflict in the plan and request approval before proceeding.
+- Keep changes minimal, approved, and compatible with current interfaces.
+- Use typed TypeScript and idiomatic Python/FastAPI.
+- Add/update unit or integration tests for behavior changes without altering acceptance tests.
+- Avoid unrelated refactoring, upgrades, schema, authentication, deployment, or CI changes.
+- Prioritize reliable audio playback and persistence.
+- If instructions conflict with a user request, identify the conflict in the plan and obtain approval.

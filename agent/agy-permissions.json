@@ -1,9 +1,11 @@
 {
   "permissions": {
-    "allow": ["command(npm test)", "command(git add)", "command(git commit)"],
+    "allow": [
+      "command(cd frontend && npm test)",
+      "command(git add)",
+      "command(git commit)"
+    ],
     "deny": [
-      "write_file(tests/)",
-      "read_file(.env)",
       "command(git push)",
       "command(rm -rf)"
     ]
