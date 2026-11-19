@@ -3,7 +3,6 @@ name: test-writer
 description: Writes and verifies acceptance-criteria-driven unit, integration, and edge-case tests without modifying production code.
 mainAgent: true
 subagent: true
-permissionMode: acceptEdits
 commandExecutionPolicy: sandbox
 tools:
   - view_file
