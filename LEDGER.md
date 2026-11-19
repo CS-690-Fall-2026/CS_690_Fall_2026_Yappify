@@ -354,3 +354,19 @@ checks: Manually reviewed the 29 questions against docs/design/S-7.md. No implem
 evidence: S-7, AC-7, E-8, E-16, A-4
 risk: Supported audio formats, maximum clip duration, upload validation, and music licensing requirements are still unresolved.
 
+
+## Entry 19
+
+artifact: `docs/design/S-7.md` §4 and §8, and `docs/backlog.md` §4d AC-7 — decisions 4–16 settled for Milestone 2.
+
+tool: omp agent session, model `bifrost/opencode-go/deepseek-v4.1-flash`, used 2026-11-19. Decision content is the team's; the assistant applied the edits and did not choose any value.
+
+prompts: `prompts/S-7-decisions-settled.txt` — team decision relayed by the student, plus the approved wording for decision 8.
+
+review: I read each of the 13 `Source: Proposed team decision, pending confirmation.` lines and replaced only the source line, preserving every existing `Reason:`. Decision 8 was rewritten to the wording the student approved: frontend-only, no backend endpoint, authentication not implemented, mock current-user record from the frontend data module. I removed decision 16's provisional-lock sentence because the decisions are now settled, deleted the "Pending Team Confirmation" block and the "provisional … subject to team review" preamble, and pointed the two §4 setting markers at their decisions. In `docs/backlog.md` I replaced AC-7's trailing `AUDIO_LICENSE_POLICY`/Q-2 clause with "Publication is out of scope for S-7 (team decision, 2026-11-19)" and added the copyright-confirmation Given so the row matches design §9. I rejected no content and changed no value: formats remain MP3/WAV/M4A, duration 60 s, ownership checkbox unchecked by default, clips in memory.
+
+checks: `grep -n "pending confirmation\|provisional\|Pending Team" docs/design/S-7.md docs/backlog.md` -> no matches; `git diff --stat` -> 2 files, +31/−46; `grep -c '^## Entry' LEDGER.md` -> 19.
+
+evidence: S-7, AC-7; team decision recorded in §8 with source and reason per handout 1c.
+
+risk: The AC-7 test still asserts the pre-decision shape (no copyright-confirmation step, a Playwright `button` named "Play" rather than a native audio control), so 3b's audit will report it until 3a rewrites it. Decision 8's mock current-user record has no implementation yet, and nothing in S-7's rules or tests exercises it, so its shape is unverified.

@@ -1,0 +1,12 @@
+Settle S-7 §8 decisions 4–16 after team discussion.
+
+Team decision (relayed 2026-11-19): use mock data for authentication; the upload
+architecture will have no backend endpoint for this milestone; all other proposed
+decisions were agreed by the team as written. Approved wording for decision 8:
+authentication is not implemented; a mock current-user record supplied by the
+frontend data module stands in until a real auth backend exists.
+
+Applied: 13 Source lines changed to "Team decision, 2026-11-19."; decision 8 rewritten;
+decision 16's provisional-lock sentence removed; "Pending Team Confirmation" block and
+the provisional preamble deleted; §4 setting markers point at decisions 4 and 5; backlog
+AC-7 reconciled with design §9 (copyright confirmation in, licensing clause out).
