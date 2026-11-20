@@ -566,3 +566,20 @@ commit: pending user commit (not committed by agent).
 evidence: S-7, AC-7; `evidence/coverage.txt`, `evidence/mutation-before.txt`, `evidence/mutation-after.txt`, `MILESTONE2.md` §5d–5f, `docs/design/S-7.md` §9.
 
 risk: Tasks 4.6–4.7 (`UploadClip.tsx`, `UploadedClipView.tsx`) are not yet built, so `test_ac7_valid_audio_upload_displays_playback` and `upload-rules.spec.ts` remain red and are marked pending in `MILESTONE2.md` §5f; `UPLOAD_ACCEPT` (`constants.ts:20`) cannot be killed until `UploadClip.tsx` consumes it.
+## Entry 30
+
+artifact: Task 4.6 (AC-07) — `frontend/src/components/UploadClip.tsx` (new): the upload controls; `frontend/src/App.tsx` (modified): mounts `<UploadClip />` after `<AudioRecorder />`.
+
+tool: Claude Code session, model `claude-opus-5-5`, implemented and tested 2026-11-19, committed 2026-11-20. The implementation follows the approved plan (`docs/plans/S-7-plan.md`, "Error handling (upload controls, task 4.6)" and "UI integration") and `docs/design/S-7.md` §8 decisions 11, 12, 13, 15.
+
+prompts: `prompts/S-7-task-4.6.txt` — student's Task 4.6 implementation request.
+
+review: `UploadClip` renders `<h2>Upload an Audio Clip</h2>`; the decision-13 checkbox inside a `<label>` reading "I confirm that I own this audio or have permission to upload it", controlled and unchecked by default; and `<label htmlFor>` "Choose audio file" with a single-file `<input type="file" accept={UPLOAD_ACCEPT}>`. On `change` it reads the first file and resets `input.value = ""`; an empty selection (cancel) returns without calling `uploadAudio` and leaves the clip and any message unchanged. Otherwise it clears the previous error, sets the checking state, and calls `uploadAudio(file, { ownershipConfirmed })`. On success it stores the clip with `setUnpublishedClip(result, file.name)` and mirrors it in React state. On failure an `UploadError` message is shown as written and any other error is shown with the `UploadFailedError` message; the existing clip is left unchanged. While checking, "Checking audio…" is shown and both the file input and checkbox are disabled. Plan deviation, approved by the student before implementation: the error `<p role="alert" aria-live="assertive">` is rendered only when an error exists, instead of the plan's "persistent" region, because the `@display` rule tests expect `getByRole("alert")` to have count 0 after an accepted or cancelled selection. As the task required, nothing displays the accepted clip yet (no `<audio>`, filename, duration, unpublished status or Remove button); a `void clip;` placeholder keeps the state referenced until Task 4.7 renders it. No new dependencies; recorder files and tests untouched.
+
+checks (run 2026-11-19): `cd frontend && npm run build` -> vite, 21 modules transformed, built in 126 ms; `cd frontend && npx playwright test --grep @controls` -> 10 passed (5.8 s); `cd frontend && npm test` -> 17 tests, 11 passed, 6 failed: AC-1 (`ac-01-record.spec.ts`) passed; all 10 `@controls` rule tests passed; AC-7 (`ac-07-upload.spec.ts`) and the 5 `@display` rule tests failed as expected, each with "element(s) not found" waiting for the accepted file's name to be visible, because the uploaded-audio display is Task 4.7. `git diff m2-tests-locked -- frontend/tests/acceptance` -> empty (re-checked 2026-11-20 before commit). No coverage was run (no frontend coverage script exists). This commit is red on purpose, a known exception to the AGENTS.md green gate (plan open item 5); the gate applies at Tasks 4.7/4.8.
+
+commit: `Task 4.6 (AC-07): Implement upload controls` (SHA recorded by `git log`; a commit cannot contain its own hash).
+
+evidence: S-7, AC-7; design decisions 11, 12, 13, 15.
+
+risk: Accepted clips are stored but not yet shown, so the success path is checked only indirectly (no error and the "Checking audio…" state clears) until Task 4.7. The `void clip;` placeholder must be removed when the display is added. `vite build` does not type-check, and no strict `tsc` check was run on the new component.

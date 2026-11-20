@@ -1,0 +1,43 @@
+We are continuing Milestone 2, Deliverable 4b for S-7.
+
+Read AGENTS.md, docs/plans/S-7-plan.md, docs/design/S-7.md, frontend/src/audio/upload.ts, frontend/src/data/clips.ts, and frontend/tests/rules/upload-rules.spec.ts.
+
+Implement ONLY Task 4.6: Upload Controls.
+
+Create frontend/src/components/UploadClip.tsx and update frontend/src/App.tsx to mount the upload controls after AudioRecorder.
+
+Requirements:
+1. Display the heading "Upload an Audio Clip".
+2. Add the copyright confirmation checkbox with the exact accessible label required by the locked AC-7 test, initially unchecked.
+3. Add an accessible file picker labeled "Choose audio file" using UPLOAD_ACCEPT.
+4. Call uploadAudio(file, { ownershipConfirmed }) when a file is selected.
+5. Display "Checking audio…" during validation and disable the file input and checkbox while processing.
+6. Display validation errors in an accessible role="alert" region, clearing previous errors when a new selection begins.
+7. On successful validation, call setUnpublishedClip(result, file.name) and update component state.
+8. Preserve the existing clip when a file is rejected.
+9. Handle cancelled file selection without changing the existing clip.
+10. Reset the file input after each selection.
+
+Do not implement the uploaded-audio display yet. That belongs to Task 4.7.
+
+Do not add an audio player, filename display, duration display, unpublished status, or Remove button.
+
+Do not modify the locked acceptance tests, recorder components, or unrelated files. Do not add dependencies.
+
+Run:
+- npm run build
+- npx playwright test --grep @controls
+- npm test
+
+Expected:
+- AC-1 remains green.
+- The @controls rule tests should pass.
+- AC-7 and @display tests remain red because the uploaded-audio display is not implemented.
+
+If any @controls tests fail, investigate the cause and fix only Task 4.6 implementation code.
+
+Confirm locked acceptance tests remain unchanged.
+
+Report the changed files, test results, and any limitations.
+
+Do not commit or push. I will review the implementation first.
