@@ -1,0 +1,39 @@
+We are continuing Milestone 2, Deliverable 4b for S-7 (Upload Existing Audio).
+
+Read AGENTS.md, docs/plans/S-7-plan.md, docs/design/S-7.md, and frontend/src/audio/constants.ts before making changes.
+
+Implement ONLY Task 4.4 from the approved implementation plan.
+
+Create frontend/src/audio/upload.ts with:
+- UploadResult and UploadOptions types, reusing S-1's RecordedClip type.
+- uploadAudio(file, options) for validating an audio upload.
+- The UploadError base class and all planned error subclasses:
+  OwnershipNotConfirmedError, UnsupportedFormatError,
+  FileSizeLimitError, InvalidAudioError,
+  DurationLimitError, and UploadFailedError.
+
+Follow the validation order specified in the plan:
+1. Check copyright/ownership confirmation.
+2. Validate supported extensions and MIME types.
+3. Enforce the 20 MB file-size limit.
+4. Verify the file is readable.
+5. Load audio metadata with a temporary object URL and the 10-second timeout.
+6. Reject invalid durations and audio longer than 60 seconds.
+7. Return the validated audio result with unpublished status.
+
+Use the error messages and behavior approved in the S-7 design decisions.
+
+Ensure temporary object URLs and event listeners are cleaned up.
+
+Do not implement the clip store, upload UI, or any later tasks.
+Do not modify the locked acceptance tests.
+Do not modify unrelated files or add dependencies.
+
+Run npm run build from frontend.
+Run npm test and report the results.
+
+AC-1 must remain green. AC-7 and the additional rule tests are expected to remain red because the upload UI has not been implemented yet.
+
+Show me the changed files and summarize the implementation.
+
+Do not commit or push anything until I review the changes.

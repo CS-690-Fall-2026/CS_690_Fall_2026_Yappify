@@ -454,3 +454,21 @@ commit: `Task 4.3 (AC-07): Add upload rule tests` (SHA recorded by `git log`; a 
 evidence: S-7, AC-7; `evidence/red-rules.txt`; design decisions 3, 5, 9–13, 15, 16.
 
 risk: Every rule test stops at the missing upload controls, so no fixture has reached `setInputFiles` yet. The generated WAV durations, the over-20 MB buffer, the corrupt-file case and the validation behavior still need verification after the upload controls are implemented (Task 4.6). The "disabled while checking" test relies on seeing the loading state through a MutationObserver, which could prove timing-sensitive.
+
+## Entry 25
+
+artifact: Task 4.4 (AC-07) — `frontend/src/audio/upload.ts` (new): the `UploadResult` and `UploadOptions` types, `uploadAudio(file, options)`, the `UploadError` base class and six subclasses.
+
+tool: Claude Code session, model `claude-opus-5-5`, used 2026-11-19. The implementation follows the approved plan (`docs/plans/S-7-plan.md`, "Types and data structures" and "Validation (uploadAudio)") and `docs/design/S-7.md` §8 decisions 3, 9, 10, 12, 13, 14.
+
+prompts: `prompts/S-7-task-4.4.txt` — student's Task 4.4 implementation request.
+
+review: `UploadResult` reuses S-1's `RecordedClip` (`recorder.ts`) and narrows `mimeType` to `NormalizedMimeType` and adds `status: "unpublished"`; `UploadOptions` is `{ ownershipConfirmed: boolean }`. Six subclasses of `UploadError`, each setting its own `name` and a default user message: `OwnershipNotConfirmedError` and `FileSizeLimitError` (the plan's proposed messages, open items 1 and 2), and `UnsupportedFormatError`, `InvalidAudioError`, `DurationLimitError` and `UploadFailedError` (verbatim from decision 12). Validation order, first failure wins: (0) ownership not confirmed, checked before the file is read; (1) format: an unknown or missing lower-cased extension, including `.mp4`, or a non-empty MIME type that is not one of that format's variants, gives `UnsupportedFormatError` (an empty MIME type continues to decoding); (2) size over `MAX_UPLOAD_BYTES` gives `FileSizeLimitError`; (3) a rejected `file.slice(0, 1).arrayBuffer()` gives `UploadFailedError`; (4) `canPlayType(normalized) === ""`, a metadata `error` event, or the 10 s `METADATA_TIMEOUT_MS` timeout gives `InvalidAudioError`; (5) a duration that is not finite or is <= 0 gives `InvalidAudioError`, and one above `MAX_CLIP_DURATION` gives `DurationLimitError`, compared unrounded so 60.04 s is rejected; (6) returns `{ audio: file, durationSeconds, mimeType: normalized, status: "unpublished" }` with the original `File` unmodified. The metadata probe always clears its timer, removes both listeners, detaches its source and revokes the temporary object URL in `finally`. Nothing imports the module yet; the clip store and UI are Tasks 4.5–4.7.
+
+checks: `cd frontend && npm run build` -> vite, 17 modules transformed, built in 123 ms; strict type check (no `tsconfig.json` exists and `vite build` does not type-check) `cd frontend && npx tsc --noEmit --strict --target es2022 --module esnext --moduleResolution bundler --lib es2022,dom --skipLibCheck src/audio/upload.ts` -> exit 0, no errors; `cd frontend && npm test` -> 17 tests, 1 passed, 16 failed (2.2 m): AC-1 (`ac-01-record.spec.ts`) passed; AC-7 (`ac-07-upload.spec.ts`) failed as expected at the missing ownership-confirmation checkbox; all 15 rule tests failed as expected because the upload controls do not exist yet (timeouts waiting for the checkbox or file input, or checks on those missing controls), with no import, syntax or type errors. `git diff m2-tests-locked -- frontend/tests/acceptance` -> empty. No coverage was run (no frontend coverage script exists). This commit is red on purpose, a known exception to the AGENTS.md green gate (plan open item 5); the gate applies at Tasks 4.7/4.8.
+
+commit: `Task 4.4 (AC-07): Implement audio upload validation` (SHA recorded by `git log`; a commit cannot contain its own hash).
+
+evidence: S-7, AC-7; design decisions 3, 9, 10, 12, 13, 14.
+
+risk: The validation in `uploadAudio` has not yet been exercised by any test: the rule tests reach it only through the upload UI, which arrives in Task 4.6. The validation order, the messages, the metadata timeout and the URL/listener cleanup were checked by code review and the type check only.
