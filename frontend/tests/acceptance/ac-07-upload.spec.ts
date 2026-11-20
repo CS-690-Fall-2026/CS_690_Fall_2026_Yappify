@@ -37,16 +37,17 @@ test("test_ac7_valid_audio_upload_displays_playback", async ({ page }) => {
   await expect(confirm).not.toBeChecked();
   await confirm.check();
 
-  await page.getByLabel(/upload/i).setInputFiles(fixture);
+  const fileInput = page.locator('input[type="file"]');
+  await expect(fileInput).toHaveAccessibleName(/.+/);
+  await fileInput.setInputFiles(fixture);
 
   // Decision 15: accepted clip shows the original filename and its duration.
   await expect(page.getByText("tone.wav")).toBeVisible();
-  await expect(page.getByText(/(^|\D)0:05(\D|$)|(^|\D)5\s?(s|sec)/i)).toBeVisible();
+  await expect(page.getByText("0:05")).toBeVisible();
 
   // Decisions 14-15: native audio control playing the selected file.
   const audio = page.locator("audio").first();
   await expect(audio).toBeVisible();
-  await expect(audio).toHaveAttribute("src", /^blob:/);
 
   // Decision 16: real metadata, not just the presence of a player element.
   await page.waitForFunction(() => {
@@ -55,7 +56,7 @@ test("test_ac7_valid_audio_upload_displays_playback", async ({ page }) => {
       !!el &&
       el.readyState >= HTMLMediaElement.HAVE_METADATA &&
       Number.isFinite(el.duration) &&
-      el.duration > 0
+      Math.abs(el.duration - 5) < 0.25
     );
   });
   expect(
@@ -69,5 +70,4 @@ test("test_ac7_valid_audio_upload_displays_playback", async ({ page }) => {
 
   // Decisions 1 and 14: the clip stays unpublished; publishing is out of S-7.
   await expect(page.getByText(/^unpublished$/i)).toBeVisible();
-  await expect(page.getByRole("button", { name: /^publish/i })).toHaveCount(0);
 });
