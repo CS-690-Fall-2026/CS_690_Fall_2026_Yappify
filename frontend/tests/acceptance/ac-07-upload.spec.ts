@@ -56,7 +56,7 @@ test("test_ac7_valid_audio_upload_displays_playback", async ({ page }) => {
       !!el &&
       el.readyState >= HTMLMediaElement.HAVE_METADATA &&
       Number.isFinite(el.duration) &&
-      Math.abs(el.duration - 5) < 0.25
+      Math.abs(el.duration - 5) < 0.05
     );
   });
   expect(
