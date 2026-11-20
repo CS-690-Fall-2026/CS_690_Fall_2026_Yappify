@@ -99,6 +99,91 @@ The corrected plan is saved in docs/plans/S-7-plan.md.
 2. **§6 Postconditions:** Across randomized valid/invalid upload sequences against `frontend/src/data/clips.ts`, a rejected file never produces or mutates the stored clip.
 3. **§6 Preconditions:** Inputs violating readability, decodability, or `SUPPORTED_AUDIO_FORMATS` are never accepted.
 
+### 5d. Coverage
+
+- **README test command:** `npm run test:coverage` from `frontend/` (`frontend/scripts/coverage.mjs`), which collects Chromium V8 JS coverage across the passing Playwright suites, maps it via Vite inline source maps + `v8-to-istanbul`, prints missing lines and branch coverage, and exits non-zero if S-7 line coverage drops below `80%`.
+- **Report:** `evidence/coverage.txt` — **100% line coverage** (`278/278` lines across `constants.ts`, `upload.ts`, `clips.ts`, and `formatDuration.ts`) and **100% branch coverage** (`60/60` branches) after adding the 5e tests (up from `99.28%` lines / `96.49%` branches before 5e).
+- **Uncovered line/branch note:** Before the 5e unit additions, `src/audio/upload.ts:162-164` (`if (new Audio().canPlayType(spec.normalized) === "") { throw new InvalidAudioError(); }`) and the false branch of `src/utils/formatDuration.ts:6` (`Number.isFinite(seconds) && seconds > 0 ? ... : 0`) were uncovered because Chromium natively supports WAV/MP3/M4A codecs and `uploadAudio` rejects non-positive/non-finite durations before formatting; both are acceptable defensive branches and are now also exercised by `frontend/tests/unit/upload-mutation-kills.unit.spec.ts` (note that S-7 UI components `UploadClip.tsx` and `UploadedClipView.tsx` from Tasks 4.6–4.7 are not yet built).
+
+### 5e. Mutation testing
+
+- **Configuration:** `frontend/stryker.config.mjs` (mutates only the S-7 story logic files: `src/audio/upload.ts`, `src/data/clips.ts`, `src/utils/formatDuration.ts`, and `src/audio/constants.ts`; uses Stryker's `command` runner against `tests/unit`, `tests/integration`, and `tests/property`, with `frontend/tests/coverage-test.ts` propagating `__STRYKER_ACTIVE_MUTANT__` into Chromium).
+- **Before (`evidence/mutation-before.txt`):** `95` killed, `34` survived (`73.64%` mutation score across `129` mutants).
+- **After (`evidence/mutation-after.txt`):** `116` killed, `13` survived (`89.92%` mutation score: `clips.ts` `100.00%`, `formatDuration.ts` `90.91%`, `upload.ts` `89.42%`, `constants.ts` `66.67%`).
+- **Triage selection (20 of 34 initial survivors):** Because the first run produced 34 survivors (>20), we triaged 20 by selecting all validation-logic, boundary-condition, error-handling, data-store, and formatter mutants plus representative metadata-timeout/cleanup entrypoints, leaving redundant inner probe-cleanup guards (`upload.ts:116-120`), `probe.preload`, dotfile `dot <= 0`, and unbuilt UI constant `UPLOAD_ACCEPT` (`constants.ts:20`) outside the 20-row triage.
+
+| Mutant | What it changed | Resolution (killing test + commit / reason) |
+|---|---|---|
+| `upload.ts:145` (#72) | `file.type !== ""` -> `true` | Killed by `upload-mutation-kills.unit.spec.ts` — `AC-7 (d9): uploadAudio accepts valid .wav file when file.type is empty string` (pending commit; commit cannot contain its own SHA) |
+| `upload.ts:145` (#74) | `file.type !== ""` -> `file.type !== "Stryker was here!"` | Killed by `upload-mutation-kills.unit.spec.ts` — `AC-7 (d9): uploadAudio accepts valid .wav file when file.type is empty string` (pending commit) |
+| `upload.ts:171` (#106) | `durationSeconds > MAX_CLIP_DURATION` -> `>=` | Killed by `upload-mutation-kills.unit.spec.ts` — `AC-7 (d5, d10): uploadAudio accepts exact 60.00 s WAV boundary with unpublished status` (pending commit) |
+| `upload.ts:150` (#81) | `file.size > MAX_UPLOAD_BYTES` -> `>=` | Killed by `upload-mutation-kills.unit.spec.ts` — `AC-7 (d11): uploadAudio accepts exact MAX_UPLOAD_BYTES (20 MB) WAV file` (pending commit) |
+| `upload.ts:162` (#90) | `canPlayType(...) === ""` -> `false` | Killed by `upload-mutation-kills.unit.spec.ts` — `AC-7 (d9, d12): uploadAudio rejects with InvalidAudioError when canPlayType returns empty string` (pending commit) |
+| `upload.ts:162-164` (#93) | Emptied `if (canPlayType === "")` block | Killed by `upload-mutation-kills.unit.spec.ts` — `AC-7 (d9, d12): uploadAudio rejects with InvalidAudioError when canPlayType returns empty string` (pending commit) |
+| `upload.ts:32` (#4) | `this.name = "UploadError"` -> `""` | Killed by `upload-mutation-kills.unit.spec.ts` — `AC-7 (d12): UploadError base class sets name to "UploadError"` (pending commit) |
+| `upload.ts:108` (#39) | `setTimeout(() => reject(...))` -> `() => undefined` | Killed by `upload-mutation-kills.unit.spec.ts` — `AC-7 (d10, d12): uploadAudio rejects with InvalidAudioError on metadata timeout and cleans up URL and timer` (pending commit) |
+| `upload.ts:114-122` (#44) | Emptied `loaded.finally(() => {})` | Killed by `upload-mutation-kills.unit.spec.ts` — `AC-7 (d10, d12): uploadAudio rejects with InvalidAudioError on metadata timeout and cleans up URL and timer` (pending commit) |
+| `upload.ts:115` (#45) | Removed `clearTimeout(timer)` | Killed by `upload-mutation-kills.unit.spec.ts` — `AC-7 (d10, d12): uploadAudio rejects with InvalidAudioError on metadata timeout and cleans up URL and timer` (pending commit) |
+| `upload.ts:121` (#57) | Removed `URL.revokeObjectURL(url)` | Killed by `upload-mutation-kills.unit.spec.ts` — `AC-7 (d10, d12): uploadAudio rejects with InvalidAudioError on metadata timeout and cleans up URL and timer` (pending commit) |
+| `clips.ts:24-27` (#112) | `MOCK_CURRENT_USER` -> `{}` | Killed by `upload-mutation-kills.unit.spec.ts` — `AC-7 (d8, d11): getCurrentUser returns a copy and setUnpublishedClip generates strictly increasing clip IDs` (pending commit) |
+| `clips.ts:25` (#113) | `id: "user-1"` -> `""` | Killed by `upload-mutation-kills.unit.spec.ts` — `AC-7 (d8, d11): getCurrentUser returns a copy and setUnpublishedClip generates strictly increasing clip IDs` (pending commit) |
+| `clips.ts:26` (#114) | `displayName: "Demo User"` -> `""` | Killed by `upload-mutation-kills.unit.spec.ts` — `AC-7 (d8, d11): getCurrentUser returns a copy and setUnpublishedClip generates strictly increasing clip IDs` (pending commit) |
+| `clips.ts:37` (#116) | `return { ...MOCK_CURRENT_USER }` -> `return {}` | Killed by `upload-mutation-kills.unit.spec.ts` — `AC-7 (d8, d11): getCurrentUser returns a copy and setUnpublishedClip generates strictly increasing clip IDs` (pending commit) |
+| `clips.ts:47` (#120) | `nextClipNumber++` -> `nextClipNumber--` | Killed by `upload-mutation-kills.unit.spec.ts` — `AC-7 (d8, d11): getCurrentUser returns a copy and setUnpublishedClip generates strictly increasing clip IDs` (pending commit) |
+| `formatDuration.ts:6` (#124) | `Number.isFinite(seconds) && seconds > 0` -> `true` | Killed by `upload-mutation-kills.unit.spec.ts` — `AC-7 (d15): formatDuration formats 0, -5, NaN, Infinity as 0:00, 5 as 0:05, and 60 as 1:00` (pending commit) |
+| `formatDuration.ts:6` (#126) | `&&` -> `\|\|` in duration guard | Killed by `upload-mutation-kills.unit.spec.ts` — `AC-7 (d15): formatDuration formats 0, -5, NaN, Infinity as 0:00, 5 as 0:05, and 60 as 1:00` (pending commit) |
+| `formatDuration.ts:6` (#128) | `seconds > 0` -> `seconds >= 0` | Equivalent: for `seconds === 0`, `Math.round(0)` produces `0`, identical to the `: 0` fallback (`"0:00"`). |
+| `upload.ts:81` (#26) | `if (dot < 0)` -> `if (false)` | Equivalent: when `dot === -1`, `fileName.slice(-1)` has length `<= 1`, which never matches `.mp3`, `.wav`, or `.m4a`. |
+
+Even at 99.28% line coverage (and 100% line coverage on `clips.ts` and `formatDuration.ts`), the initial 73.64% mutation score exposed missing boundary checks (`60.00 s`, `20 MB`, `file.type === ""`) and weak assertions (`ownerId === getCurrentUser().id` passing even when both were `undefined`) that coverage never flagged.
+
+### 5f. Traceability
+
+| Evidence ID | Story ID | AC ID | Test name | Passing commit |
+|---|---|---|---|---|
+| E-8, E-16, A-4 | S-7 | AC-7 | `test_ac7_valid_audio_upload_displays_playback` | _Pending (Tasks 4.6–4.7 UI not yet built)_ |
+| E-8, E-16, A-4 | S-7 | AC-7 | `controls › unsupported .ogg is rejected (d4, d9)` | _Pending (Tasks 4.6–4.7; added red in `c5afb1d`)_ |
+| E-8, E-16, A-4 | S-7 | AC-7 | `controls › audio-only .mp4 is rejected (d9)` | _Pending (Tasks 4.6–4.7; added red in `c5afb1d`)_ |
+| E-8, E-16, A-4 | S-7 | AC-7 | `controls › .wav with conflicting MIME audio/mpeg is rejected (d9)` | _Pending (Tasks 4.6–4.7; added red in `c5afb1d`)_ |
+| E-8, E-16, A-4 | S-7 | AC-7 | `controls › file over 20 MB is rejected (d11)` | _Pending (Tasks 4.6–4.7; added red in `c5afb1d`)_ |
+| E-8, E-16, A-4 | S-7 | AC-7 | `controls › undecodable .wav is rejected as invalid audio (d3, d12)` | _Pending (Tasks 4.6–4.7; added red in `c5afb1d`)_ |
+| E-8, E-16, A-4 | S-7 | AC-7 | `controls › 61 s WAV is rejected (d5, d10)` | _Pending (Tasks 4.6–4.7; added red in `c5afb1d`)_ |
+| E-8, E-16, A-4 | S-7 | AC-7 | `controls › 60.04 s WAV is rejected; duration is not rounded (d10)` | _Pending (Tasks 4.6–4.7; added red in `c5afb1d`)_ |
+| E-8, E-16, A-4 | S-7 | AC-7 | `controls › valid file without ownership confirmation is rejected (d13)` | _Pending (Tasks 4.6–4.7; added red in `c5afb1d`)_ |
+| E-8, E-16, A-4 | S-7 | AC-7 | `controls › confirmation unchecked on load and file input labelled (d13, d15)` | _Pending (Tasks 4.6–4.7; added red in `c5afb1d`)_ |
+| E-8, E-16, A-4 | S-7 | AC-7 | `controls › controls are disabled while checking audio (d11)` | _Pending (Tasks 4.6–4.7; added red in `c5afb1d`)_ |
+| E-8, E-16, A-4 | S-7 | AC-7 | `display › 60.00 s WAV is accepted and shows 1:00 (d5, d10, d15)` | _Pending (Tasks 4.6–4.7; added red in `c5afb1d`)_ |
+| E-8, E-16, A-4 | S-7 | AC-7 | `display › rejected file leaves the previous clip in place (d11, d12)` | _Pending (Tasks 4.6–4.7; added red in `c5afb1d`)_ |
+| E-8, E-16, A-4 | S-7 | AC-7 | `display › second valid upload replaces the first (d11)` | _Pending (Tasks 4.6–4.7; added red in `c5afb1d`)_ |
+| E-8, E-16, A-4 | S-7 | AC-7 | `display › cancelled selection leaves the clip unchanged (d11, §7 case 4)` | _Pending (Tasks 4.6–4.7; added red in `c5afb1d`)_ |
+| E-8, E-16, A-4 | S-7 | AC-7 | `display › Remove clears the clip and its audio element (d15)` | _Pending (Tasks 4.6–4.7; added red in `c5afb1d`)_ |
+| E-8, E-16, A-4 | S-7 | AC-7 | `AC-7 (§7.1, §4): uploadAudio rejects unsupported .ogg format with UnsupportedFormatError` | `b068c56` |
+| E-8, E-16, A-4 | S-7 | AC-7 | `AC-7 (§7.1, d9, §4): uploadAudio rejects audio-only .mp4 extension with UnsupportedFormatError` | `b068c56` |
+| E-8, E-16, A-4 | S-7 | AC-7 | `AC-7 (§7.1, d9, §4): uploadAudio rejects file with no extension with UnsupportedFormatError` | `b068c56` |
+| E-8, E-16, A-4 | S-7 | AC-7 | `AC-7 (§7.1, d9, §4): uploadAudio rejects conflicting MIME type for .wav extension` | `b068c56` |
+| E-8, E-16, A-4 | S-7 | AC-7 | `AC-7 (§7.2, d5, §4): uploadAudio rejects 61 s audio with DurationLimitError` | `b068c56` |
+| E-8, E-16, A-4 | S-7 | AC-7 | `AC-7 (§7.2, d10, §4): uploadAudio rejects 60.04 s audio without rounding` | `b068c56` |
+| E-8, E-16, A-4 | S-7 | AC-7 | `AC-7 (§7.3, d3, d12, §4): uploadAudio rejects corrupted audio with InvalidAudioError` | `b068c56` |
+| E-8, E-16, A-4 | S-7 | AC-7 | `AC-7 (§7.3, d10, §4): uploadAudio rejects 0, NaN, and Infinity durations with InvalidAudioError` | `b068c56` |
+| E-8, E-16, A-4 | S-7 | AC-7 | `AC-7 (§7.4, d11): cancelled selection creates no clip when empty and preserves existing clip invariant` | `b068c56` |
+| E-8, E-16, A-4 | S-7 | AC-7 | `AC-7 (d13, §4): uploadAudio rejects valid audio when ownershipConfirmed is false` | `b068c56` |
+| E-8, E-16, A-4 | S-7 | AC-7 | `AC-7 (d11, §4): uploadAudio rejects file exceeding 20 MB with FileSizeLimitError` | `b068c56` |
+| E-8, E-16, A-4 | S-7 | AC-7 | `AC-7 (d12, §4): uploadAudio rejects unreadable file with UploadFailedError` | `b068c56` |
+| E-8, E-16, A-4 | S-7 | AC-7 | `AC-7 (§4, d14): uploadAudio accepts valid 5 s WAV and returns unpublished UploadResult` | `b068c56` |
+| E-8, E-16, A-4 | S-7 | AC-7 | `valid upload passes uploadAudio, stores UnpublishedClip in clips.ts, and loads playable audio` | `09c757f` |
+| E-8, E-16, A-4 | S-7 | AC-7 | `rejected upload preserves stored clip; second valid upload replaces it with new id; remove clears store` | `09c757f` |
+| E-8, E-16, A-4 | S-7 | AC-7 | `§6 Invariant: every accepted upload has a permitted format and finite duration in (0, MAX_CLIP_DURATION]` | `622e394` |
+| E-8, E-16, A-4 | S-7 | AC-7 | `§6 Postconditions: rejected uploads never mutate or create a clip in clips.ts across arbitrary sequences` | `622e394` |
+| E-8, E-16, A-4 | S-7 | AC-7 | `§6 Preconditions: unreadable, undecodable, or non-permitted-format inputs are never accepted` | `622e394` |
+| E-8, E-16, A-4 | S-7 | AC-7 | `AC-7 (d9): uploadAudio accepts valid .wav file when file.type is empty string` | _Pending commit (5e)_ |
+| E-8, E-16, A-4 | S-7 | AC-7 | `AC-7 (d5, d10): uploadAudio accepts exact 60.00 s WAV boundary with unpublished status` | _Pending commit (5e)_ |
+| E-8, E-16, A-4 | S-7 | AC-7 | `AC-7 (d11): uploadAudio accepts exact MAX_UPLOAD_BYTES (20 MB) WAV file` | _Pending commit (5e)_ |
+| E-8, E-16, A-4 | S-7 | AC-7 | `AC-7 (d9, d12): uploadAudio rejects with InvalidAudioError when canPlayType returns empty string` | _Pending commit (5e)_ |
+| E-8, E-16, A-4 | S-7 | AC-7 | `AC-7 (d10, d12): uploadAudio rejects with InvalidAudioError on metadata timeout and cleans up URL and timer` | _Pending commit (5e)_ |
+| E-8, E-16, A-4 | S-7 | AC-7 | `AC-7 (d12): UploadError base class sets name to "UploadError"` | _Pending commit (5e)_ |
+| E-8, E-16, A-4 | S-7 | AC-7 | `AC-7 (d8, d11): getCurrentUser returns a copy and setUnpublishedClip generates strictly increasing clip IDs` | _Pending commit (5e)_ |
+| E-8, E-16, A-4 | S-7 | AC-7 | `AC-7 (d15): formatDuration formats 0, -5, NaN, Infinity as 0:00, 5 as 0:05, and 60 as 1:00` | _Pending commit (5e)_ |
+
 ## 6c. Answers to headless review findings
 
 _Pending._

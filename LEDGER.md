@@ -539,3 +539,30 @@ commit: pending user commit (not committed by agent).
 evidence: S-7, AC-07; `docs/design/S-7.md` §6 ("Rules"); `MILESTONE2.md` §5.
 
 risk: Tasks 4.6–4.7 (`UploadClip.tsx` and `UploadedClipView.tsx`) are not yet implemented, so full `npm test` remains red on the 16 UI-dependent tests and property tests cover `uploadAudio` + `clips.ts` rather than UI DOM events.
+
+
+## Entry 29
+
+artifact: Tasks 5d–5f (AC-07) — coverage enforcement (`frontend/scripts/coverage.mjs`, `frontend/tests/coverage-test.ts`, `frontend/package.json`, `frontend/package-lock.json`, `README.md`, `evidence/coverage.txt`), mutation testing (`frontend/stryker.config.mjs`, `frontend/tests/unit/upload-mutation-kills.unit.spec.ts`, `evidence/mutation-before.txt`, `evidence/mutation-after.txt`), traceability (`docs/design/S-7.md` §9, `MILESTONE2.md` §5d–5f).
+
+tool: Antigravity, Gemini 4 Hydrogen (High), plus `test-writer` subagent for `frontend/tests/unit/upload-mutation-kills.unit.spec.ts`, used 2026-11-20; `v8-to-istanbul`, `istanbul-lib-coverage`, `istanbul-reports`, `@stryker-mutator/core`, Playwright 1.56.0 (Chromium).
+
+prompts: User prompt requesting 5d (coverage threshold >= 80% in README test command + `evidence/coverage.txt` + uncovered line/branch note), 5e (mutation config for story logic files, before/after evidence, `test-writer` survivor kills, 20-survivor triage table, and mutation-vs-coverage sentence), and 5f (traceability rows in `MILESTONE2.md` with passing commits + matching test names in `docs/design/S-7.md` §9).
+
+review: Added Playwright Chromium V8 coverage collection (`frontend/tests/coverage-test.ts` and `frontend/scripts/coverage.mjs`), configured `npm run test:coverage` in `frontend/package.json` and `README.md` to fail below 80% S-7 line coverage, and saved `evidence/coverage.txt` (99.28% lines / 96.49% branches before 5e; 100% lines / 100% branches after 5e). Configured `frontend/stryker.config.mjs` to mutate only `src/audio/upload.ts`, `src/data/clips.ts`, `src/utils/formatDuration.ts`, and `src/audio/constants.ts`, propagating `__STRYKER_ACTIVE_MUTANT__` into Chromium. First Stryker run (`evidence/mutation-before.txt`) killed 95/129 (73.64%, 34 survived). Invoked `test-writer` to add 8 AC-7 tests in `frontend/tests/unit/upload-mutation-kills.unit.spec.ts`, reviewed all 8 tests for AC derivation and cleanup restoration, and re-ran Stryker (`evidence/mutation-after.txt`), reaching 116/129 killed (89.92%, 13 survived). Triaged 20 survivors in `MILESTONE2.md` §5e and synchronized test names across `MILESTONE2.md` §5f and `docs/design/S-7.md` §9.
+
+checks:
+- `cd frontend && npm run test:coverage` (after 5e edits) -> 27 passed (3.2s); S-7 coverage: 100% lines (278/278), 100% branches (60/60), threshold 80%.
+- `cd frontend && npx stryker run` (before) -> 95 killed, 34 survived, 73.64% mutation score (saved in `evidence/mutation-before.txt`).
+- `cd frontend && npx stryker run` (after) -> 116 killed, 13 survived, 89.92% mutation score (saved in `evidence/mutation-after.txt`).
+- `cd frontend && npx playwright test tests/unit/upload-mutation-kills.unit.spec.ts` -> 8 passed (1.8s).
+- `cd frontend && npx tsc --noEmit --strict --target ES2022 --module ESNext --moduleResolution bundler --lib ES2022,DOM --types node --skipLibCheck tests/unit/upload-mutation-kills.unit.spec.ts` -> exit 0.
+- `cd frontend && npm run build` -> vite v8.3.7, 17 modules transformed, built in 155ms.
+- `cd frontend && npm test` -> 43 tests total: 27 passed (`ac-01-record.spec.ts`: 1, `upload.unit.spec.ts`: 13, `upload-mutation-kills.unit.spec.ts`: 8, `upload.integration.spec.ts`: 2, `upload.property.spec.ts`: 3), 16 failed (pre-existing expected UI failures in `ac-07-upload.spec.ts`: 1, `upload-rules.spec.ts`: 15).
+- `git diff -- frontend/tests/acceptance` -> empty.
+
+commit: pending user commit (not committed by agent).
+
+evidence: S-7, AC-7; `evidence/coverage.txt`, `evidence/mutation-before.txt`, `evidence/mutation-after.txt`, `MILESTONE2.md` §5d–5f, `docs/design/S-7.md` §9.
+
+risk: Tasks 4.6–4.7 (`UploadClip.tsx`, `UploadedClipView.tsx`) are not yet built, so `test_ac7_valid_audio_upload_displays_playback` and `upload-rules.spec.ts` remain red and are marked pending in `MILESTONE2.md` §5f; `UPLOAD_ACCEPT` (`constants.ts:20`) cannot be killed until `UploadClip.tsx` consumes it.

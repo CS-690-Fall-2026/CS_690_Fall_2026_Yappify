@@ -1,0 +1,91 @@
+11:20:36 (56) INFO ProjectReader Found 4 of 32 file(s) to be mutated.
+11:20:36 (56) INFO Instrumenter Instrumented 4 source file(s) with 129 mutant(s)
+11:20:36 (56) INFO ConcurrencyTokenProvider Creating 1 test runner process(es).
+11:20:37 (56) INFO DryRunExecutor Starting initial test run (command test runner with "perTest" coverage analysis). This may take a while.
+11:20:40 (56) INFO DryRunExecutor Initial test run succeeded. Ran 1 tests in 3 seconds (net 3606 ms, overhead 1 ms).
+
+All tests
+  ✓ All tests (killed 116)
+
+[Survived] StringLiteral
+src/audio/constants.ts:20:30
+-   export const UPLOAD_ACCEPT = ".mp3,.wav,.m4a,audio/mpeg,audio/wav,audio/mp4,audio/x-m4a";
++   export const UPLOAD_ACCEPT = "";
+
+[Survived] ConditionalExpression
+src/audio/upload.ts:81:7
+-     if (dot < 0) return null;
++     if (false) return null;
+
+[Survived] EqualityOperator
+src/audio/upload.ts:81:7
+-     if (dot < 0) return null;
++     if (dot <= 0) return null;
+
+[Survived] StringLiteral
+src/audio/upload.ts:99:19
+-     probe.preload = "metadata";
++     probe.preload = "";
+
+[Survived] ConditionalExpression
+src/audio/upload.ts:116:9
+-       if (onLoaded) probe.removeEventListener("loadedmetadata", onLoaded);
++       if (true) probe.removeEventListener("loadedmetadata", onLoaded);
+
+[Survived] ConditionalExpression
+src/audio/upload.ts:116:9
+-       if (onLoaded) probe.removeEventListener("loadedmetadata", onLoaded);
++       if (false) probe.removeEventListener("loadedmetadata", onLoaded);
+
+[Survived] StringLiteral
+src/audio/upload.ts:116:45
+-       if (onLoaded) probe.removeEventListener("loadedmetadata", onLoaded);
++       if (onLoaded) probe.removeEventListener("", onLoaded);
+
+[Survived] ConditionalExpression
+src/audio/upload.ts:117:9
+-       if (onError) probe.removeEventListener("error", onError);
++       if (true) probe.removeEventListener("error", onError);
+
+[Survived] ConditionalExpression
+src/audio/upload.ts:117:9
+-       if (onError) probe.removeEventListener("error", onError);
++       if (false) probe.removeEventListener("error", onError);
+
+[Survived] StringLiteral
+src/audio/upload.ts:117:44
+-       if (onError) probe.removeEventListener("error", onError);
++       if (onError) probe.removeEventListener("", onError);
+
+[Survived] StringLiteral
+src/audio/upload.ts:119:27
+-       probe.removeAttribute("src");
++       probe.removeAttribute("");
+
+[Survived] CallExpression
+src/audio/upload.ts:120:5
+-       probe.load();
++       ;
+
+[Survived] EqualityOperator
+src/audio/upload.ts:128:45 (line 6 in src/utils/formatDuration.ts)
+src/utils/formatDuration.ts:6:45
+-     const total = Number.isFinite(seconds) && seconds > 0 ? Math.round(seconds) : 0;
++     const total = Number.isFinite(seconds) && seconds >= 0 ? Math.round(seconds) : 0;
+
+Ran 1.00 tests per mutant on average.
+--------------------|------------------|----------|-----------|------------|----------|----------|
+                    | % Mutation score |          |           |            |          |          |
+File                |  total | covered | # killed | # timeout | # survived | # no cov | # errors |
+--------------------|--------|---------|----------|-----------|------------|----------|----------|
+All files           |  89.92 |   89.92 |      116 |         0 |         13 |        0 |        0 |
+ audio              |  88.79 |   88.79 |       95 |         0 |         12 |        0 |        0 |
+  constants.ts      |  66.67 |   66.67 |        2 |         0 |          1 |        0 |        0 |
+  upload.ts         |  89.42 |   89.42 |       93 |         0 |         11 |        0 |        0 |
+ data               | 100.00 |  100.00 |       11 |         0 |          0 |        0 |        0 |
+  clips.ts          | 100.00 |  100.00 |       11 |         0 |          0 |        0 |        0 |
+ utils              |  90.91 |   90.91 |       10 |         0 |          1 |        0 |        0 |
+  formatDuration.ts |  90.91 |   90.91 |       10 |         0 |          1 |        0 |        0 |
+--------------------|--------|---------|----------|-----------|------------|----------|----------|
+11:29:21 (56) INFO JsonReporter [39m Your report can be found at: file:///tmp/stryker-mutation.json
+11:29:21 (56) INFO MutationTestExecutor [39m Done in 8 minutes and 44 seconds.

@@ -1,0 +1,208 @@
+11:10:09 (54) INFO ProjectReader Found 4 of 31 file(s) to be mutated.
+11:10:09 (54) INFO Instrumenter Instrumented 4 source file(s) with 129 mutant(s)
+11:10:09 (54) INFO ConcurrencyTokenProvider Creating 1 test runner process(es).
+11:10:09 (54) INFO DryRunExecutor Starting initial test run (command test runner with "perTest" coverage analysis). This may take a while.
+11:10:12 (54) INFO DryRunExecutor Initial test run succeeded. Ran 1 tests in 3 seconds (net 3306 ms, overhead 0 ms).
+
+All tests
+  ✓ All tests (killed 95)
+
+[Survived] StringLiteral
+src/audio/constants.ts:20:30
+-   export const UPLOAD_ACCEPT = ".mp3,.wav,.m4a,audio/mpeg,audio/wav,audio/mp4,audio/x-m4a";
++   export const UPLOAD_ACCEPT = "";
+
+[Survived] StringLiteral
+src/audio/upload.ts:32:17
+-       this.name = "UploadError";
++       this.name = "";
+
+[Survived] ConditionalExpression
+src/audio/upload.ts:81:7
+-     if (dot < 0) return null;
++     if (false) return null;
+
+[Survived] EqualityOperator
+src/audio/upload.ts:81:7
+-     if (dot < 0) return null;
++     if (dot <= 0) return null;
+
+[Survived] StringLiteral
+src/audio/upload.ts:99:19
+-     probe.preload = "metadata";
++     probe.preload = "";
+
+[Survived] ArrowFunction
+src/audio/upload.ts:108:24
+-       timer = setTimeout(() => reject(new InvalidAudioError()), METADATA_TIMEOUT_MS);
++       timer = setTimeout(() => undefined, METADATA_TIMEOUT_MS);
+
+[Survived] BlockStatement
+src/audio/upload.ts:114:31
+-     return loaded.finally(() => {
+-       clearTimeout(timer);
+-       if (onLoaded) probe.removeEventListener("loadedmetadata", onLoaded);
+-       if (onError) probe.removeEventListener("error", onError);
+-       // Detach the source so the element stops loading, then release the URL.
+-       probe.removeAttribute("src");
+-       probe.load();
+-       URL.revokeObjectURL(url);
+-     });
++     return loaded.finally(() => {});
+
+[Survived] CallExpression
+src/audio/upload.ts:115:5
+-       clearTimeout(timer);
++       ;
+
+[Survived] ConditionalExpression
+src/audio/upload.ts:116:9
+-       if (onLoaded) probe.removeEventListener("loadedmetadata", onLoaded);
++       if (true) probe.removeEventListener("loadedmetadata", onLoaded);
+
+[Survived] ConditionalExpression
+src/audio/upload.ts:116:9
+-       if (onLoaded) probe.removeEventListener("loadedmetadata", onLoaded);
++       if (false) probe.removeEventListener("loadedmetadata", onLoaded);
+
+[Survived] StringLiteral
+src/audio/upload.ts:116:45
+-       if (onLoaded) probe.removeEventListener("loadedmetadata", onLoaded);
++       if (onLoaded) probe.removeEventListener("", onLoaded);
+
+[Survived] ConditionalExpression
+src/audio/upload.ts:117:9
+-       if (onError) probe.removeEventListener("error", onError);
++       if (true) probe.removeEventListener("error", onError);
+
+[Survived] ConditionalExpression
+src/audio/upload.ts:117:9
+-       if (onError) probe.removeEventListener("error", onError);
++       if (false) probe.removeEventListener("error", onError);
+
+[Survived] StringLiteral
+src/audio/upload.ts:117:44
+-       if (onError) probe.removeEventListener("error", onError);
++       if (onError) probe.removeEventListener("", onError);
+
+[Survived] StringLiteral
+src/audio/upload.ts:119:27
+-       probe.removeAttribute("src");
++       probe.removeAttribute("");
+
+[Survived] CallExpression
+src/audio/upload.ts:120:5
+-       probe.load();
++       ;
+
+[Survived] CallExpression
+src/audio/upload.ts:121:5
+-       URL.revokeObjectURL(url);
++       ;
+
+[Survived] ConditionalExpression
+src/audio/upload.ts:145:7
+-     if (file.type !== "" && !mimeTypes.includes(file.type.toLowerCase())) {
++     if (true && !mimeTypes.includes(file.type.toLowerCase())) {
+
+[Survived] StringLiteral
+src/audio/upload.ts:145:21
+-     if (file.type !== "" && !mimeTypes.includes(file.type.toLowerCase())) {
++     if (file.type !== "Stryker was here!" && !mimeTypes.includes(file.type.toLowerCase())) {
+
+[Survived] EqualityOperator
+src/audio/upload.ts:150:7
+-     if (file.size > MAX_UPLOAD_BYTES) {
++     if (file.size >= MAX_UPLOAD_BYTES) {
+
+[Survived] ConditionalExpression
+src/audio/upload.ts:162:7
+-     if (new Audio().canPlayType(spec.normalized) === "") {
++     if (false) {
+
+[Survived] StringLiteral
+src/audio/upload.ts:162:52
+-     if (new Audio().canPlayType(spec.normalized) === "") {
++     if (new Audio().canPlayType(spec.normalized) === "Stryker was here!") {
+
+[Survived] BlockStatement
+src/audio/upload.ts:162:56
+-     if (new Audio().canPlayType(spec.normalized) === "") {
+-       throw new InvalidAudioError();
+-     }
++     if (new Audio().canPlayType(spec.normalized) === "") {}
+
+[Survived] CallExpression
+src/audio/upload.ts:163:5
+-       throw new InvalidAudioError();
++       ;
+
+[Survived] EqualityOperator
+src/audio/upload.ts:171:7
+-     if (durationSeconds > MAX_CLIP_DURATION) {
++     if (durationSeconds >= MAX_CLIP_DURATION) {
+
+[Survived] ObjectLiteral
+src/data/clips.ts:24:64
+-   const MOCK_CURRENT_USER: Readonly<CurrentUser> = Object.freeze({
+-     id: "user-1",
+-     displayName: "Demo User",
+-   });
++   const MOCK_CURRENT_USER: Readonly<CurrentUser> = Object.freeze({});
+
+[Survived] StringLiteral
+src/data/clips.ts:25:7
+-     id: "user-1",
++     id: "",
+
+[Survived] StringLiteral
+src/data/clips.ts:26:16
+-     displayName: "Demo User",
++     displayName: "",
+
+[Survived] ObjectLiteral
+src/data/clips.ts:37:10
+-     return { ...MOCK_CURRENT_USER };
++     return {};
+
+[Survived] UpdateOperator
+src/data/clips.ts:47:17
+-       id: `clip-${nextClipNumber++}`,
++       id: `clip-${nextClipNumber--}`,
+
+[Survived] ConditionalExpression
+src/utils/formatDuration.ts:6:17
+-     const total = Number.isFinite(seconds) && seconds > 0 ? Math.round(seconds) : 0;
++     const total = true ? Math.round(seconds) : 0;
+
+[Survived] LogicalOperator
+src/utils/formatDuration.ts:6:17
+-     const total = Number.isFinite(seconds) && seconds > 0 ? Math.round(seconds) : 0;
++     const total = Number.isFinite(seconds) || seconds > 0 ? Math.round(seconds) : 0;
+
+[Survived] ConditionalExpression
+src/utils/formatDuration.ts:6:45
+-     const total = Number.isFinite(seconds) && seconds > 0 ? Math.round(seconds) : 0;
++     const total = Number.isFinite(seconds) && true ? Math.round(seconds) : 0;
+
+[Survived] EqualityOperator
+src/utils/formatDuration.ts:6:45
+-     const total = Number.isFinite(seconds) && seconds > 0 ? Math.round(seconds) : 0;
++     const total = Number.isFinite(seconds) && seconds >= 0 ? Math.round(seconds) : 0;
+
+Ran 1.00 tests per mutant on average.
+--------------------|------------------|----------|-----------|------------|----------|----------|
+                    | % Mutation score |          |           |            |          |          |
+File                |  total | covered | # killed | # timeout | # survived | # no cov | # errors |
+--------------------|--------|---------|----------|-----------|------------|----------|----------|
+All files           |  73.64 |   73.64 |       95 |         0 |         34 |        0 |        0 |
+ audio              |  76.64 |   76.64 |       82 |         0 |         25 |        0 |        0 |
+  constants.ts      |  66.67 |   66.67 |        2 |         0 |          1 |        0 |        0 |
+  upload.ts         |  76.92 |   76.92 |       80 |         0 |         24 |        0 |        0 |
+ data               |  54.55 |   54.55 |        6 |         0 |          5 |        0 |        0 |
+  clips.ts          |  54.55 |   54.55 |        6 |         0 |          5 |        0 |        0 |
+ utils              |  63.64 |   63.64 |        7 |         0 |          4 |        0 |        0 |
+  formatDuration.ts |  63.64 |   63.64 |        7 |         0 |          4 |        0 |        0 |
+--------------------|--------|---------|----------|-----------|------------|----------|----------|
+11:18:26 (54) INFO JsonReporter Your report can be found at: file:///tmp/stryker-mutation.json
+11:18:26 (54) INFO MutationTestExecutor Done in 8 minutes and 17 seconds.

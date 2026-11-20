@@ -1,0 +1,55 @@
+
+> test:coverage
+> node scripts/coverage.mjs
+
+
+Running 27 tests using 12 workers
+
+  ✓   2 [chromium] › tests/integration/upload.integration.spec.ts:26:3 › S-7 integration: uploadAudio + clips data module › valid upload passes uploadAudio, stores UnpublishedClip in clips.ts, and loads playable audio (485ms)
+  ✓   3 [chromium] › tests/unit/upload-mutation-kills.unit.spec.ts:230:3 › AC-7 S-7 boundary and mutation-kill unit tests › AC-7 (d10, d12): uploadAudio rejects with InvalidAudioError on metadata timeout and cleans up URL and timer (494ms)
+  ✓   8 [chromium] › tests/unit/upload-mutation-kills.unit.spec.ts:91:3 › AC-7 S-7 boundary and mutation-kill unit tests › AC-7 (d9): uploadAudio accepts valid .wav file when file.type is empty string (579ms)
+  ✓  11 [chromium] › tests/unit/upload-mutation-kills.unit.spec.ts:177:3 › AC-7 S-7 boundary and mutation-kill unit tests › AC-7 (d9, d12): uploadAudio rejects with InvalidAudioError when canPlayType returns empty string (573ms)
+  ✓  10 [chromium] › tests/unit/upload-mutation-kills.unit.spec.ts:344:3 › AC-7 S-7 boundary and mutation-kill unit tests › AC-7 (d12): UploadError base class sets name to "UploadError" (561ms)
+  ✓   6 [chromium] › tests/unit/upload-mutation-kills.unit.spec.ts:110:3 › AC-7 S-7 boundary and mutation-kill unit tests › AC-7 (d5, d10): uploadAudio accepts exact 60.00 s WAV boundary with unpublished status (655ms)
+  ✓   9 [chromium] › tests/acceptance/ac-01-record.spec.ts:39:1 › test_ac1_record_and_stop_displays_playback (611ms)
+  ✓   7 [chromium] › tests/integration/upload.integration.spec.ts:112:3 › S-7 integration: uploadAudio + clips data module › rejected upload preserves stored clip; second valid upload replaces it with new id; remove clears store (667ms)
+  ✓   5 [chromium] › tests/property/upload.property.spec.ts:245:3 › S-7 §6 property-based tests › §6 Preconditions: unreadable, undecodable, or non-permitted-format inputs are never accepted (823ms)
+  ✓  13 [chromium] › tests/unit/upload-mutation-kills.unit.spec.ts:418:3 › AC-7 S-7 boundary and mutation-kill unit tests › AC-7 (d15): formatDuration formats 0, -5, NaN, Infinity as 0:00, 5 as 0:05, and 60 as 1:00 (418ms)
+  ✓   4 [chromium] › tests/unit/upload-mutation-kills.unit.spec.ts:130:3 › AC-7 S-7 boundary and mutation-kill unit tests › AC-7 (d11): uploadAudio accepts exact MAX_UPLOAD_BYTES (20 MB) WAV file (976ms)
+  ✓  15 [chromium] › tests/unit/upload.unit.spec.ts:120:3 › AC-7 S-7 §7 edge cases and §4 uploadAudio unit tests › AC-7 (§7.1, d9, §4): uploadAudio rejects audio-only .mp4 extension with UnsupportedFormatError (366ms)
+  ✓  14 [chromium] › tests/unit/upload.unit.spec.ts:102:3 › AC-7 S-7 §7 edge cases and §4 uploadAudio unit tests › AC-7 (§7.1, §4): uploadAudio rejects unsupported .ogg format with UnsupportedFormatError (426ms)
+  ✓  16 [chromium] › tests/unit/upload.unit.spec.ts:138:3 › AC-7 S-7 §7 edge cases and §4 uploadAudio unit tests › AC-7 (§7.1, d9, §4): uploadAudio rejects file with no extension with UnsupportedFormatError (414ms)
+  ✓  17 [chromium] › tests/unit/upload.unit.spec.ts:156:3 › AC-7 S-7 §7 edge cases and §4 uploadAudio unit tests › AC-7 (§7.1, d9, §4): uploadAudio rejects conflicting MIME type for .wav extension (384ms)
+  ✓   1 [chromium] › tests/property/upload.property.spec.ts:75:3 › S-7 §6 property-based tests › §6 Invariant: every accepted upload has a permitted format and finite duration in (0, MAX_CLIP_DURATION] (1.2s)
+  ✓  18 [chromium] › tests/unit/upload.unit.spec.ts:210:3 › AC-7 S-7 §7 edge cases and §4 uploadAudio unit tests › AC-7 (§7.3, d3, d12, §4): uploadAudio rejects corrupted audio with InvalidAudioError (390ms)
+  ✓  19 [chromium] › tests/unit/upload.unit.spec.ts:228:3 › AC-7 S-7 §7 edge cases and §4 uploadAudio unit tests › AC-7 (§7.3, d10, §4): uploadAudio rejects 0, NaN, and Infinity durations with InvalidAudioError (403ms)
+  ✓  20 [chromium] › tests/unit/upload.unit.spec.ts:284:3 › AC-7 S-7 §7 edge cases and §4 uploadAudio unit tests › AC-7 (§7.4, d11): cancelled selection creates no clip when empty and preserves existing clip invariant (402ms)
+  ✓  22 [chromium] › tests/unit/upload.unit.spec.ts:343:3 › AC-7 S-7 §7 edge cases and §4 uploadAudio unit tests › AC-7 (d13, §4): uploadAudio rejects valid audio when ownershipConfirmed is false (364ms)
+  ✓  23 [chromium] › tests/unit/upload.unit.spec.ts:362:3 › AC-7 S-7 §7 edge cases and §4 uploadAudio unit tests › AC-7 (d11, §4): uploadAudio rejects file exceeding 20 MB with FileSizeLimitError (403ms)
+  ✓  25 [chromium] › tests/unit/upload.unit.spec.ts:442:3 › AC-7 S-7 §7 edge cases and §4 uploadAudio unit tests › AC-7 (§4, d14): uploadAudio accepts valid 5 s WAV and returns unpublished UploadResult (406ms)
+  ✓  24 [chromium] › tests/unit/upload.unit.spec.ts:397:3 › AC-7 S-7 §7 edge cases and §4 uploadAudio unit tests › AC-7 (d12, §4): uploadAudio rejects unreadable file with UploadFailedError (433ms)
+  ✓  12 [chromium] › tests/property/upload.property.spec.ts:164:3 › S-7 §6 property-based tests › §6 Postconditions: rejected uploads never mutate or create a clip in clips.ts across arbitrary sequences (1.5s)
+  ✓  21 [chromium] › tests/unit/upload-mutation-kills.unit.spec.ts:365:3 › AC-7 S-7 boundary and mutation-kill unit tests › AC-7 (d8, d11): getCurrentUser returns a copy and setUnpublishedClip generates strictly increasing clip IDs (427ms)
+  ✓  26 [chromium] › tests/unit/upload.unit.spec.ts:174:3 › AC-7 S-7 §7 edge cases and §4 uploadAudio unit tests › AC-7 (§7.2, d5, §4): uploadAudio rejects 61 s audio with DurationLimitError (375ms)
+  ✓  27 [chromium] › tests/unit/upload.unit.spec.ts:192:3 › AC-7 S-7 §7 edge cases and §4 uploadAudio unit tests › AC-7 (§7.2, d10, §4): uploadAudio rejects 60.04 s audio without rounding (380ms)
+
+  27 passed (3.2s)
+
+=== S-7 Story Coverage Report ===
+-------------------------|---------|----------|---------|---------|-------------------
+File                     | % Stmts | % Branch | % Funcs | % Lines | Uncovered Line #s 
+-------------------------|---------|----------|---------|---------|-------------------
+All files                |     100 |      100 |     100 |     100 |                   
+ audio/constants.ts      |     100 |      100 |     100 |     100 |                   
+ audio/upload.ts         |     100 |      100 |     100 |     100 |                   
+ data/clips.ts           |     100 |      100 |     100 |     100 |                   
+ utils/formatDuration.ts |     100 |      100 |     100 |     100 |                   
+-------------------------|---------|----------|---------|---------|-------------------
+
+Uncovered lines & branches by file:
+- src/audio/constants.ts: lines 23/23 (100%), branches 0/0 (100%) | missing lines: none | missing branches: none
+- src/audio/upload.ts: lines 182/182 (100%), branches 52/52 (100%) | missing lines: none | missing branches: none
+- src/data/clips.ts: lines 63/63 (100%), branches 4/4 (100%) | missing lines: none | missing branches: none
+- src/utils/formatDuration.ts: lines 10/10 (100%), branches 4/4 (100%) | missing lines: none | missing branches: none
+
+Total S-7 story coverage: lines=100% (minimum=80%), branches=100%

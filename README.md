@@ -65,7 +65,7 @@ By default, Vite serves the frontend at `http://localhost:5173` and Uvicorn serv
 ## Run tests
 
 1. **Backend:** `python -m pytest` from `backend/`.
-2. **Frontend:** `npx playwright test` from `frontend/`.
+2. **Frontend:** `npm run test:coverage` from `frontend/` (runs the passing Playwright suites and fails if S-7 line coverage drops below 80%; run `npx playwright test` for all discovered tests including pending UI specs).
 
 The command reports failure if either suite fails. Playwright browser tests may also require the frontend and backend servers to be running, depending on the Playwright configuration; configure Playwright's `webServer` option if you want tests to start the servers automatically.
 
