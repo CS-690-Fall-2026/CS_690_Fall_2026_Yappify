@@ -1,0 +1,7 @@
+Amend S-7 §8 decision 15 to fix the accepted clip's duration display format.
+
+Team decision (relayed 2026-11-19): display the duration as m:ss, e.g. 0:05, matching AC-6's
+minutes-and-seconds format on the playback screen. Applied as the minimal change: one bullet in
+decision 15 gains ", displayed as `m:ss` (for example `0:05`)", and the decision's Source line
+records the amendment and what it supersedes. AC-7 in §9 and docs/backlog.md §4d do not mention
+format, so no criterion text changes.

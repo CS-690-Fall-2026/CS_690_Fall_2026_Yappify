@@ -370,3 +370,19 @@ checks: `grep -n "pending confirmation\|provisional\|Pending Team" docs/design/S
 evidence: S-7, AC-7; team decision recorded in §8 with source and reason per handout 1c.
 
 risk: The AC-7 test still asserts the pre-decision shape (no copyright-confirmation step, a Playwright `button` named "Play" rather than a native audio control), so 3b's audit will report it until 3a rewrites it. Decision 8's mock current-user record has no implementation yet, and nothing in S-7's rules or tests exercises it, so its shape is unverified.
+
+## Entry 20
+
+artifact: `docs/design/S-7.md` §8 decision 15 — duration display format fixed as `m:ss`.
+
+tool: omp agent session, model `bifrost/opencode-go/deepseek-v4.1-flash`, used 2026-11-19. The format choice is the team's; the assistant applied the one-bullet edit and wrote the provenance line.
+
+prompts: `prompts/S-7-d15-duration-format.txt` — team decision relayed by the student after the 3b audit flagged that the test's duration assertion had no written source.
+
+review: The 3b audit reported (finding 2.2) that `ac-07-upload.spec.ts` asserted a duration string with no format fixed by any criterion; decision 15 said only "The audio duration". Rather than delete the assertion, the team fixed the requirement. I changed exactly one bullet, added the amendment and supersession note to the decision's Source line, and extended the Reason with the AC-6 consistency argument. I rejected the alternative of asserting "any acceptable format": it would leave the test unable to distinguish a correct duration from a wrong one, which is the type/length-only weakness the same audit flagged in finding 3.1. No criterion text changed (§9 and backlog §4d are silent on format), so the test edit that follows cites decision 15 alone.
+
+checks: `git diff docs/design/S-7.md` -> one bullet replaced, Source line amended, Reason extended; `grep -n "m:ss" docs/design/S-7.md` -> decision 15 bullet only.
+
+evidence: S-7, AC-7; audit finding 2.2 in `evidence/test-audit.md`.
+
+risk: The test assertion has not yet been updated to `0:05`, so test and decision disagree until the next commit; and the m:ss choice assumes AC-6 will be implemented with the same spacing and padding, which is unverified because S-6 is not built.
