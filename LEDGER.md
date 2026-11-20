@@ -386,3 +386,19 @@ checks: `git diff docs/design/S-7.md` -> one bullet replaced, Source line amende
 evidence: S-7, AC-7; audit finding 2.2 in `evidence/test-audit.md`.
 
 risk: The test assertion has not yet been updated to `0:05`, so test and decision disagree until the next commit; and the m:ss choice assumes AC-6 will be implemented with the same spacing and padding, which is unverified because S-6 is not built.
+
+## Entry 21
+
+artifact: `MILESTONE2.md` (3b answers), `docs/audit-answers.json`, `scripts/gen_audit_answers.py` — the commit SHAs cited for the test-audit findings.
+
+tool: omp agent session, model `bifrost/opencode-go/deepseek-v4.1-flash`, used 2026-11-19. Verdicts are the team's; the assistant wrote the manifest, the generator and the report skeleton.
+
+prompts: no new agent prompt — the findings are answered from the team's rulings recorded in this session (`evidence/test-audit.md` is the report being answered).
+
+review: I wrote the generator so the cited SHAs cannot drift: it resolves each "fixed" finding from its commit subject, refuses unless the subject matches exactly one commit, that commit is an ancestor of HEAD, and its diff touches `frontend/tests/acceptance/`; every rejected finding must carry a reason. It also has a `--check` mode that re-validates an existing table. I kept all eleven §1 rejections and the §4 rejection rather than softening them, because the rejection reasons are the review evidence 3b asks for. I rejected the alternative of hand-typing SHAs into the markdown: one drifted hash would misrepresent which commit made a change.
+
+checks: `python3 scripts/gen_audit_answers.py` -> 18 rows written; `python3 scripts/gen_audit_answers.py --check` -> "ok: 18 rows present; every cited SHA resolves and is an ancestor of HEAD"; `git log --oneline -5` confirms `9d6fd56` and `736754b` are the cited commits.
+
+evidence: 3b audit answers; `evidence/test-audit.md`; AC-7.
+
+risk: The generator validates that a commit touches the acceptance directory, not that it made the specific change a row claims — a wrong subject pairing would still pass. And the §2.2 row cites `9d6fd56` for the test change while the enabling decision amendment is `12084dd`, so a reader must follow the cross-reference.
