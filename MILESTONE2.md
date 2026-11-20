@@ -73,7 +73,14 @@ Audit: `evidence/test-audit.md`, produced by the `test-writer` subagent (Antigra
 
 ## 4a. Plan changes
 
-_Pending._
+We reviewed Claude's original implementation plan for S-7 and made two changes.
+
+**Change 1:** We moved the additional rule tests before the upload validation implementation. This allows us to follow the tests-first approach and check the expected behavior before implementing the code.
+
+**Change 2:** We split the upload interface into two tasks. One handles the file picker, copyright checkbox, loading state, and errors, while the other handles displaying and managing uploaded audio. This makes each task smaller and easier to review.
+
+The corrected plan is saved in docs/plans/S-7-plan.md.
+
 
 ## 5. Test strength
 
@@ -86,3 +93,5 @@ _Pending._
 ## Reflection (300–500 words)
 
 _Pending — written by the team._
+
+
