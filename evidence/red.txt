@@ -1,0 +1,45 @@
+
+> test
+> playwright test
+
+[WebServer] (node:1120206) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+[WebServer] (Use `node --trace-warnings ...` to show where the warning was created)
+
+Running 2 tests using 2 workers
+
+(node:1120257) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:1120256) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✓  2 [chromium] › tests/acceptance/ac-01-record.spec.ts:39:1 › test_ac1_record_and_stop_displays_playback (311ms)
+  ✘  1 [chromium] › tests/acceptance/ac-07-upload.spec.ts:30:1 › test_ac7_valid_audio_upload_displays_playback (5.1s)
+
+
+  1) [chromium] › tests/acceptance/ac-07-upload.spec.ts:30:1 › test_ac7_valid_audio_upload_displays_playback 
+
+    Error: expect(locator).not.toBeChecked() failed
+
+    Locator: getByLabel('I confirm that I own this audio or have permission to upload it')
+    Expected: not checked
+    Timeout: 5000ms
+    Error: element(s) not found
+
+    Call log:
+      - Expect "not toBeChecked" getByLabel('I confirm that I own this audio or have permission to upload it') with timeout 5000ms
+      - waiting for getByLabel('I confirm that I own this audio or have permission to upload it')
+
+
+      35 |     "I confirm that I own this audio or have permission to upload it",
+      36 |   );
+    > 37 |   await expect(confirm).not.toBeChecked();
+         |                             ^
+      38 |   await confirm.check();
+      39 |
+      40 |   const fileInput = page.locator('input[type="file"]');
+        at /home/TacticalTaco/school/CS690/group-project/frontend/tests/acceptance/ac-07-upload.spec.ts:37:29
+
+    Error Context: test-results/ac-07-upload-test-ac7-valid-audio-upload-displays-playback-chromium/error-context.md
+
+  1 failed
+    [chromium] › tests/acceptance/ac-07-upload.spec.ts:30:1 › test_ac7_valid_audio_upload_displays_playback 
+  1 passed (6.0s)

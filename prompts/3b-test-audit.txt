@@ -1,0 +1,4 @@
+Use the test-writer subagent to audit frontend/tests/acceptance against AC-7 and sections 6 and 7 of docs/design/S-7.md.
+  Report every criterion without a test, every expected value that does not follow from its criterion, and every assert that
+  only checks a type or length. Write a test for each missing criterion.
+  Scope: report findings as text and add tests only. Do not modify production source.
