@@ -490,3 +490,27 @@ commit: `Task 4.5 (AC-07): Add temporary clip storage` (SHA recorded by `git log
 evidence: S-7, AC-7; design decisions 7, 8, 11.
 
 risk: The clip store has not yet been exercised by any browser test: nothing imports it until the upload controls (Task 4.6) and the display (Task 4.7) are built. Storing, replacing, retrieving and removing clips, and the owner assignment, were checked by code review and the type check only.
+
+
+## Entry 27
+
+artifact: S-7 / AC-07 integration tests (`frontend/tests/integration/upload.integration.spec.ts`) and `MILESTONE2.md` §5 ("Integration test").
+
+tool: Antigravity, Gemini 4 Hydrogen (High), used 2026-11-20; Playwright 1.56.0 (Chromium) against Vite dev server (`npm test`).
+
+prompts: User prompt requesting an integration test running the story's logic together with a real part it talks to with no mock between them, naming the two parts in `MILESTONE2.md`.
+
+review: Added two integration tests in `frontend/tests/integration/upload.integration.spec.ts` exercising `uploadAudio` (`frontend/src/audio/upload.ts`) together with the real temporary clip store data module (`frontend/src/data/clips.ts`) and `formatDuration` (`frontend/src/utils/formatDuration.ts`) in Chromium with real `File`, `URL.createObjectURL`, and `<audio>` metadata/playback and zero mocks between them. Updated `MILESTONE2.md` §5 to name both parts (`frontend/src/audio/upload.ts` and `frontend/src/data/clips.ts`).
+
+checks:
+- `cd frontend && npx playwright test tests/integration/upload.integration.spec.ts` -> 2 passed (1.2s).
+- `cd frontend && npm run build` -> vite v8.3.7, 17 modules transformed, built in 167ms.
+- `cd frontend && npx tsc --noEmit --strict --target ES2022 --module ESNext --moduleResolution bundler --lib ES2022,DOM --types node --skipLibCheck tests/integration/upload.integration.spec.ts` -> exit 0, no errors.
+- `cd frontend && npm test` -> 32 tests total: 16 passed (`ac-01-record.spec.ts`: 1, `upload.integration.spec.ts`: 2, `upload.unit.spec.ts`: 13), 16 failed (pre-existing expected failures because Tasks 4.6–4.7 `UploadClip.tsx` / `UploadedClipView.tsx` are not yet implemented: `ac-07-upload.spec.ts`: 1, `upload-rules.spec.ts`: 15).
+- No coverage was run (no frontend coverage script exists).
+
+commit: pending user commit (not committed by agent).
+
+evidence: S-7, AC-07; `docs/design/S-7.md` §4, §6, §8 decisions 7, 8, 11, 12, 14, 15, 16; `MILESTONE2.md` §5.
+
+risk: Because Tasks 4.6–4.7 (`UploadClip.tsx` and `UploadedClipView.tsx`) do not exist yet, integration with React UI event handlers is not yet covered and full `npm test` remains red on the 16 UI-dependent tests.

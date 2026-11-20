@@ -84,7 +84,12 @@ The corrected plan is saved in docs/plans/S-7-plan.md.
 
 ## 5. Test strength
 
-_Pending._
+### Integration test
+
+`frontend/tests/integration/upload.integration.spec.ts` runs S-7's upload/validation logic together with the real data module in Chromium with no mocks between them:
+
+1. **Story logic:** `uploadAudio` in `frontend/src/audio/upload.ts` (real browser `File` readability check, `URL.createObjectURL`, `<audio>` metadata decoding, and format/size/duration/ownership validation), paired with `formatDuration` in `frontend/src/utils/formatDuration.ts`.
+2. **Real data module:** the temporary in-memory clip store in `frontend/src/data/clips.ts` (`getCurrentUser`, `setUnpublishedClip`, `getUnpublishedClip`, `removeUnpublishedClip`).
 
 ## 6c. Answers to headless review findings
 
