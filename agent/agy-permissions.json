@@ -6,6 +6,7 @@
       "command(git commit)"
     ],
     "deny": [
+      "write_file(frontend/tests/acceptance/)",
       "command(git push)",
       "command(rm -rf)"
     ]
