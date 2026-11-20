@@ -91,6 +91,14 @@ The corrected plan is saved in docs/plans/S-7-plan.md.
 1. **Story logic:** `uploadAudio` in `frontend/src/audio/upload.ts` (real browser `File` readability check, `URL.createObjectURL`, `<audio>` metadata decoding, and format/size/duration/ownership validation), paired with `formatDuration` in `frontend/src/utils/formatDuration.ts`.
 2. **Real data module:** the temporary in-memory clip store in `frontend/src/data/clips.ts` (`getCurrentUser`, `setUnpublishedClip`, `getUnpublishedClip`, `removeUnpublishedClip`).
 
+### Property-based tests
+
+`frontend/tests/property/upload.property.spec.ts` checks three universal properties derived from `docs/design/S-7.md` §6 ("Rules") across seeded random inputs in Chromium:
+
+1. **§6 Invariant:** Every accepted clip has a permitted format in `SUPPORTED_AUDIO_FORMATS`, finite duration `0 < durationSeconds <= MAX_CLIP_DURATION`, `status === "unpublished"`, and the original `File` reference.
+2. **§6 Postconditions:** Across randomized valid/invalid upload sequences against `frontend/src/data/clips.ts`, a rejected file never produces or mutates the stored clip.
+3. **§6 Preconditions:** Inputs violating readability, decodability, or `SUPPORTED_AUDIO_FORMATS` are never accepted.
+
 ## 6c. Answers to headless review findings
 
 _Pending._

@@ -514,3 +514,28 @@ commit: pending user commit (not committed by agent).
 evidence: S-7, AC-07; `docs/design/S-7.md` §4, §6, §8 decisions 7, 8, 11, 12, 14, 15, 16; `MILESTONE2.md` §5.
 
 risk: Because Tasks 4.6–4.7 (`UploadClip.tsx` and `UploadedClipView.tsx`) do not exist yet, integration with React UI event handlers is not yet covered and full `npm test` remains red on the 16 UI-dependent tests.
+
+
+## Entry 28
+
+artifact: S-7 / AC-07 property-based tests (`frontend/tests/property/upload.property.spec.ts`) and `MILESTONE2.md` §5 ("Property-based tests").
+
+tool: Antigravity, Gemini 4 Hydrogen (High), used 2026-11-20; Playwright 1.56.0 (Chromium) against Vite dev server (`npm test`).
+
+prompts: User prompt requesting at least two property-based tests built from rules in `docs/design/S-7.md` §6, naming each rule in a comment and checking universal properties rather than recomputing the implementation.
+
+review: Added three deterministic seeded (Mulberry32) property-based tests in `frontend/tests/property/upload.property.spec.ts` reusing `makeWav` and `makeGarbage` from `frontend/tests/rules/wav.ts` (no new dependencies): (1) §6 Invariant (30 trials: every accepted upload has a permitted format in `SUPPORTED_AUDIO_FORMATS`, finite duration in `(0, MAX_CLIP_DURATION]`, `status === "unpublished"`, and original `File` reference, while every rejection throws `UploadError`), (2) §6 Postconditions (30-step sequence against `frontend/src/data/clips.ts`: rejected uploads never create or mutate the stored clip; accepted uploads store an `unpublished` clip with the input `File`), and (3) §6 Preconditions (25 invalid inputs violating readability, decodability, or `SUPPORTED_AUDIO_FORMATS` never resolve). Updated `MILESTONE2.md` §5 with a `### Property-based tests` subsection.
+
+checks:
+- `cd frontend && npx playwright test tests/property/upload.property.spec.ts` -> 3 passed (1.9s).
+- `cd frontend && npx tsc --noEmit --strict --target ES2022 --module ESNext --moduleResolution bundler --lib ES2022,DOM --types node --skipLibCheck tests/property/upload.property.spec.ts` -> exit 0, no errors.
+- `cd frontend && npm run build` -> vite v8.3.7, 17 modules transformed, built in 139ms.
+- `cd frontend && npm test` -> 35 tests total: 19 passed (`ac-01-record.spec.ts`: 1, `upload.integration.spec.ts`: 2, `upload.property.spec.ts`: 3, `upload.unit.spec.ts`: 13), 16 failed (pre-existing expected failures because Tasks 4.6–4.7 `UploadClip.tsx` / `UploadedClipView.tsx` are not yet implemented: `ac-07-upload.spec.ts`: 1, `upload-rules.spec.ts`: 15).
+- `git diff -- frontend/tests/acceptance` -> empty.
+- No coverage was run (no frontend coverage script exists).
+
+commit: pending user commit (not committed by agent).
+
+evidence: S-7, AC-07; `docs/design/S-7.md` §6 ("Rules"); `MILESTONE2.md` §5.
+
+risk: Tasks 4.6–4.7 (`UploadClip.tsx` and `UploadedClipView.tsx`) are not yet implemented, so full `npm test` remains red on the 16 UI-dependent tests and property tests cover `uploadAudio` + `clips.ts` rather than UI DOM events.
