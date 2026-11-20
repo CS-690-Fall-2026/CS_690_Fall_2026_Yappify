@@ -583,3 +583,25 @@ commit: `Task 4.6 (AC-07): Implement upload controls` (SHA recorded by `git log`
 evidence: S-7, AC-7; design decisions 11, 12, 13, 15.
 
 risk: Accepted clips are stored but not yet shown, so the success path is checked only indirectly (no error and the "Checking audio…" state clears) until Task 4.7. The `void clip;` placeholder must be removed when the display is added. `vite build` does not type-check, and no strict `tsc` check was run on the new component.
+
+## Entry 31
+
+artifact: Task 4.7 (AC-07) — `frontend/src/components/UploadedClipView.tsx` (new): the uploaded-audio display; `frontend/src/components/UploadClip.tsx` (modified): renders the display when a clip exists and handles Remove.
+
+tool: Claude Code session, model `claude-opus-5-5`, implemented and tested 2026-11-20. The implementation follows the approved plan (`docs/plans/S-7-plan.md`, "Storage and playback" and "UI integration", Task 4.7) and `docs/design/S-7.md` §8 decisions 1, 2, 11, 14, 15.
+
+prompts: `prompts/S-7-task-4.7.txt` — student's Task 4.7 implementation request.
+
+review: `UploadedClipView` (props `{ clip: UnpublishedClip; onRemove: () => void }`) renders the original filename in a single `<p>` (it appears nowhere else, so Playwright strict mode finds exactly one match), `Duration: {formatDuration(clip.durationSeconds)}` in `m:ss`, a native `<audio controls preload="metadata">` player, `<span>Unpublished</span>`, and a **Remove** button that calls `onRemove`. The component owns the playback object URL: a `useEffect` keyed on `[clip.id, clip.audio]` calls `URL.createObjectURL(clip.audio)` and revokes the URL in its cleanup, which covers replacement (new clip id), removal (the view unmounts), unmount and the StrictMode double mount (decision 14). The URL is stored with the id of its clip, and `src` is used only when that id matches the current clip, so the player never points at a revoked URL during a replacement. `UploadClip` adds `handleRemove` (calls `removeUnpublishedClip()` then `setClip(null)`), renders `{clip && <UploadedClipView clip={clip} onRemove={handleRemove} />}` below the error region, and the Task 4.6 `void clip;` placeholder is removed. The upload `<audio>` appears only after an accepted upload, and "Remove" does not match AC-1's `/play/i`, `/^record/i` or `/^stop/i` button patterns. No new dependencies; tests, recorder files and lockfiles untouched.
+
+checks (run 2026-11-20):
+- `cd frontend && npm run build` -> vite v8.3.7, 23 modules transformed, built in 116 ms (re-run: 192 ms).
+- `cd frontend && npm test` -> 43 passed, 0 failed (12.5 s; re-run 15.3 s): AC-1 `ac-01-record.spec.ts` 1/1; AC-7 `ac-07-upload.spec.ts` 1/1; `upload-rules.spec.ts` 15/15 (10 `@controls`, 5 `@display`); `upload.unit.spec.ts` 13/13; `upload-mutation-kills.unit.spec.ts` 7/7; `upload.integration.spec.ts` 2/2; `upload.property.spec.ts` 3/3.
+- `git diff m2-tests-locked -- frontend/tests/acceptance` -> empty; `git diff -- frontend/tests` -> empty.
+- Coverage (`npm run test:coverage`) and Stryker were not run for this task.
+
+commit: `Task 4.7 (AC-07): Display uploaded audio clips` (SHA recorded by `git log`; a commit cannot contain its own hash).
+
+evidence: S-7, AC-7; design decisions 1, 2, 11, 14, 15.
+
+risk: `npm run build` (`vite build`) does not type-check, and there is no `tsconfig.json` in `frontend/`, so no TypeScript check was run on the new or changed component. No test asserts object URL revocation directly; the Playwright suite checks only the visible behaviour (playback, replacement and Remove).

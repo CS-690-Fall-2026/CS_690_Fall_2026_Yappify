@@ -1,17 +1,23 @@
 // S-7 upload controls (docs/design/S-7.md decisions 11, 12, 13, 15;
 // docs/plans/S-7-plan.md "UI integration", Task 4.6).
 //
-// Holds the upload state. The uploaded-audio display is added in Task 4.7.
+// Holds the upload state and renders the uploaded-audio display (Task 4.7).
 
 import React, { useState } from "react";
 import { UPLOAD_ACCEPT } from "../audio/constants";
 import { uploadAudio, UploadError, UploadFailedError } from "../audio/upload";
-import { getUnpublishedClip, setUnpublishedClip, type UnpublishedClip } from "../data/clips";
+import {
+  getUnpublishedClip,
+  removeUnpublishedClip,
+  setUnpublishedClip,
+  type UnpublishedClip,
+} from "../data/clips";
+import { UploadedClipView } from "./UploadedClipView";
 
 const FILE_INPUT_ID = "upload-audio-file";
 
 export const UploadClip: React.FC = () => {
-  // Mirrors the clip store; rendered by the display in Task 4.7.
+  // Mirrors the clip store.
   const [clip, setClip] = useState<UnpublishedClip | null>(() => getUnpublishedClip());
   const [ownershipConfirmed, setOwnershipConfirmed] = useState(false);
   const [isChecking, setIsChecking] = useState(false);
@@ -39,7 +45,10 @@ export const UploadClip: React.FC = () => {
     }
   };
 
-  void clip; // Displayed in Task 4.7.
+  const handleRemove = () => {
+    removeUnpublishedClip();
+    setClip(null);
+  };
 
   return (
     <section aria-labelledby="upload-heading">
@@ -73,6 +82,8 @@ export const UploadClip: React.FC = () => {
           {error}
         </p>
       )}
+
+      {clip && <UploadedClipView clip={clip} onRemove={handleRemove} />}
     </section>
   );
 };

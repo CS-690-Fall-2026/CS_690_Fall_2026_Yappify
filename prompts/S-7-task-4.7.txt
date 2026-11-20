@@ -1,0 +1,30 @@
+We are continuing Milestone 2, Deliverable 4b for S-7.
+
+Read AGENTS.md, docs/plans/S-7-plan.md, docs/design/S-7.md, frontend/src/components/UploadClip.tsx, frontend/src/data/clips.ts, and frontend/tests/rules/upload-rules.spec.ts.
+
+Prepare a bounded implementation plan for ONLY Task 4.7: Uploaded Audio Display.
+
+Requirements:
+1. Create frontend/src/components/UploadedClipView.tsx.
+2. Display the accepted clip's filename exactly once.
+3. Display its duration using formatDuration() in m:ss.
+4. Provide a native HTML audio player with playback controls.
+5. Display "Unpublished" status.
+6. Add a Remove button that clears the stored clip and the displayed clip.
+7. Manage audio object URLs using useEffect and revoke them on replacement, removal, and unmount.
+8. Update UploadClip.tsx to render UploadedClipView when a clip exists.
+9. Remove the temporary "void clip" placeholder.
+
+Do not change the locked acceptance tests.
+Do not modify unrelated files or add dependencies.
+
+After I approve the plan, implement Task 4.7 only, then run:
+- npm run build
+- npm test
+
+Check that AC-1, AC-7, and all upload rule tests pass.
+Also report any failures from the additional tests recently added by teammates.
+
+Do not commit, push, or start Task 4.8.
+
+Show me the plan and wait for approval before editing.
