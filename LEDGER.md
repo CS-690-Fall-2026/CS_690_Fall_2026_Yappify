@@ -418,3 +418,21 @@ checks: `git rm scripts/gen_audit_answers.py docs/audit-answers.json` -> both re
 evidence: 3b answers in `MILESTONE2.md`; AC-7.
 
 risk: The table can no longer be re-validated automatically, so a later edit to one of the cited commits' subjects (none expected before m2-submit) would leave a stale reason trail with no check to catch it.
+
+## Entry 23
+
+artifact: Task 4.2 (AC-07) — `frontend/src/audio/constants.ts` and `frontend/src/utils/formatDuration.ts` (both new).
+
+tool: Claude Code session, model `claude-opus-5-5`, used 2026-11-19. Values and shapes come from the approved plan (`docs/plans/S-7-plan.md`, "Types and data structures"); the assistant transcribed them and did not choose any value.
+
+prompts: `prompts/S-7-task-4.2.txt` — student's Task 4.2 implementation request.
+
+review: `constants.ts` matches the plan's sketch: `SUPPORTED_AUDIO_FORMATS` (mp3/wav/m4a, their MIME variants and normalized type, `as const`), the derived `SupportedFormat` and `NormalizedMimeType` types, `MAX_CLIP_DURATION = 60` (d5), `MAX_UPLOAD_BYTES = 20 * 1024 * 1024` (d11), `UPLOAD_ACCEPT` (d15) and `METADATA_TIMEOUT_MS = 10_000`. `formatDuration` rounds only the displayed value to whole seconds and zero-pads the seconds (5 -> `0:05`, 60 -> `1:00`, d15). One addition beyond the plan: an input that is not finite or is <= 0 displays `0:00` rather than `NaN:NaN`; valid durations are unaffected. Nothing imports either module yet; that begins in Task 4.3. The first `npm run build` failed with `sh: vite: command not found` because `frontend/node_modules` was incomplete; with the student's approval, `npm ci` restored it from the unchanged lockfile.
+
+checks: `cd frontend && npm ci` -> added 28 packages, 0 vulnerabilities; `cd frontend && npm run build` -> vite v8.3.7, 17 modules transformed, built in 132 ms; `cd frontend && npm test` -> 1 passed, 1 failed: `ac-01-record.spec.ts` passed (AC-1 green), `ac-07-upload.spec.ts` failed at line 37 because the copyright-confirmation checkbox does not exist yet (AC-7 red as expected; the upload UI is Tasks 4.6–4.7); `git diff m2-tests-locked -- frontend/tests/acceptance` -> empty; `git diff HEAD -- frontend/package.json frontend/package-lock.json` -> empty. No coverage was run (no frontend coverage script exists).
+
+commit: `Task 4.2 (AC-07): Add upload constants and duration formatter` (SHA recorded by `git log`; a commit cannot contain its own hash).
+
+evidence: S-7, AC-7; design decisions 4, 5, 9, 11, 14, 15.
+
+risk: `frontend/` has no `tsconfig.json` and `vite build` does not type-check, so the new types are compiled but not checked; and because nothing imports the modules yet, a wrong value would only show up in the Task 4.3 rule tests.

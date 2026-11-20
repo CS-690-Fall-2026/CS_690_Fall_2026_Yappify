@@ -1,0 +1,19 @@
+We are starting Milestone 2, Deliverable 4b for S-7 (Upload Existing Audio).
+
+Read docs/plans/S-7-plan.md, docs/design/S-7.md, and AGENTS.md before making changes.
+
+Implement ONLY Task 4.2 from the approved implementation plan:
+- Create frontend/src/audio/constants.ts for supported audio formats, MIME variants, maximum clip duration, maximum upload size, and metadata timeout.
+- Create frontend/src/utils/formatDuration.ts to format durations as m:ss.
+
+Follow the exact requirements and decisions in the approved plan.
+
+Do not implement Task 4.3 or any later tasks.
+Do not modify the locked acceptance tests.
+Do not modify unrelated files or add dependencies.
+
+Run npm run build from frontend and report the result.
+
+Show me the changed files and summarize what you implemented.
+
+Do not commit or push any changes. I will review them first.
