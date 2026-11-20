@@ -605,3 +605,51 @@ commit: `Task 4.7 (AC-07): Display uploaded audio clips` (SHA recorded by `git l
 evidence: S-7, AC-7; design decisions 1, 2, 11, 14, 15.
 
 risk: `npm run build` (`vite build`) does not type-check, and there is no `tsconfig.json` in `frontend/`, so no TypeScript check was run on the new or changed component. No test asserts object URL revocation directly; the Playwright suite checks only the visible behaviour (playback, replacement and Remove).
+
+## Entry 32
+
+artifact: Correction note for Entries 27, 28, 29 and 31, and for two commits made without a ledger entry. Earlier entries are left unchanged; this entry supersedes the specific fields listed below.
+
+tool: Claude Code session, model `claude-opus-5-5`, used 2026-11-20, during Task 4.8 verification. Facts were taken from `git log`, `git show --stat` and `npx playwright test --reporter=list` at `a94bd7d`.
+
+prompts: Student's Task 4.8 documentation-correction request (2026-11-20).
+
+review: Corrections:
+- Entry 27 `commit: pending user commit` → committed as `09c757f` ("Add integration tests for audio upload and validation logic").
+- Entry 28 `commit: pending user commit` → committed as `622e394` ("Add property-based tests for audio upload validation and update documentation").
+- Entry 29 `commit: pending user commit` → committed as `df684be` ("feat: add coverage and mutation testing setup").
+- Entry 31 checks: `upload-mutation-kills.unit.spec.ts` ran **8/8**, not 7/7. Its per-file counts summed to 42; the correct breakdown of the 43 passing tests is AC-1 1, AC-7 1, `upload-rules` 15, `upload.unit` 13, `upload-mutation-kills.unit` 8, `upload.integration` 2, `upload.property` 3. Entry 31's total (43 passed, 0 failed) was correct.
+- No ledger entry exists for `8d6dee4` ("Add reviewed S-7 implementation plan": `docs/plans/S-7-plan.md`, `MILESTONE2.md` §4a; this is Task 4.1) or for `b068c56` ("unit tests": `frontend/tests/unit/upload.unit.spec.ts`, 13 tests, `package.json`/`package-lock.json`, `prompts/unit-tests.md`). They are recorded here after the fact; their tool and review details were not reconstructed.
+- `8d6dee4`, `b068c56`, `09c757f`, `622e394` and `df684be` do not use the AGENTS.md `Task N (AC-ID): …` subject format. History is not rewritten; this entry maps them to their tasks instead.
+
+checks: `git log --diff-filter=A --format=%h` per test file → unit `b068c56`, integration `09c757f`, property `622e394`, mutation-kills `df684be`. `git show --stat 8d6dee4 b068c56`. `npx playwright test --reporter=list` → 8 tests listed for `upload-mutation-kills.unit.spec.ts`.
+
+commit: Committed with Task 4.8 (see Entry 33).
+
+evidence: S-7, AC-7; AGENTS.md "Git and ledger rules".
+
+risk: The missing entries for `8d6dee4` and `b068c56` are summarized from commit contents only, so their prompts and review decisions are not recorded. Whoever wrote those commits may want to add detail in a later entry.
+
+## Entry 33
+
+artifact: Task 4.8 (AC-07): final verification of S-7 at `a94bd7d`; `MILESTONE2.md` Deliverable 4 status, §4 build status, §5d note, §5e and §5f commit cells; ledger Entry 32.
+
+tool: Claude Code session, model `claude-opus-5-5`, used 2026-11-20. Node/npm from the local machine; Playwright 1.56 (Chromium); TypeScript 7.0.2.
+
+prompts: Student's Task 4.8 verification requests (plan, approval of steps 1–6 plus a strict tsc check, and the documentation-correction request), 2026-11-20.
+
+review: Verified the six approved checks. (1) Fresh clone of `a94bd7d` into `/tmp/yappify-verify`; `npm ci` installed from the lockfile without rewriting it. (2) Build passed. (3) Full suite passed. (4) Locked acceptance tests are identical to `m2-tests-locked` (`d1732e7`). (5) The implementation was reviewed against `docs/design/S-7.md` §8 decisions 1–16 and the approved plan. It has the validation order and decision-12 messages, in-memory storage only, the original `File` with `status: "unpublished"`, an object URL created per clip and revoked on replace/remove/unmount, the display fields listed in decision 15, a confirmation box unchecked by default, labelled inputs, a loading state that disables both inputs, and cancel handling that does not call `uploadAudio`. Two approved deviations: confirmation is checked before format (plan open item 1), and the alert region is rendered only when an error exists (Entry 30). (6) All 40 files changed since `m2-tests-locked` belong to Deliverables 3–5; no unrelated changes. Documentation was corrected as recorded in Entry 32. The coverage re-run was deferred by the student. Deliverable 4 is not marked complete: the `m2-green` tag and the 4c–4f requirements are still pending.
+
+checks (2026-11-20):
+- `git clone <repo> /tmp/yappify-verify && cd frontend && npm ci && npx playwright install chromium` → 214 packages added, 0 errors; `git status` clean afterwards. `npm audit` reports 4 moderate vulnerabilities (not investigated).
+- `npm run build` → vite, 23 modules transformed, built in 111 ms.
+- `npm test` (clone) → **43 passed, 0 failed** (9.9 s); `CI=1 npm test` (clone, fresh dev server) → 43 passed (11.3 s); `npm test` (working repo) → 43 passed (8.1 s). By file: `ac-01-record` 1, `ac-07-upload` 1, `upload-rules` 15, `upload.unit` 13, `upload-mutation-kills.unit` 8, `upload.integration` 2, `upload.property` 3.
+- `git diff --stat m2-tests-locked HEAD -- frontend/tests/acceptance` → empty; `git diff m2-tests-locked -- frontend/tests/acceptance` → empty; blob hashes of `ac-01-record.spec.ts`, `ac-07-upload.spec.ts` and `fixtures/tone.wav` match the tag.
+- `npx tsc --noEmit --strict --target ES2022 --module ESNext --moduleResolution bundler --lib ES2022,DOM,DOM.Iterable --jsx react-jsx --types node --skipLibCheck` on `App.tsx`, `UploadClip.tsx`, `UploadedClipView.tsx`, `upload.ts`, `constants.ts`, `clips.ts`, `formatDuration.ts` → exit 0, no errors.
+- Not run: `npm run test:coverage`, Stryker, the manual browser check from the plan's Verification section, and backend pytest (there is no backend).
+
+commit: `Task 4.8 (AC-07): Record final verification and correct documentation` (SHA recorded by `git log`; a commit cannot contain its own hash).
+
+evidence: S-7, AC-7; `docs/plans/S-7-plan.md` Task 4.8; `docs/design/S-7.md` §8.
+
+risk: `m2-green` is not tagged yet; the team must approve it. Coverage figures in `evidence/coverage.txt` predate the UI components. README.md still describes the coverage command as the test command and mentions "pending UI specs", and AGENTS.md has the old acceptance-test path and coverage note; both files are protected and were left unchanged. The Deliverable 4c–4f handout requirements were not available in the repo and have not been checked.
