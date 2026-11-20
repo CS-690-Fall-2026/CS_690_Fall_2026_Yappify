@@ -402,3 +402,19 @@ checks: `python3 scripts/gen_audit_answers.py` -> 18 rows written; `python3 scri
 evidence: 3b audit answers; `evidence/test-audit.md`; AC-7.
 
 risk: The generator validates that a commit touches the acceptance directory, not that it made the specific change a row claims — a wrong subject pairing would still pass. And the §2.2 row cites `9d6fd56` for the test change while the enabling decision amendment is `12084dd`, so a reader must follow the cross-reference.
+
+## Entry 22
+
+artifact: removal of `scripts/gen_audit_answers.py` and `docs/audit-answers.json`; `MILESTONE2.md` 3b preamble and markers.
+
+tool: omp agent session, model `bifrost/opencode-go/deepseek-v4.1-flash`, used 2026-11-19.
+
+prompts: student's instruction to stop shipping the generator, after it had produced and validated the 18-row table.
+
+review: The generator served its purpose — it resolved each cited commit from its subject, refused a subject that did not match exactly one commit, verified ancestry of HEAD, and confirmed the diff touched `frontend/tests/acceptance/`, then re-validated the written table. It was throwaway tooling: the table it produced is static markdown, so keeping the harness would ship a second, unrequested source of truth for text the grader reads directly. I deleted both files, removed the 3-bullet reference to them from the report preamble, and renamed the block markers to name no script. I kept the table itself unchanged — deleting a generator must not change an answer.
+
+checks: `git rm scripts/gen_audit_answers.py docs/audit-answers.json` -> both removed, `scripts/` gone; `grep -n "gen_audit_answers" MILESTONE2.md` -> no matches; `grep -c '^## Entry' LEDGER.md` -> 22.
+
+evidence: 3b answers in `MILESTONE2.md`; AC-7.
+
+risk: The table can no longer be re-validated automatically, so a later edit to one of the cited commits' subjects (none expected before m2-submit) would leave a stale reason trail with no check to catch it.
