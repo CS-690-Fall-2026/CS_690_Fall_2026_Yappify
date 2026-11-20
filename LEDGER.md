@@ -472,3 +472,21 @@ commit: `Task 4.4 (AC-07): Implement audio upload validation` (SHA recorded by `
 evidence: S-7, AC-7; design decisions 3, 9, 10, 12, 13, 14.
 
 risk: The validation in `uploadAudio` has not yet been exercised by any test: the rule tests reach it only through the upload UI, which arrives in Task 4.6. The validation order, the messages, the metadata timeout and the URL/listener cleanup were checked by code review and the type check only.
+
+## Entry 26
+
+artifact: Task 4.5 (AC-07) — `frontend/src/data/clips.ts` (new): the `CurrentUser` and `UnpublishedClip` types, `getCurrentUser()`, `setUnpublishedClip(result, fileName)`, `getUnpublishedClip()` and `removeUnpublishedClip()`.
+
+tool: Claude Code session, model `claude-opus-5-5`, used 2026-11-19. The implementation follows the approved plan (`docs/plans/S-7-plan.md`, "Types and data structures" and "Storage and playback") and `docs/design/S-7.md` §8 decisions 7, 8, 11.
+
+prompts: `prompts/S-7-task-4.5.txt` — student's Task 4.5 implementation request.
+
+review: `CurrentUser` is `{ id, displayName }`; `UnpublishedClip` extends `UploadResult` (type-only import from `upload.ts`) with `id`, `ownerId` and `fileName`. `getCurrentUser()` returns a copy of a frozen mock user `{ id: "user-1", displayName: "Demo User" }` (decision 8; no authentication). The store is a single module-level `UnpublishedClip | null` held in browser memory only, so a page refresh clears it (decision 7). `setUnpublishedClip` copies the upload result, assigns a new counter-based id (`clip-1`, `clip-2`, …), sets `ownerId` to the current user's id, replaces any existing clip and returns the new clip; a replacement therefore always has a new `id`, which the Task 4.7 view uses to manage its object URL. `getUnpublishedClip()` returns the stored clip or `null`; `removeUnpublishedClip()` resets it to `null`. No web storage, browser database, network request or new dependency. The header comment was reworded during review so that the plan's grep check finds no storage API names. Nothing imports the module yet; the upload UI is Tasks 4.6–4.7.
+
+checks: `cd frontend && npm run build` -> vite, 17 modules transformed, built in 108 ms; strict type check (no `tsconfig.json` exists and `vite build` does not type-check) `cd frontend && npx tsc --noEmit --strict --target ES2022 --module ESNext --moduleResolution bundler --lib ES2022,DOM --skipLibCheck src/data/clips.ts` -> exit 0, no errors; `cd frontend && grep -n "localStorage\|indexedDB\|fetch" src/data/clips.ts` (plan's done-when check, also run case-insensitively with `sessionStorage` and `XMLHttpRequest`) -> no matches; `cd frontend && npm test` -> 17 tests, 1 passed, 16 failed (2.1 m): AC-1 (`ac-01-record.spec.ts`) passed; AC-7 (`ac-07-upload.spec.ts`) failed as expected because the ownership-confirmation checkbox does not exist; all 15 rule tests failed as expected because the upload interface does not exist yet (timeouts waiting for the confirmation checkbox), with no import, syntax or type errors. `git diff m2-tests-locked -- frontend/tests/acceptance` -> empty. No coverage was run (no frontend coverage script exists). This commit is red on purpose, a known exception to the AGENTS.md green gate (plan open item 5); the gate applies at Tasks 4.7/4.8.
+
+commit: `Task 4.5 (AC-07): Add temporary clip storage` (SHA recorded by `git log`; a commit cannot contain its own hash).
+
+evidence: S-7, AC-7; design decisions 7, 8, 11.
+
+risk: The clip store has not yet been exercised by any browser test: nothing imports it until the upload controls (Task 4.6) and the display (Task 4.7) are built. Storing, replacing, retrieving and removing clips, and the owner assignment, were checked by code review and the type check only.

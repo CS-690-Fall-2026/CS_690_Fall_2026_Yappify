@@ -1,0 +1,42 @@
+We are continuing Milestone 2, Deliverable 4b for S-7 (Upload Existing Audio).
+
+Read AGENTS.md, docs/plans/S-7-plan.md, docs/design/S-7.md, and frontend/src/audio/upload.ts before making changes.
+
+Implement ONLY Task 4.5 from the approved S-7 implementation plan.
+
+Create frontend/src/data/clips.ts to implement temporary in-memory storage for uploaded audio.
+
+Requirements:
+1. Define CurrentUser with id and displayName.
+2. Define UnpublishedClip extending UploadResult with id, ownerId, and fileName.
+3. Implement getCurrentUser() using a mock current user.
+4. Implement setUnpublishedClip(result, fileName) to save a single unpublished clip in memory, replacing any existing clip.
+5. Implement getUnpublishedClip() to retrieve the stored clip or null.
+6. Implement removeUnpublishedClip() to clear the stored clip.
+7. Assign the current mock user's ID as the clip owner.
+
+Follow the types and behavior in the approved plan.
+
+Storage restrictions:
+- Keep everything in browser memory only.
+- Do not use localStorage, sessionStorage, IndexedDB, a backend, or network requests.
+- Do not add authentication or new dependencies.
+
+Do not implement Tasks 4.6 or 4.7.
+Do not modify the upload UI, App.tsx, or locked acceptance tests.
+Do not modify unrelated files.
+
+Run npm run build from frontend.
+Run a standalone strict TypeScript check for the new module.
+Run npm test and report the results.
+
+Expected test results:
+- AC-1 passes.
+- AC-7 remains red because the upload interface is missing.
+- The additional rule tests remain red for the same reason.
+
+Confirm that the locked acceptance tests are unchanged.
+
+Show me the changed files and summarize the implementation.
+
+Do not commit or push anything until I review the changes.
