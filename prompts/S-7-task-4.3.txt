@@ -1,0 +1,25 @@
+We are continuing Milestone 2, Deliverable 4b for S-7.
+
+Read AGENTS.md, docs/plans/S-7-plan.md, and docs/design/S-7.md.
+
+Implement ONLY Task 4.3 from the approved plan: write the additional rule tests before implementing the upload validation logic.
+
+Create:
+- frontend/tests/rules/wav.ts
+- frontend/tests/rules/upload-rules.spec.ts
+
+Update frontend/playwright.config.ts only as proposed in the approved plan, so the additional rule tests are discovered.
+
+Do not modify any locked acceptance tests.
+Do not implement Tasks 4.4–4.7.
+Do not modify unrelated files or add dependencies.
+
+Run the tests and confirm:
+- AC-1 remains green.
+- AC-7 remains red.
+- The new rule tests fail because the upload feature is not implemented yet, not because of broken test setup.
+
+Save the test output to evidence/red-rules.txt as specified in the plan.
+
+Show me the changed files and test results.
+Do not commit or push anything until I review the changes.

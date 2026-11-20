@@ -1,0 +1,392 @@
+
+> test
+> playwright test
+
+
+Running 17 tests using 4 workers
+
+  ✓   1 [chromium] › tests/acceptance/ac-01-record.spec.ts:39:1 › test_ac1_record_and_stop_displays_playback (2.0s)
+  ✘   2 [chromium] › tests/acceptance/ac-07-upload.spec.ts:30:1 › test_ac7_valid_audio_upload_displays_playback (5.7s)
+  ✘   3 [chromium] › tests/rules/upload-rules.spec.ts:66:3 › controls › unsupported .ogg is rejected (d4, d9) @controls (30.1s)
+  ✘   4 [chromium] › tests/rules/upload-rules.spec.ts:71:3 › controls › audio-only .mp4 is rejected (d9) @controls (30.1s)
+  ✘   5 [chromium] › tests/rules/upload-rules.spec.ts:76:3 › controls › .wav with conflicting MIME audio/mpeg is rejected (d9) @controls (30.0s)
+  ✘   6 [chromium] › tests/rules/upload-rules.spec.ts:81:3 › controls › file over 20 MB is rejected (d11) @controls (30.0s)
+  ✘   8 [chromium] › tests/rules/upload-rules.spec.ts:95:3 › controls › 61 s WAV is rejected (d5, d10) @controls (30.1s)
+  ✘   7 [chromium] › tests/rules/upload-rules.spec.ts:90:3 › controls › undecodable .wav is rejected as invalid audio (d3, d12) @controls (30.1s)
+  ✘   9 [chromium] › tests/rules/upload-rules.spec.ts:100:3 › controls › 60.04 s WAV is rejected; duration is not rounded (d10) @controls (30.0s)
+  ✘  10 [chromium] › tests/rules/upload-rules.spec.ts:105:3 › controls › valid file without ownership confirmation is rejected (d13) @controls (30.0s)
+  ✘  11 [chromium] › tests/rules/upload-rules.spec.ts:117:3 › controls › controls are disabled while checking audio (d11) @controls (5.3s)
+  ✘  12 [chromium] › tests/rules/upload-rules.spec.ts:110:3 › controls › confirmation unchecked on load and file input labelled (d13, d15) @controls (5.3s)
+  ✘  13 [chromium] › tests/rules/upload-rules.spec.ts:149:3 › display › 60.00 s WAV is accepted and shows 1:00 (d5, d10, d15) @display (30.1s)
+  ✘  14 [chromium] › tests/rules/upload-rules.spec.ts:155:3 › display › rejected file leaves the previous clip in place (d11, d12) @display (30.0s)
+  ✘  15 [chromium] › tests/rules/upload-rules.spec.ts:164:3 › display › second valid upload replaces the first (d11) @display (30.0s)
+  ✘  16 [chromium] › tests/rules/upload-rules.spec.ts:173:3 › display › cancelled selection leaves the clip unchanged (d11, §7 case 4) @display (30.0s)
+  ✘  17 [chromium] › tests/rules/upload-rules.spec.ts:182:3 › display › Remove clears the clip and its audio element (d15) @display (30.0s)
+
+
+  1) [chromium] › tests/acceptance/ac-07-upload.spec.ts:30:1 › test_ac7_valid_audio_upload_displays_playback 
+
+    Error: expect(locator).not.toBeChecked() failed
+
+    Locator: getByLabel('I confirm that I own this audio or have permission to upload it')
+    Expected: not checked
+    Timeout: 5000ms
+    Error: element(s) not found
+
+    Call log:
+      - Expect "not toBeChecked" getByLabel('I confirm that I own this audio or have permission to upload it') with timeout 5000ms
+      - waiting for getByLabel('I confirm that I own this audio or have permission to upload it')
+
+
+      35 |     "I confirm that I own this audio or have permission to upload it",
+      36 |   );
+    > 37 |   await expect(confirm).not.toBeChecked();
+         |                             ^
+      38 |   await confirm.check();
+      39 |
+      40 |   const fileInput = page.locator('input[type="file"]');
+        at /Users/joshuageorge/Desktop/yapplify/CS_690_Fall_2026_Yappify/frontend/tests/acceptance/ac-07-upload.spec.ts:37:29
+
+    Error Context: test-results/acceptance-ac-07-upload-te-e36f2-io-upload-displays-playback-chromium/error-context.md
+
+  2) [chromium] › tests/rules/upload-rules.spec.ts:66:3 › controls › unsupported .ogg is rejected (d4, d9) @controls 
+
+    Test timeout of 30000ms exceeded.
+
+    Error: locator.check: Test timeout of 30000ms exceeded.
+    Call log:
+      - waiting for getByLabel('I confirm that I own this audio or have permission to upload it')
+
+
+      43 |
+      44 | async function select(page: Page, file: Fixture, { confirm = true } = {}) {
+    > 45 |   if (confirm) await page.getByLabel(CONFIRM_LABEL).check();
+         |                                                     ^
+      46 |   await page.getByLabel(FILE_LABEL).setInputFiles(file);
+      47 | }
+      48 |
+        at select (/Users/joshuageorge/Desktop/yapplify/CS_690_Fall_2026_Yappify/frontend/tests/rules/upload-rules.spec.ts:45:53)
+        at /Users/joshuageorge/Desktop/yapplify/CS_690_Fall_2026_Yappify/frontend/tests/rules/upload-rules.spec.ts:67:11
+
+    Error Context: test-results/rules-upload-rules-control-46c97-rted-ogg-is-rejected-d4-d9--chromium/error-context.md
+
+  3) [chromium] › tests/rules/upload-rules.spec.ts:71:3 › controls › audio-only .mp4 is rejected (d9) @controls 
+
+    Test timeout of 30000ms exceeded.
+
+    Error: locator.check: Test timeout of 30000ms exceeded.
+    Call log:
+      - waiting for getByLabel('I confirm that I own this audio or have permission to upload it')
+
+
+      43 |
+      44 | async function select(page: Page, file: Fixture, { confirm = true } = {}) {
+    > 45 |   if (confirm) await page.getByLabel(CONFIRM_LABEL).check();
+         |                                                     ^
+      46 |   await page.getByLabel(FILE_LABEL).setInputFiles(file);
+      47 | }
+      48 |
+        at select (/Users/joshuageorge/Desktop/yapplify/CS_690_Fall_2026_Yappify/frontend/tests/rules/upload-rules.spec.ts:45:53)
+        at /Users/joshuageorge/Desktop/yapplify/CS_690_Fall_2026_Yappify/frontend/tests/rules/upload-rules.spec.ts:72:11
+
+    Error Context: test-results/rules-upload-rules-controls-audio-only-mp4-is-rejected-d9--chromium/error-context.md
+
+  4) [chromium] › tests/rules/upload-rules.spec.ts:76:3 › controls › .wav with conflicting MIME audio/mpeg is rejected (d9) @controls 
+
+    Test timeout of 30000ms exceeded.
+
+    Error: locator.check: Test timeout of 30000ms exceeded.
+    Call log:
+      - waiting for getByLabel('I confirm that I own this audio or have permission to upload it')
+
+
+      43 |
+      44 | async function select(page: Page, file: Fixture, { confirm = true } = {}) {
+    > 45 |   if (confirm) await page.getByLabel(CONFIRM_LABEL).check();
+         |                                                     ^
+      46 |   await page.getByLabel(FILE_LABEL).setInputFiles(file);
+      47 | }
+      48 |
+        at select (/Users/joshuageorge/Desktop/yapplify/CS_690_Fall_2026_Yappify/frontend/tests/rules/upload-rules.spec.ts:45:53)
+        at /Users/joshuageorge/Desktop/yapplify/CS_690_Fall_2026_Yappify/frontend/tests/rules/upload-rules.spec.ts:77:11
+
+    Error Context: test-results/rules-upload-rules-control-35b5f--audio-mpeg-is-rejected-d9--chromium/error-context.md
+
+  5) [chromium] › tests/rules/upload-rules.spec.ts:81:3 › controls › file over 20 MB is rejected (d11) @controls 
+
+    Test timeout of 30000ms exceeded.
+
+    Error: locator.check: Test timeout of 30000ms exceeded.
+    Call log:
+      - waiting for getByLabel('I confirm that I own this audio or have permission to upload it')
+
+
+      43 |
+      44 | async function select(page: Page, file: Fixture, { confirm = true } = {}) {
+    > 45 |   if (confirm) await page.getByLabel(CONFIRM_LABEL).check();
+         |                                                     ^
+      46 |   await page.getByLabel(FILE_LABEL).setInputFiles(file);
+      47 | }
+      48 |
+        at select (/Users/joshuageorge/Desktop/yapplify/CS_690_Fall_2026_Yappify/frontend/tests/rules/upload-rules.spec.ts:45:53)
+        at /Users/joshuageorge/Desktop/yapplify/CS_690_Fall_2026_Yappify/frontend/tests/rules/upload-rules.spec.ts:82:11
+
+    Error Context: test-results/rules-upload-rules-controls-file-over-20-MB-is-rejected-d11--chromium/error-context.md
+
+  6) [chromium] › tests/rules/upload-rules.spec.ts:90:3 › controls › undecodable .wav is rejected as invalid audio (d3, d12) @controls 
+
+    Test timeout of 30000ms exceeded.
+
+    Error: locator.check: Test timeout of 30000ms exceeded.
+    Call log:
+      - waiting for getByLabel('I confirm that I own this audio or have permission to upload it')
+
+
+      43 |
+      44 | async function select(page: Page, file: Fixture, { confirm = true } = {}) {
+    > 45 |   if (confirm) await page.getByLabel(CONFIRM_LABEL).check();
+         |                                                     ^
+      46 |   await page.getByLabel(FILE_LABEL).setInputFiles(file);
+      47 | }
+      48 |
+        at select (/Users/joshuageorge/Desktop/yapplify/CS_690_Fall_2026_Yappify/frontend/tests/rules/upload-rules.spec.ts:45:53)
+        at /Users/joshuageorge/Desktop/yapplify/CS_690_Fall_2026_Yappify/frontend/tests/rules/upload-rules.spec.ts:91:11
+
+    Error Context: test-results/rules-upload-rules-control-d025e-ed-as-invalid-audio-d3-d12--chromium/error-context.md
+
+  7) [chromium] › tests/rules/upload-rules.spec.ts:95:3 › controls › 61 s WAV is rejected (d5, d10) @controls 
+
+    Test timeout of 30000ms exceeded.
+
+    Error: locator.check: Test timeout of 30000ms exceeded.
+    Call log:
+      - waiting for getByLabel('I confirm that I own this audio or have permission to upload it')
+
+
+      43 |
+      44 | async function select(page: Page, file: Fixture, { confirm = true } = {}) {
+    > 45 |   if (confirm) await page.getByLabel(CONFIRM_LABEL).check();
+         |                                                     ^
+      46 |   await page.getByLabel(FILE_LABEL).setInputFiles(file);
+      47 | }
+      48 |
+        at select (/Users/joshuageorge/Desktop/yapplify/CS_690_Fall_2026_Yappify/frontend/tests/rules/upload-rules.spec.ts:45:53)
+        at /Users/joshuageorge/Desktop/yapplify/CS_690_Fall_2026_Yappify/frontend/tests/rules/upload-rules.spec.ts:96:11
+
+    Error Context: test-results/rules-upload-rules-controls-61-s-WAV-is-rejected-d5-d10--chromium/error-context.md
+
+  8) [chromium] › tests/rules/upload-rules.spec.ts:100:3 › controls › 60.04 s WAV is rejected; duration is not rounded (d10) @controls 
+
+    Test timeout of 30000ms exceeded.
+
+    Error: locator.check: Test timeout of 30000ms exceeded.
+    Call log:
+      - waiting for getByLabel('I confirm that I own this audio or have permission to upload it')
+
+
+      43 |
+      44 | async function select(page: Page, file: Fixture, { confirm = true } = {}) {
+    > 45 |   if (confirm) await page.getByLabel(CONFIRM_LABEL).check();
+         |                                                     ^
+      46 |   await page.getByLabel(FILE_LABEL).setInputFiles(file);
+      47 | }
+      48 |
+        at select (/Users/joshuageorge/Desktop/yapplify/CS_690_Fall_2026_Yappify/frontend/tests/rules/upload-rules.spec.ts:45:53)
+        at /Users/joshuageorge/Desktop/yapplify/CS_690_Fall_2026_Yappify/frontend/tests/rules/upload-rules.spec.ts:101:11
+
+    Error Context: test-results/rules-upload-rules-control-d27ac-uration-is-not-rounded-d10--chromium/error-context.md
+
+  9) [chromium] › tests/rules/upload-rules.spec.ts:105:3 › controls › valid file without ownership confirmation is rejected (d13) @controls 
+
+    Test timeout of 30000ms exceeded.
+
+    Error: locator.setInputFiles: Test timeout of 30000ms exceeded.
+    Call log:
+      - waiting for getByLabel('Choose audio file')
+
+
+      44 | async function select(page: Page, file: Fixture, { confirm = true } = {}) {
+      45 |   if (confirm) await page.getByLabel(CONFIRM_LABEL).check();
+    > 46 |   await page.getByLabel(FILE_LABEL).setInputFiles(file);
+         |   ^
+      47 | }
+      48 |
+      49 | async function expectRejected(page: Page, message: string) {
+        at select (/Users/joshuageorge/Desktop/yapplify/CS_690_Fall_2026_Yappify/frontend/tests/rules/upload-rules.spec.ts:46:3)
+        at /Users/joshuageorge/Desktop/yapplify/CS_690_Fall_2026_Yappify/frontend/tests/rules/upload-rules.spec.ts:106:5
+
+    Error Context: test-results/rules-upload-rules-control-625a7-nfirmation-is-rejected-d13--chromium/error-context.md
+
+  10) [chromium] › tests/rules/upload-rules.spec.ts:110:3 › controls › confirmation unchecked on load and file input labelled (d13, d15) @controls 
+
+    Error: expect(locator).not.toBeChecked() failed
+
+    Locator: getByLabel('I confirm that I own this audio or have permission to upload it')
+    Expected: not checked
+    Timeout: 5000ms
+    Error: element(s) not found
+
+    Call log:
+      - Expect "not toBeChecked" getByLabel('I confirm that I own this audio or have permission to upload it') with timeout 5000ms
+      - waiting for getByLabel('I confirm that I own this audio or have permission to upload it')
+
+
+      109 |
+      110 |   test("confirmation unchecked on load and file input labelled (d13, d15)", async ({ page }) => {
+    > 111 |     await expect(page.getByLabel(CONFIRM_LABEL)).not.toBeChecked();
+          |                                                      ^
+      112 |     const input = page.getByLabel(FILE_LABEL);
+      113 |     await expect(input).toHaveAttribute("type", "file");
+      114 |     await expect(input).toHaveAccessibleName(FILE_LABEL);
+        at /Users/joshuageorge/Desktop/yapplify/CS_690_Fall_2026_Yappify/frontend/tests/rules/upload-rules.spec.ts:111:54
+
+    Error Context: test-results/rules-upload-rules-control-1e872-ile-input-labelled-d13-d15--chromium/error-context.md
+
+  11) [chromium] › tests/rules/upload-rules.spec.ts:117:3 › controls › controls are disabled while checking audio (d11) @controls 
+
+    Error: expect(locator).toBeEnabled() failed
+
+    Locator: getByLabel('I confirm that I own this audio or have permission to upload it')
+    Expected: enabled
+    Timeout: 5000ms
+    Error: element(s) not found
+
+    Call log:
+      - Expect "toBeEnabled" getByLabel('I confirm that I own this audio or have permission to upload it') with timeout 5000ms
+      - waiting for getByLabel('I confirm that I own this audio or have permission to upload it')
+
+
+      118 |     const box = page.getByLabel(CONFIRM_LABEL);
+      119 |     const input = page.getByLabel(FILE_LABEL);
+    > 120 |     await expect(box).toBeEnabled();
+          |                       ^
+      121 |     await expect(input).toBeEnabled();
+      122 |
+      123 |     // Validation can finish within a frame, so record the control state on
+        at /Users/joshuageorge/Desktop/yapplify/CS_690_Fall_2026_Yappify/frontend/tests/rules/upload-rules.spec.ts:120:23
+
+    Error Context: test-results/rules-upload-rules-control-9bfc1-d-while-checking-audio-d11--chromium/error-context.md
+
+  12) [chromium] › tests/rules/upload-rules.spec.ts:149:3 › display › 60.00 s WAV is accepted and shows 1:00 (d5, d10, d15) @display 
+
+    Test timeout of 30000ms exceeded.
+
+    Error: locator.check: Test timeout of 30000ms exceeded.
+    Call log:
+      - waiting for getByLabel('I confirm that I own this audio or have permission to upload it')
+
+
+      43 |
+      44 | async function select(page: Page, file: Fixture, { confirm = true } = {}) {
+    > 45 |   if (confirm) await page.getByLabel(CONFIRM_LABEL).check();
+         |                                                     ^
+      46 |   await page.getByLabel(FILE_LABEL).setInputFiles(file);
+      47 | }
+      48 |
+        at select (/Users/joshuageorge/Desktop/yapplify/CS_690_Fall_2026_Yappify/frontend/tests/rules/upload-rules.spec.ts:45:53)
+        at /Users/joshuageorge/Desktop/yapplify/CS_690_Fall_2026_Yappify/frontend/tests/rules/upload-rules.spec.ts:150:11
+
+    Error Context: test-results/rules-upload-rules-display-96ee2--and-shows-1-00-d5-d10-d15--chromium/error-context.md
+
+  13) [chromium] › tests/rules/upload-rules.spec.ts:155:3 › display › rejected file leaves the previous clip in place (d11, d12) @display 
+
+    Test timeout of 30000ms exceeded.
+
+    Error: locator.check: Test timeout of 30000ms exceeded.
+    Call log:
+      - waiting for getByLabel('I confirm that I own this audio or have permission to upload it')
+
+
+      43 |
+      44 | async function select(page: Page, file: Fixture, { confirm = true } = {}) {
+    > 45 |   if (confirm) await page.getByLabel(CONFIRM_LABEL).check();
+         |                                                     ^
+      46 |   await page.getByLabel(FILE_LABEL).setInputFiles(file);
+      47 | }
+      48 |
+        at select (/Users/joshuageorge/Desktop/yapplify/CS_690_Fall_2026_Yappify/frontend/tests/rules/upload-rules.spec.ts:45:53)
+        at /Users/joshuageorge/Desktop/yapplify/CS_690_Fall_2026_Yappify/frontend/tests/rules/upload-rules.spec.ts:156:11
+
+    Error Context: test-results/rules-upload-rules-display-e95c6-ious-clip-in-place-d11-d12--chromium/error-context.md
+
+  14) [chromium] › tests/rules/upload-rules.spec.ts:164:3 › display › second valid upload replaces the first (d11) @display 
+
+    Test timeout of 30000ms exceeded.
+
+    Error: locator.check: Test timeout of 30000ms exceeded.
+    Call log:
+      - waiting for getByLabel('I confirm that I own this audio or have permission to upload it')
+
+
+      43 |
+      44 | async function select(page: Page, file: Fixture, { confirm = true } = {}) {
+    > 45 |   if (confirm) await page.getByLabel(CONFIRM_LABEL).check();
+         |                                                     ^
+      46 |   await page.getByLabel(FILE_LABEL).setInputFiles(file);
+      47 | }
+      48 |
+        at select (/Users/joshuageorge/Desktop/yapplify/CS_690_Fall_2026_Yappify/frontend/tests/rules/upload-rules.spec.ts:45:53)
+        at /Users/joshuageorge/Desktop/yapplify/CS_690_Fall_2026_Yappify/frontend/tests/rules/upload-rules.spec.ts:165:11
+
+    Error Context: test-results/rules-upload-rules-display-f7974-oad-replaces-the-first-d11--chromium/error-context.md
+
+  15) [chromium] › tests/rules/upload-rules.spec.ts:173:3 › display › cancelled selection leaves the clip unchanged (d11, §7 case 4) @display 
+
+    Test timeout of 30000ms exceeded.
+
+    Error: locator.check: Test timeout of 30000ms exceeded.
+    Call log:
+      - waiting for getByLabel('I confirm that I own this audio or have permission to upload it')
+
+
+      43 |
+      44 | async function select(page: Page, file: Fixture, { confirm = true } = {}) {
+    > 45 |   if (confirm) await page.getByLabel(CONFIRM_LABEL).check();
+         |                                                     ^
+      46 |   await page.getByLabel(FILE_LABEL).setInputFiles(file);
+      47 | }
+      48 |
+        at select (/Users/joshuageorge/Desktop/yapplify/CS_690_Fall_2026_Yappify/frontend/tests/rules/upload-rules.spec.ts:45:53)
+        at /Users/joshuageorge/Desktop/yapplify/CS_690_Fall_2026_Yappify/frontend/tests/rules/upload-rules.spec.ts:174:11
+
+    Error Context: test-results/rules-upload-rules-display-95a84-ip-unchanged-d11-§7-case-4--chromium/error-context.md
+
+  16) [chromium] › tests/rules/upload-rules.spec.ts:182:3 › display › Remove clears the clip and its audio element (d15) @display 
+
+    Test timeout of 30000ms exceeded.
+
+    Error: locator.check: Test timeout of 30000ms exceeded.
+    Call log:
+      - waiting for getByLabel('I confirm that I own this audio or have permission to upload it')
+
+
+      43 |
+      44 | async function select(page: Page, file: Fixture, { confirm = true } = {}) {
+    > 45 |   if (confirm) await page.getByLabel(CONFIRM_LABEL).check();
+         |                                                     ^
+      46 |   await page.getByLabel(FILE_LABEL).setInputFiles(file);
+      47 | }
+      48 |
+        at select (/Users/joshuageorge/Desktop/yapplify/CS_690_Fall_2026_Yappify/frontend/tests/rules/upload-rules.spec.ts:45:53)
+        at /Users/joshuageorge/Desktop/yapplify/CS_690_Fall_2026_Yappify/frontend/tests/rules/upload-rules.spec.ts:183:11
+
+    Error Context: test-results/rules-upload-rules-display-0a457--and-its-audio-element-d15--chromium/error-context.md
+
+  16 failed
+    [chromium] › tests/acceptance/ac-07-upload.spec.ts:30:1 › test_ac7_valid_audio_upload_displays_playback 
+    [chromium] › tests/rules/upload-rules.spec.ts:66:3 › controls › unsupported .ogg is rejected (d4, d9) @controls 
+    [chromium] › tests/rules/upload-rules.spec.ts:71:3 › controls › audio-only .mp4 is rejected (d9) @controls 
+    [chromium] › tests/rules/upload-rules.spec.ts:76:3 › controls › .wav with conflicting MIME audio/mpeg is rejected (d9) @controls 
+    [chromium] › tests/rules/upload-rules.spec.ts:81:3 › controls › file over 20 MB is rejected (d11) @controls 
+    [chromium] › tests/rules/upload-rules.spec.ts:90:3 › controls › undecodable .wav is rejected as invalid audio (d3, d12) @controls 
+    [chromium] › tests/rules/upload-rules.spec.ts:95:3 › controls › 61 s WAV is rejected (d5, d10) @controls 
+    [chromium] › tests/rules/upload-rules.spec.ts:100:3 › controls › 60.04 s WAV is rejected; duration is not rounded (d10) @controls 
+    [chromium] › tests/rules/upload-rules.spec.ts:105:3 › controls › valid file without ownership confirmation is rejected (d13) @controls 
+    [chromium] › tests/rules/upload-rules.spec.ts:110:3 › controls › confirmation unchecked on load and file input labelled (d13, d15) @controls 
+    [chromium] › tests/rules/upload-rules.spec.ts:117:3 › controls › controls are disabled while checking audio (d11) @controls 
+    [chromium] › tests/rules/upload-rules.spec.ts:149:3 › display › 60.00 s WAV is accepted and shows 1:00 (d5, d10, d15) @display 
+    [chromium] › tests/rules/upload-rules.spec.ts:155:3 › display › rejected file leaves the previous clip in place (d11, d12) @display 
+    [chromium] › tests/rules/upload-rules.spec.ts:164:3 › display › second valid upload replaces the first (d11) @display 
+    [chromium] › tests/rules/upload-rules.spec.ts:173:3 › display › cancelled selection leaves the clip unchanged (d11, §7 case 4) @display 
+    [chromium] › tests/rules/upload-rules.spec.ts:182:3 › display › Remove clears the clip and its audio element (d15) @display 
+  1 passed (2.1m)

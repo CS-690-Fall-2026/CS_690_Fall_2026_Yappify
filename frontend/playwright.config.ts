@@ -1,7 +1,7 @@
 import { defineConfig, devices } from "@playwright/test";
 
 export default defineConfig({
-  testDir: "./tests/acceptance",
+  testDir: "./tests",
   fullyParallel: true,
   reporter: [["list"]],
   use: {

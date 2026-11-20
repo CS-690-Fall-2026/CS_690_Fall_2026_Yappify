@@ -436,3 +436,21 @@ commit: `Task 4.2 (AC-07): Add upload constants and duration formatter` (SHA rec
 evidence: S-7, AC-7; design decisions 4, 5, 9, 11, 14, 15.
 
 risk: `frontend/` has no `tsconfig.json` and `vite build` does not type-check, so the new types are compiled but not checked; and because nothing imports the modules yet, a wrong value would only show up in the Task 4.3 rule tests.
+
+## Entry 24
+
+artifact: Task 4.3 (AC-07) — `frontend/tests/rules/wav.ts` and `frontend/tests/rules/upload-rules.spec.ts` (both new), `frontend/playwright.config.ts` (`testDir` changed from `./tests/acceptance` to `./tests`, as proposed in the approved plan), `evidence/red-rules.txt` (red run).
+
+tool: Claude Code session, model `claude-opus-5-5`, used 2026-11-19. The test cases come from the approved plan (`docs/plans/S-7-plan.md`, "Rule-test cases (4.3)") and `docs/design/S-7.md` §7, §8 decisions 3, 5, 9–13, 15–16 and §9 "Additional Tests".
+
+prompts: `prompts/S-7-task-4.3.txt` — student's Task 4.3 implementation request.
+
+review: 15 rule tests in two tagged groups. `@controls` (10): `.ogg`, `.mp4`, and `.wav` with MIME `audio/mpeg` rejected with the format message; a file over 20 MB rejected with the size message; random bytes in a `.wav` rejected as invalid audio; 61 s and 60.04 s WAVs rejected with the duration message; a valid file without ownership confirmation rejected; the checkbox unchecked on load and the file input labelled; the input and checkbox disabled while "Checking audio…" is shown. `@display` (5): a 60.00 s WAV accepted and shown as `1:00`; a rejected file leaves the previous clip; a second valid upload replaces the first; an empty `change` leaves the clip; Remove clears the clip and its `<audio>`. Expected messages are written out in the spec, not imported from `src/`: three are verbatim from decision 12, and the size and confirmation messages are the plan's proposed defaults (open items 1 and 2). Fixtures are generated in memory by `wav.ts` (8 kHz mono 16-bit PCM sine tone; seeded pseudo-random bytes for the corrupt case); no binary fixtures are committed, and their origin and usage rights are documented in the file (decision 16).
+
+checks: `cd frontend && npx playwright test --list` -> 17 tests in 3 files; `cd frontend && npm test > ../evidence/red-rules.txt 2>&1` -> 17 tests, 1 passed, 16 failed (exit 1): AC-1 (`ac-01-record.spec.ts`) passed; AC-7 (`ac-07-upload.spec.ts`) failed as expected, waiting for the ownership-confirmation checkbox; all 15 rule tests failed because the upload interface does not exist yet (14 timed out waiting for the confirmation checkbox, and the unconfirmed-upload case timed out waiting for the "Choose audio file" input). The log contains no import, syntax, type or strict-mode errors. `grep -c testDir frontend/playwright.config.ts` -> 1 (`"./tests"`); `git diff m2-tests-locked -- frontend/tests/acceptance` -> empty. No build was needed (no app code changed), and no coverage was run (no frontend coverage script exists). This commit is red on purpose, a known exception to the AGENTS.md green gate (plan open item 5); the gate applies at Tasks 4.7/4.8.
+
+commit: `Task 4.3 (AC-07): Add upload rule tests` (SHA recorded by `git log`; a commit cannot contain its own hash).
+
+evidence: S-7, AC-7; `evidence/red-rules.txt`; design decisions 3, 5, 9–13, 15, 16.
+
+risk: Every rule test stops at the missing upload controls, so no fixture has reached `setInputFiles` yet. The generated WAV durations, the over-20 MB buffer, the corrupt-file case and the validation behavior still need verification after the upload controls are implemented (Task 4.6). The "disabled while checking" test relies on seeing the loading state through a MutationObserver, which could prove timing-sensitive.
