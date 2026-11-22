@@ -653,3 +653,19 @@ commit: `Task 4.8 (AC-07): Record final verification and correct documentation` 
 evidence: S-7, AC-7; `docs/plans/S-7-plan.md` Task 4.8; `docs/design/S-7.md` §8.
 
 risk: `m2-green` is not tagged yet; the team must approve it. Coverage figures in `evidence/coverage.txt` predate the UI components. README.md still describes the coverage command as the test command and mentions "pending UI specs", and AGENTS.md has the old acceptance-test path and coverage note; both files are protected and were left unchanged. The Deliverable 4c–4f handout requirements were not available in the repo and have not been checked.
+
+## Entry 35
+
+artifact: tagg `m2-green` and `evidence/greent.txt` for S-7/AC-7 (Deliverable 4d).
+
+tool -- `npm test` (Playwright 1.56, Chromium) and `npm run build` (Vite) executed by Luke Hill, 2026-11-21, on a clean checkout of 66168cf.
+
+prompts: none; no agent prompt in this task.
+
+review: Team approved green claim on 2026-11-21 after Task 4.8's verification (Entry 33) was read. Two claims were rejected as out of scope for this tag: D4c/4e/4f and D6 are still open, and D5's coveragge figures were not re-measured for the 4.6-4.7 UI components. The acceptance-test lock check was run against `frontend/tests/acceptance`, the professor-approved path, not the handout's `tests/acceptance`; that deviation is recorded in the commit message.
+
+checkks: `npm test` -> 43 passed, 0 failed (green.txt). `git diff --stat m2-tests-locked m2-green --frontend/tests/acceptance` -> empty. `git ls-remote --tags origin` lists m2-green at the green.txt commit.
+
+evidence: S-7, AC-7; `evidence/green.txt`; tag `m2-green`.
+
+risk `npm run test:coverage`, Stryker, and the manual browser check were not re-run at this commit --coverageg and mutation evidence still describe the pre-4.6-4.7 tree. green.txt is one machine's run, and the repo has no CI, so nothing re-verifies it after this point.
