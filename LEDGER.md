@@ -701,3 +701,19 @@ checks: `git tag -f m2-green 18a4f8d` -> "Updated tag 'm2-green' (was 7041723)".
 evidence: S-7, AC-7; Deliverable 4d; `evidence/green.txt`; tags `m2-tests-locked` and `m2-green`.
 
 risk: A force-pushed tag — any clone that fetched `m2-green` before 2026-11-21 still holds `7041723` and will not update without `git fetch --tags --force`, so a cached copy could still show the superseded `green.txt`. `18a4f8d`'s subject keeps the `66160cf` typo. Nothing re-verifies the green run after this point because the repo has no CI, and D4c's review, D4e, D4f and D6 remain open.
+
+## Entry 37
+
+artifact: Task 4.11 (AC-07) refactor — `frontend/src/audio/upload.ts`; `evidence/refactor.txt`.
+
+tool: Antigravity CLI (`agy` 1.5.12), Gemini 3.8 Flash, used 2026-11-21; no subagent. Refactor diff reviewed with the omp assistant (DeepSeek V4.1 Flash), 2026-11-21.
+
+prompts: `prompts/S-7-task-4.11-refactor.txt` — one bounded prompt (Deliverable 4e): extract the validation chain in `uploadAudio` into named guards with the same order, the same error classes, and no behavior change.
+
+review: The plan was accepted unchanged and nothing was rejected; the agent kept its change to the one file it was given. Diff read against the pre-refactor file: order preserved (ownership, format and MIME, size, readability, decodability, duration); every `throw` keeps its class and message; `uploadAudio` keeps its signature and return shape; `spec` and `mimeTypes` moved inside the format guard, with `spec` looked up again only for the returned `mimeType`. Two nits were noticed and accepted rather than relitigated: `return await readDuration(file)` inside the async guard, and the second `SUPPORTED_AUDIO_FORMATS` lookup. An earlier commit made before the plan was approved held only a stale `refactor.txt`; it was amended away, so no commit in history claims a refactor it does not contain.
+
+checks: `npm run build` -> 89 ms, no errors. `npm test` -> 43 passed, 0 failed, captured to `evidence/refactor.txt` at 22:29, after the 22:23 source edit. Committed as `692e7ff`, amending `17a241b`.
+
+evidence: S-7, AC-7; Deliverable 4e.
+
+risk: The guard order is not asserted by any test — a reordering that kept all 43 tests green would go unnoticed. Coverage and mutation runs were not repeated after the refactor, so `evidence/coverage.txt` and the mutation reports still describe the pre-refactor `upload.ts`.
