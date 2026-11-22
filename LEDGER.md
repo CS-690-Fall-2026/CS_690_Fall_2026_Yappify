@@ -733,3 +733,68 @@ checks: `bash scripts/review_story.sh` -> exit 0, `SUCCESS`, 1 turn, 150.7 s, 13
 evidence: S-7, AC-7; Deliverable 6.
 
 risk: The graded file runs in one turn, so it cannot prove the reviewer subagent produced the verdict; the agent-mode file is the only attribution, and it carries `structured_output: null`. Both verdicts are model judgements that nothing independently checks, and an empty findings list cannot be distinguished from a defect the reviewer missed. 290,625 tokens were spent on this deliverable across both runs.
+
+## Entry 40
+
+artifact: `AGENTS.md`
+
+tool: ChatGPT, GPT-6, November 19, 2026
+
+prompts: I asked ChatGPT to revise the Yappify coding agent instructions to address three issues: reduce the document from 136 lines to under the 100-line limit required by 2a, remove the `npm run coverage` command because no coverage script exists, and remove `tests/acceptance/` from the protected acceptance test paths so only `frontend/tests/ac-*.spec.ts` remains protected. I provided the original `AGENTS.md` content and requested these specific changes.
+
+review: I reviewed the revised instructions to make sure the important project rules were preserved, including the mandatory approval workflow, testing requirements, Git commit rules, and protected files. The revision shortened repetitive sections, clarified that commands must be verified on a fresh clone, and updated both references to protected acceptance tests. The changes were limited to the instructions document.
+
+checks: I compared the revised content against the three requested changes. No automated tests or fresh-clone command checks were run because this was a documentation-only revision. The revised content was provided in ChatGPT, but the repository file was not modified.
+
+evidence: Original `AGENTS.md`, revised `AGENTS.md`, 2a requirements.
+
+risk: The documented setup and test commands still need to be verified on a fresh clone. Frontend coverage remains unavailable until a coverage script is implemented. The revised instructions also need to be saved to the repository and verified to meet the 100-line limit.
+
+## Entry 41
+
+artifact: `.agents/agents/test-writer/agent.md`
+
+tool: ChatGPT, GPT-6, November 22, 2026
+
+prompts: I asked ChatGPT to review the test-writer agent instructions and address four missing requirements. Expected test values must come from acceptance criteria rather than running the implementation, every test must reference its AC ID, the agent must never modify production source code, and it must have clear stop conditions. ChatGPT provided a revised version of the agent instructions.
+
+review: I reviewed the proposed changes to make sure the agent follows the acceptance criteria instead of copying existing code behavior. The revised instructions require AC IDs for every test, prohibit production code changes, and tell the agent to stop when requirements are missing or a test reveals a production defect. The original instruction to run tests and confirm they pass was changed so that failing tests are reported rather than adjusted to match the implementation.
+
+checks: I compared the proposed instructions against the four identified requirements. I did not run tests because this change only involved the agent configuration. The revised instructions have not yet been verified in the repository.
+
+evidence: `.agents/agents/test-writer/agent.md`, revised agent instructions from ChatGPT
+
+risk: The revised instructions have not been tested with an actual coding task. The agent may still need additional safeguards to ensure it consistently includes AC IDs, derives expectations from acceptance criteria, and stops without modifying production code.
+
+## Entry 42
+
+artifact: `.agents/agents/reviewer/agent.md`
+
+tool: ChatGPT, GPT-6, November 22, 2026
+
+prompts: I asked ChatGPT to review and revise the code-reviewer agent configuration. I pointed out that the original agent was not strictly read-only because it included `run_command`, that its severity labels did not match the expected blocking/minor format, that findings did not include an `ac_id`, and that it lacked a stop condition. I also specified that the agent needed to be named `reviewer` to match 6b's fallback command, `agy --agent reviewer`.
+
+review: I reviewed the proposed changes to make sure the agent was configured for read-only code inspection. The revised configuration removed `run_command`, renamed the agent to `reviewer`, standardized findings to use blocking/minor severity levels, and required a unique `ac_id` for every finding. It also added an explicit stop condition requiring the agent to finish after producing its review report. I checked that the proposed configuration aligned with the fallback agent name used by 6b.
+
+checks: I compared the original configuration against the revised version and checked that the identified issues were addressed. I did not execute the agent or run integration tests. The configuration still needs to be verified in the repository to confirm that the runtime enforces the read-only tool permissions and recognizes the renamed agent.
+
+evidence: 2c, 6b, original code-reviewer agent configuration, ChatGPT-generated reviewer agent revision
+
+risk: Removing `run_command` restricts the available tools but does not independently guarantee read-only behavior unless the agent runtime enforces the tool allowlist. The rename may also require updates to existing references to `code-reviewer`. The revised configuration has not been tested with `agy --agent reviewer`.
+
+## Entry 43
+
+artifact: Unit tests
+
+tool: Antigravity, Gemini 4 Hydrogen (High), used 2026-11-20; Playwright 1.56.0 (Chromium) against Vite dev server (`npm test`).
+
+prompts: prompts/unit-tests.md
+
+review: Added unit tests in `frontend/tests/unit`
+
+checks:
+- `cd frontend && npx playwright test tests/unit/upload-mutation-kills.unit.spec.ts` and `tests/unit/upload.unit.spec.ts`-> all passed.
+
+evidence: S-7, AC-07; `docs/design/S-7.md` §4, §6, §8 decisions 7, 8, 11, 12, 14, 15, 16; `MILESTONE2.md` §5.
+
+risk: Because Tasks 4.6–4.7 (`UploadClip.tsx` and `UploadedClipView.tsx`) do not exist yet, integration with React UI event handlers is not yet covered and full `npm test` remains red on the 16 UI-dependent tests.
