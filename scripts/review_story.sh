@@ -23,13 +23,20 @@ if [ -z "$FILES" ]; then
 fi
 
 PROMPT="Use the reviewer subagent to review these files against docs/design/${STORY_ID}.md and its acceptance criteria.
-Report only what the reviewer finds. Files: ${FILES}"
+Report only what the reviewer finds.
+Complete the review in this turn and return the JSON report now; do not hand off and return a placeholder.
+Files: ${FILES}"
 
 # The ledger entry for this task references the full prompt by path.
 printf '%s\n' "$PROMPT" > prompts/6b-headless-review.txt
 
+AGENT_FLAGS=()
+if [ -n "${REVIEW_AGENT:-}" ]; then
+  AGENT_FLAGS=(--agent "$REVIEW_AGENT")
+fi
+
 agy -p "$PROMPT" --output-format json \
-  --json-schema "$SCHEMA" > "$OUT"
+  --json-schema "$SCHEMA" "${AGENT_FLAGS[@]}" > "$OUT"
 
 if [ ! -s "$OUT" ]; then
   echo "review_story: agy produced no output in $OUT" >&2
