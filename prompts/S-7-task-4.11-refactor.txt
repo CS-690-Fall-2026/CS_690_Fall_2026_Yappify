@@ -1,0 +1,23 @@
+We are continuing Milestone 2, Deliverable 4e for S-7. The story is green at tag m2-green; this is the one refactor task.
+
+Read AGENTS.md, docs/design/S-7.md (sections 4, 6, 7, 8), docs/plans/S-7-plan.md, and frontend/src/audio/upload.ts.
+
+Refactor only the validation chain inside uploadAudio in frontend/src/audio/upload.ts:
+
+1. Extract each check already present into its own named function with a single job: ownership confirmation, file name to supported format, size limit, readability, decodability, duration limit. Each function gets a doc comment naming the design decision it enforces.
+2. Keep the order of the checks exactly as it is today, and keep the same error class and the same message for every failure.
+3. Keep uploadAudio as the exported entry point, with the same signature and the same return type.
+4. Change no behavior: same accepted results, same rejections, same messages.
+
+Change only frontend/src/audio/upload.ts.
+
+Do not change frontend/tests/acceptance/ (locked by a tool-enforced deny rule), any other test file, frontend/src/components/, frontend/src/data/, frontend/src/audio/constants.ts, docs/, or any dependency.
+
+Show me the plan and wait for approval before editing.
+
+After I approve: make the change, then run
+- npm run build
+- npm test
+All 43 tests must still pass. Report the diff summary and name every test that fails.
+
+Do not commit, push, or start another task.

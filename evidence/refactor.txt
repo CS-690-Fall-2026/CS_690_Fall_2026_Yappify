@@ -1,0 +1,78 @@
+
+> test
+> playwright test
+
+[WebServer] (node:536538) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+[WebServer] (Use `node --trace-warnings ...` to show where the warning was created)
+
+Running 43 tests using 8 workers
+
+(node:536587) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:536595) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:536594) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:536588) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:536606) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:536608) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:536615) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:536625) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✓   7 [chromium] › tests/integration/upload.integration.spec.ts:26:3 › S-7 integration: uploadAudio + clips data module › valid upload passes uploadAudio, stores UnpublishedClip in clips.ts, and loads playable audio (340ms)
+  ✓   6 [chromium] › tests/rules/upload-rules.spec.ts:66:3 › controls › unsupported .ogg is rejected (d4, d9) @controls (422ms)
+  ✓   8 [chromium] › tests/integration/upload.integration.spec.ts:112:3 › S-7 integration: uploadAudio + clips data module › rejected upload preserves stored clip; second valid upload replaces it with new id; remove clears store (389ms)
+  ✓   5 [chromium] › tests/acceptance/ac-07-upload.spec.ts:30:1 › test_ac7_valid_audio_upload_displays_playback (505ms)
+  ✓   1 [chromium] › tests/acceptance/ac-01-record.spec.ts:39:1 › test_ac1_record_and_stop_displays_playback (531ms)
+  ✓   2 [chromium] › tests/property/upload.property.spec.ts:245:3 › S-7 §6 property-based tests › §6 Preconditions: unreadable, undecodable, or non-permitted-format inputs are never accepted (539ms)
+  ✓   9 [chromium] › tests/rules/upload-rules.spec.ts:76:3 › controls › .wav with conflicting MIME audio/mpeg is rejected (d9) @controls (262ms)
+(node:537447) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✓   4 [chromium] › tests/property/upload.property.spec.ts:75:3 › S-7 §6 property-based tests › §6 Invariant: every accepted upload has a permitted format and finite duration in (0, MAX_CLIP_DURATION] (829ms)
+(node:537477) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✓  10 [chromium] › tests/rules/upload-rules.spec.ts:100:3 › controls › 60.04 s WAV is rejected; duration is not rounded (d10) @controls (410ms)
+  ✓  11 [chromium] › tests/rules/upload-rules.spec.ts:105:3 › controls › valid file without ownership confirmation is rejected (d13) @controls (224ms)
+(node:537500) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:537503) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✓  12 [chromium] › tests/rules/upload-rules.spec.ts:110:3 › controls › confirmation unchecked on load and file input labelled (d13, d15) @controls (277ms)
+  ✓   3 [chromium] › tests/property/upload.property.spec.ts:164:3 › S-7 §6 property-based tests › §6 Postconditions: rejected uploads never mutate or create a clip in clips.ts across arbitrary sequences (1.1s)
+  ✓  15 [chromium] › tests/rules/upload-rules.spec.ts:117:3 › controls › controls are disabled while checking audio (d11) @controls (374ms)
+  ✓  13 [chromium] › tests/rules/upload-rules.spec.ts:71:3 › controls › audio-only .mp4 is rejected (d9) @controls (405ms)
+  ✓  16 [chromium] › tests/rules/upload-rules.spec.ts:149:3 › display › 60.00 s WAV is accepted and shows 1:00 (d5, d10, d15) @display (536ms)
+  ✓  17 [chromium] › tests/rules/upload-rules.spec.ts:90:3 › controls › undecodable .wav is rejected as invalid audio (d3, d12) @controls (389ms)
+  ✓  19 [chromium] › tests/rules/upload-rules.spec.ts:155:3 › display › rejected file leaves the previous clip in place (d11, d12) @display (423ms)
+  ✓  18 [chromium] › tests/rules/upload-rules.spec.ts:95:3 › controls › 61 s WAV is rejected (d5, d10) @controls (488ms)
+  ✓  20 [chromium] › tests/rules/upload-rules.spec.ts:164:3 › display › second valid upload replaces the first (d11) @display (483ms)
+  ✓  21 [chromium] › tests/rules/upload-rules.spec.ts:173:3 › display › cancelled selection leaves the clip unchanged (d11, §7 case 4) @display (397ms)
+  ✓  23 [chromium] › tests/unit/upload-mutation-kills.unit.spec.ts:91:3 › AC-7 S-7 boundary and mutation-kill unit tests › AC-7 (d9): uploadAudio accepts valid .wav file when file.type is empty string (221ms)
+  ✓  22 [chromium] › tests/rules/upload-rules.spec.ts:182:3 › display › Remove clears the clip and its audio element (d15) @display (432ms)
+  ✓  24 [chromium] › tests/unit/upload-mutation-kills.unit.spec.ts:110:3 › AC-7 S-7 boundary and mutation-kill unit tests › AC-7 (d5, d10): uploadAudio accepts exact 60.00 s WAV boundary with unpublished status (317ms)
+  ✓  26 [chromium] › tests/unit/upload-mutation-kills.unit.spec.ts:177:3 › AC-7 S-7 boundary and mutation-kill unit tests › AC-7 (d9, d12): uploadAudio rejects with InvalidAudioError when canPlayType returns empty string (247ms)
+  ✓  27 [chromium] › tests/unit/upload-mutation-kills.unit.spec.ts:230:3 › AC-7 S-7 boundary and mutation-kill unit tests › AC-7 (d10, d12): uploadAudio rejects with InvalidAudioError on metadata timeout and cleans up URL and timer (265ms)
+  ✓  28 [chromium] › tests/unit/upload-mutation-kills.unit.spec.ts:365:3 › AC-7 S-7 boundary and mutation-kill unit tests › AC-7 (d8, d11): getCurrentUser returns a copy and setUnpublishedClip generates strictly increasing clip IDs (235ms)
+  ✓  29 [chromium] › tests/unit/upload-mutation-kills.unit.spec.ts:344:3 › AC-7 S-7 boundary and mutation-kill unit tests › AC-7 (d12): UploadError base class sets name to "UploadError" (246ms)
+  ✓  30 [chromium] › tests/unit/upload-mutation-kills.unit.spec.ts:418:3 › AC-7 S-7 boundary and mutation-kill unit tests › AC-7 (d15): formatDuration formats 0, -5, NaN, Infinity as 0:00, 5 as 0:05, and 60 as 1:00 (225ms)
+  ✓  31 [chromium] › tests/unit/upload.unit.spec.ts:102:3 › AC-7 S-7 §7 edge cases and §4 uploadAudio unit tests › AC-7 (§7.1, §4): uploadAudio rejects unsupported .ogg format with UnsupportedFormatError (215ms)
+  ✓  25 [chromium] › tests/unit/upload-mutation-kills.unit.spec.ts:130:3 › AC-7 S-7 boundary and mutation-kill unit tests › AC-7 (d11): uploadAudio accepts exact MAX_UPLOAD_BYTES (20 MB) WAV file (540ms)
+  ✓  32 [chromium] › tests/unit/upload.unit.spec.ts:120:3 › AC-7 S-7 §7 edge cases and §4 uploadAudio unit tests › AC-7 (§7.1, d9, §4): uploadAudio rejects audio-only .mp4 extension with UnsupportedFormatError (209ms)
+  ✓  34 [chromium] › tests/unit/upload.unit.spec.ts:156:3 › AC-7 S-7 §7 edge cases and §4 uploadAudio unit tests › AC-7 (§7.1, d9, §4): uploadAudio rejects conflicting MIME type for .wav extension (194ms)
+  ✓  33 [chromium] › tests/unit/upload.unit.spec.ts:138:3 › AC-7 S-7 §7 edge cases and §4 uploadAudio unit tests › AC-7 (§7.1, d9, §4): uploadAudio rejects file with no extension with UnsupportedFormatError (214ms)
+  ✓  37 [chromium] › tests/unit/upload.unit.spec.ts:210:3 › AC-7 S-7 §7 edge cases and §4 uploadAudio unit tests › AC-7 (§7.3, d3, d12, §4): uploadAudio rejects corrupted audio with InvalidAudioError (217ms)
+  ✓  35 [chromium] › tests/unit/upload.unit.spec.ts:174:3 › AC-7 S-7 §7 edge cases and §4 uploadAudio unit tests › AC-7 (§7.2, d5, §4): uploadAudio rejects 61 s audio with DurationLimitError (291ms)
+  ✓  38 [chromium] › tests/unit/upload.unit.spec.ts:284:3 › AC-7 S-7 §7 edge cases and §4 uploadAudio unit tests › AC-7 (§7.4, d11): cancelled selection creates no clip when empty and preserves existing clip invariant (225ms)
+  ✓  36 [chromium] › tests/unit/upload.unit.spec.ts:192:3 › AC-7 S-7 §7 edge cases and §4 uploadAudio unit tests › AC-7 (§7.2, d10, §4): uploadAudio rejects 60.04 s audio without rounding (297ms)
+  ✓  39 [chromium] › tests/unit/upload.unit.spec.ts:228:3 › AC-7 S-7 §7 edge cases and §4 uploadAudio unit tests › AC-7 (§7.3, d10, §4): uploadAudio rejects 0, NaN, and Infinity durations with InvalidAudioError (217ms)
+  ✓  40 [chromium] › tests/unit/upload.unit.spec.ts:343:3 › AC-7 S-7 §7 edge cases and §4 uploadAudio unit tests › AC-7 (d13, §4): uploadAudio rejects valid audio when ownershipConfirmed is false (205ms)
+  ✓  41 [chromium] › tests/unit/upload.unit.spec.ts:362:3 › AC-7 S-7 §7 edge cases and §4 uploadAudio unit tests › AC-7 (d11, §4): uploadAudio rejects file exceeding 20 MB with FileSizeLimitError (191ms)
+  ✓  42 [chromium] › tests/unit/upload.unit.spec.ts:397:3 › AC-7 S-7 §7 edge cases and §4 uploadAudio unit tests › AC-7 (d12, §4): uploadAudio rejects unreadable file with UploadFailedError (158ms)
+  ✓  43 [chromium] › tests/unit/upload.unit.spec.ts:442:3 › AC-7 S-7 §7 edge cases and §4 uploadAudio unit tests › AC-7 (§4, d14): uploadAudio accepts valid 5 s WAV and returns unpublished UploadResult (160ms)
+  ✓  14 [chromium] › tests/rules/upload-rules.spec.ts:81:3 › controls › file over 20 MB is rejected (d11) @controls (2.2s)
+
+  43 passed (4.1s)

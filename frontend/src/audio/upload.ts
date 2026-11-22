@@ -123,19 +123,20 @@ function readDuration(file: File): Promise<number> {
 }
 
 /**
- * Validates a selected audio file and returns it as an unpublished clip.
- *
- * Order (plan "Validation"; decision 12, with decision 13's confirmation first):
- * 0. ownership confirmed, 1. format, 2. size, 3. readable,
- * 4. decodable (metadata loads), 5. duration.
+ * Enforces Decision 13 (and Decision 6): confirms that the user has verified ownership
+ * or permission to upload the audio before reading or processing the file.
  */
-export async function uploadAudio(file: File, options: UploadOptions): Promise<UploadResult> {
-  // 0. Ownership confirmation (decision 13), before the file is read.
+function validateOwnershipConfirmation(options: UploadOptions): void {
   if (!options.ownershipConfirmed) {
     throw new OwnershipNotConfirmedError();
   }
+}
 
-  // 1. Format (decision 9): extension first, then a non-empty MIME type must match it.
+/**
+ * Enforces Decision 4 and Decision 9: validates that the file name extension maps to
+ * a supported audio format (MP3, WAV, M4A) and that any non-empty MIME type matches it.
+ */
+function validateFileNameToSupportedFormat(file: File): SupportedFormat {
   const format = formatForFileName(file.name);
   if (format === null) {
     throw new UnsupportedFormatError();
@@ -145,32 +146,80 @@ export async function uploadAudio(file: File, options: UploadOptions): Promise<U
   if (file.type !== "" && !mimeTypes.includes(file.type.toLowerCase())) {
     throw new UnsupportedFormatError();
   }
+  return format;
+}
 
-  // 2. Size (decision 11).
+/**
+ * Enforces Decision 11: rejects files exceeding the configured maximum file size (20 MB).
+ */
+function validateSizeLimit(file: File): void {
   if (file.size > MAX_UPLOAD_BYTES) {
     throw new FileSizeLimitError();
   }
+}
 
-  // 3. Readability (decision 12): an unreadable file is a load failure, not invalid audio.
+/**
+ * Enforces Decision 12: verifies the file is readable by reading an initial slice,
+ * throwing UploadFailedError if reading fails.
+ */
+async function validateReadability(file: File): Promise<void> {
   try {
     await file.slice(0, 1).arrayBuffer();
   } catch {
     throw new UploadFailedError();
   }
+}
 
-  // 4. Decode (decisions 9, 10): the browser must support the codec and load the metadata.
-  if (new Audio().canPlayType(spec.normalized) === "") {
+/**
+ * Enforces Decision 9 and Decision 12: verifies the browser can decode the normalized audio
+ * format and loads its metadata, returning the measured duration in seconds.
+ */
+async function validateDecodability(file: File, mimeType: NormalizedMimeType): Promise<number> {
+  if (new Audio().canPlayType(mimeType) === "") {
     throw new InvalidAudioError();
   }
-  const durationSeconds = await readDuration(file);
+  return await readDuration(file);
+}
 
-  // 5. Duration (decision 10): compared unrounded, so 60.04 s is rejected.
+/**
+ * Enforces Decision 5 and Decision 10: validates that the audio duration is finite,
+ * strictly positive, and does not exceed MAX_CLIP_DURATION (unrounded).
+ */
+function validateDurationLimit(durationSeconds: number): void {
   if (!Number.isFinite(durationSeconds) || durationSeconds <= 0) {
     throw new InvalidAudioError();
   }
   if (durationSeconds > MAX_CLIP_DURATION) {
     throw new DurationLimitError();
   }
+}
+
+/**
+ * Validates a selected audio file and returns it as an unpublished clip.
+ *
+ * Order (plan "Validation"; decision 12, with decision 13's confirmation first):
+ * 0. ownership confirmed, 1. format, 2. size, 3. readable,
+ * 4. decodable (metadata loads), 5. duration.
+ */
+export async function uploadAudio(file: File, options: UploadOptions): Promise<UploadResult> {
+  // 0. Ownership confirmation (decision 13), before the file is read.
+  validateOwnershipConfirmation(options);
+
+  // 1. Format (decision 9): extension first, then a non-empty MIME type must match it.
+  const format = validateFileNameToSupportedFormat(file);
+  const spec = SUPPORTED_AUDIO_FORMATS[format];
+
+  // 2. Size (decision 11).
+  validateSizeLimit(file);
+
+  // 3. Readability (decision 12): an unreadable file is a load failure, not invalid audio.
+  await validateReadability(file);
+
+  // 4. Decode (decisions 9, 10): the browser must support the codec and load the metadata.
+  const durationSeconds = await validateDecodability(file, spec.normalized);
+
+  // 5. Duration (decision 10): compared unrounded, so 60.04 s is rejected.
+  validateDurationLimit(durationSeconds);
 
   // 6. Accepted: keep the original File unmodified (decision 14).
   return {
