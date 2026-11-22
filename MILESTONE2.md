@@ -203,7 +203,20 @@ Even at 99.28% line coverage (and 100% line coverage on `clips.ts` and `formatDu
 
 ## 6c. Answers to headless review findings
 
-_Pending._
+Two runs are committed, both unedited:
+
+- `evidence/headless-review.json` — `bash scripts/review_story.sh` after `m2-green`, main session, one turn, 150.7 s. `structured_output` is `{"findings": [], "verdict": "pass"}` and validates against `agent/review-schema.json`.
+- `evidence/headless-review-agent-mode.json` — the same prompt run with `agy --agent reviewer`, the 6b fallback for a report that does not show the reviewer doing the work. Four turns, 259.7 s, verdict `pass`, three residual risks citing `clips.ts` and `UploadedClipView.tsx`. In this form agy leaves `structured_output` null and writes the report into `response`, which is why both files exist.
+
+**Findings: none in either run**, so there is nothing to fix and nothing to reject.
+
+Residual risks, recorded rather than answered — each is a settled scope decision:
+
+| Risk | Where it is settled |
+|---|---|
+| Decoder variance across browsers (`canPlayType`, `loadedmetadata`) | Decision 15; the suite runs Chromium with WAV fixtures |
+| Accepted clips live only in module memory in `clips.ts` | Decisions 7 and 8 — persistence deferred |
+| `UploadedClipView` has no `src` on the first frame, because the object URL is created in `useEffect` | Decisions 2 and 14; tests wait for metadata readiness |
 
 ## Reflection (300–500 words)
 

@@ -717,3 +717,19 @@ checks: `npm run build` -> no errors, and `npm test` -> 43 passed, 0 failed (`ev
 evidence: S-7, AC-7; Deliverable 4e.
 
 risk: The guard order is not asserted by any test — a reordering that kept all 43 tests green would go unnoticed. Coverage and mutation runs were not repeated after the refactor, so `evidence/coverage.txt` and the mutation reports still describe the pre-refactor `upload.ts`.
+
+## Entry 39
+
+artifact: `evidence/headless-review.json`; `evidence/headless-review-agent-mode.json`; `prompts/6b-headless-review.txt`; `MILESTONE2.md` §6c.
+
+tool: Antigravity CLI (`agy` 1.5.12), Gemini 3.8 Flash, used 2026-11-22, headless print mode; subagent `reviewer` (`.agents/agents/code-reviewer/agent.md`).
+
+prompts: `prompts/6b-headless-review.txt` — written by the script from `git diff --name-only m2-tests-locked HEAD -- frontend/src`: seven files, 469 insertions.
+
+review: Two runs, both kept. The main-session run came back in one turn with `{"findings": [], "verdict": "pass"}`; a one-turn artefact cannot show who reviewed, so the same prompt was re-run with `--agent reviewer`, which returned a four-turn report with three cited residual risks and the same verdict. No finding required a fix or a rejection; the three risks were checked against decisions 2, 7, 8, 14 and 15 and left as recorded scope. An earlier attempt at this task, run without asking, was reverted at the author's direction before this one.
+
+checks: `bash scripts/review_story.sh` -> exit 0, `SUCCESS`, 1 turn, 150.7 s, 137,641 tokens, `structured_output` validated against `agent/review-schema.json`. `REVIEW_AGENT=reviewer bash scripts/review_story.sh` -> `SUCCESS`, 4 turns, 259.7 s, 152,984 tokens, verdict `pass`, three residual risks. Committed as `3a7feb9`.
+
+evidence: S-7, AC-7; Deliverable 6.
+
+risk: The graded file runs in one turn, so it cannot prove the reviewer subagent produced the verdict; the agent-mode file is the only attribution, and it carries `structured_output: null`. Both verdicts are model judgements that nothing independently checks, and an empty findings list cannot be distinguished from a defect the reviewer missed. 290,625 tokens were spent on this deliverable across both runs.
