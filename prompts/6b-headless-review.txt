@@ -1,0 +1,10 @@
+Use the reviewer subagent to review these files against docs/design/S-7.md and its acceptance criteria.
+Report only what the reviewer finds.
+Complete the review in this turn and return the JSON report now; do not hand off and return a placeholder.
+Files: frontend/src/App.tsx
+frontend/src/audio/constants.ts
+frontend/src/audio/upload.ts
+frontend/src/components/UploadClip.tsx
+frontend/src/components/UploadedClipView.tsx
+frontend/src/data/clips.ts
+frontend/src/utils/formatDuration.ts
