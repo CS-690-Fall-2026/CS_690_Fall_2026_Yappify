@@ -69,27 +69,29 @@ Do not report style-only issues already enforced by automated tooling.
 
 ## Finding Requirements
 
-Every finding MUST include:
+Every finding MUST be an object with exactly these five fields:
 
-- `ac_id`: Unique identifier within the review, formatted `AC-001`, `AC-002`, etc.
+- `file`: repository-relative path, for example `frontend/src/audio/upload.ts`
+- `line`: the line number, or a line range written as text
+- `ac_id`: the acceptance criterion the finding relates to, copied from section 9 of the story's design doc, for example `AC-7`; use `none` when no criterion covers it. Never invent counter-style IDs such as `AC-001`
 - `severity`: `blocking` or `minor`
-- `location`: Exact `path/to/file:line`
-- `summary`: Concise description
-- `impact`: Why the issue matters and when it occurs
-- `recommended_fix`: Concrete code snippet showing the correction
+- `problem`: what is wrong, the failure scenario, and the evidence in the code for it
 
-Use the following format:
+Return one JSON object with `verdict` (`pass` when there is no blocking finding, otherwise `fail`) and `findings` (an array, empty when there are none), matching `agent/review-schema.json`:
 
-### AC-001 — blocking
-**Location:** `path/to/file:42`
-
-**Issue:** Concise summary.
-
-**Impact:** Explain the failure scenario.
-
-**Recommended fix:**
-```language
-// Concrete corrective code
+```json
+{
+  "verdict": "pass",
+  "findings": [
+    {
+      "file": "frontend/src/audio/upload.ts",
+      "line": 42,
+      "ac_id": "AC-7",
+      "severity": "minor",
+      "problem": "What is wrong, when it fails, and the code that shows it."
+    }
+  ]
+}
 ```
 
 ## Stop Condition
@@ -98,14 +100,12 @@ Stop when all of the following are satisfied:
 
 1. All relevant files accessible within the supplied review scope have been inspected.
 2. Relevant callers, dependencies, and tests have been examined sufficiently to validate findings.
-3. Findings have been deduplicated and assigned unique `ac_id` values.
-4. Every finding has a severity, exact location, impact, and recommended fix.
-5. A final review report has been produced.
+3. Findings have been deduplicated and each one names the criterion it relates to, or `none`.
+4. Every finding carries `file`, `line`, `ac_id`, `severity` and `problem`.
+5. A final review report has been produced as the JSON object described above.
 
-If no actionable findings exist, output:
+If no actionable findings exist, return `{"verdict": "pass", "findings": []}`.
 
-**Review passed — no actionable findings.**
-
-Include any verified residual risks or testing gaps.
+After the JSON, list any verified residual risks or testing gaps as plain text.
 
 Do not continue searching, repeat the review, modify files, or initiate follow-up work after the final report.

@@ -1,0 +1,49 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Yappify story review report",
+  "description": "Headless reviewer output for Milestone 2 Deliverable 6 (S-7, AC-7).",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["verdict", "findings"],
+  "properties": {
+    "verdict": {
+      "description": "pass when no blocking finding exists, fail otherwise.",
+      "enum": ["pass", "fail"]
+    },
+    "findings": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["file", "line", "ac_id", "severity", "problem"],
+        "properties": {
+          "file": {
+            "description": "Repository-relative path, e.g. frontend/src/audio/upload.ts",
+            "type": "string",
+            "minLength": 1
+          },
+          "line": {
+            "description": "Line number, or a line range as text.",
+            "anyOf": [
+              { "type": "integer", "minimum": 1 },
+              { "type": "string", "minLength": 1 }
+            ]
+          },
+          "ac_id": {
+            "description": "Acceptance criterion the finding relates to (e.g. AC-7), or \"none\".",
+            "type": "string",
+            "minLength": 1
+          },
+          "severity": {
+            "enum": ["blocking", "minor"]
+          },
+          "problem": {
+            "description": "What is wrong and why it matters, with the evidence for it.",
+            "type": "string",
+            "minLength": 1
+          }
+        }
+      }
+    }
+  }
+}
