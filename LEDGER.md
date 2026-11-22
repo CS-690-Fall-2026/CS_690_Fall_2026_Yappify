@@ -654,18 +654,50 @@ evidence: S-7, AC-7; `docs/plans/S-7-plan.md` Task 4.8; `docs/design/S-7.md` §8
 
 risk: `m2-green` is not tagged yet; the team must approve it. Coverage figures in `evidence/coverage.txt` predate the UI components. README.md still describes the coverage command as the test command and mentions "pending UI specs", and AGENTS.md has the old acceptance-test path and coverage note; both files are protected and were left unchanged. The Deliverable 4c–4f handout requirements were not available in the repo and have not been checked.
 
+## Entry 34
+
+artifact: Deliverable 4c reviewer delegation — `evidence/delegation/reviewer-task-4.7.md`, `evidence/delegation/reviewer-panel.png`, `prompts/4c-reviewer-delegation.txt`.
+
+tool: Antigravity CLI (`agy` 1.5.12), Gemini 3.8 Flash, used 2026-11-21, subagent `reviewer` (`.agents/agents/code-reviewer/agent.md`).
+
+prompts: `prompts/4c-reviewer-delegation.txt` — one prompt, taken verbatim from agy's prompt history, conversation `e45f1ff3-7697-4a0e-948a-a6501df5b077`. It named the subagent explicitly and scoped it to `UploadedClipView.tsx` and `UploadClip.tsx` against `docs/design/S-7.md`.
+
+review: Delegation proof is the `/agents` panel capture in `reviewer-panel.png`, which shows `Use the reviewer subagent to review @frontend/src…` with `Agent(reviewer: Code Reviewer) · Gemini 3.8 Flash` in the running state — the subagent, its name and its state, not just the main agent's claim. The report's verdict was "Review passed — no actionable findings" across correctness, security, concurrency, performance and maintainability, and it recorded three residual risks: `src` is undefined on the first commit because the object URL is created in `useEffect`; the Remove button stays enabled while `isChecking`; and `.m4a` decoding depends on the platform codec. Accepted the verdict without changing code and rejected no finding. Scope limitation noted rather than papered over: the reviewer was not asked about `upload.ts` or `clips.ts`, so Tasks 4.4–4.5 rest on their own tests, not on this review.
+
+checks: `/agents` listed `reviewer` before the run; panel screenshot captured 2026-11-21 19:30; report saved to `evidence/delegation/reviewer-task-4.7.md`. Report contains no line-level citations.
+
+evidence: S-7, AC-7; Deliverable 4c.
+
+risk: The report is a model's prose summary, not a diff-checked audit, and the reviewer's tool list (`view_file`, `list_dir`, `find_by_name`, `grep_search`) means it ran no tests; a wrong "no findings" verdict would leave no trace in this artifact. The three residual risks it named are unverified by any test.
+
 ## Entry 35
 
-artifact: tagg `m2-green` and `evidence/greent.txt` for S-7/AC-7 (Deliverable 4d).
+artifact: tag `m2-green` and `evidence/green.txt` for S-7/AC-7 (Deliverable 4d).
 
-tool -- `npm test` (Playwright 1.56, Chromium) and `npm run build` (Vite) executed by Luke Hill, 2026-11-21, on a clean checkout of 66168cf.
+tool: `npm test` (Playwright 1.56, Chromium) and `npm run build` (Vite) executed by Luke Hill, 2026-11-21, on a clean checkout of 66168cf.
 
 prompts: none; no agent prompt in this task.
 
-review: Team approved green claim on 2026-11-21 after Task 4.8's verification (Entry 33) was read. Two claims were rejected as out of scope for this tag: D4c/4e/4f and D6 are still open, and D5's coveragge figures were not re-measured for the 4.6-4.7 UI components. The acceptance-test lock check was run against `frontend/tests/acceptance`, the professor-approved path, not the handout's `tests/acceptance`; that deviation is recorded in the commit message.
+review: Team approved the green claim on 2026-11-21 after Task 4.8's verification (Entry 33) was read. Two claims were rejected as out of scope for this tag: D4c/4e/4f and D6 are still open, and D5's coverage figures were not re-measured for the 4.6–4.7 UI components. The acceptance-test lock check was run against `frontend/tests/acceptance`, the professor-approved path, not the handout's `tests/acceptance`; that deviation is recorded in the commit message.
 
-checkks: `npm test` -> 43 passed, 0 failed (green.txt). `git diff --stat m2-tests-locked m2-green --frontend/tests/acceptance` -> empty. `git ls-remote --tags origin` lists m2-green at the green.txt commit.
+checks: `npm test` -> 43 passed, 0 failed (`evidence/green.txt`). `git diff --stat m2-tests-locked m2-green -- frontend/tests/acceptance` -> empty. `git ls-remote --tags origin` listed `m2-green` at the `green.txt` commit at the time this entry was written.
 
 evidence: S-7, AC-7; `evidence/green.txt`; tag `m2-green`.
 
-risk `npm run test:coverage`, Stryker, and the manual browser check were not re-run at this commit --coverageg and mutation evidence still describe the pre-4.6-4.7 tree. green.txt is one machine's run, and the repo has no CI, so nothing re-verifies it after this point.
+risk: `npm run test:coverage`, Stryker, and the manual browser check were not re-run at this commit — coverage and mutation evidence still describe the pre-4.6–4.7 tree. `green.txt` is one machine's run, and the repo has no CI, so nothing re-verifies it after this point.
+
+## Entry 36
+
+artifact: `evidence/green.txt` as re-recorded in `18a4f8d`; tag `m2-green` moved from `7041723` to `18a4f8d`; ledger numbering repair (Entry 34 inserted, Entry 35 corrected).
+
+tool: `npm test` (Playwright 1.56, Chromium) executed by Luke Hill, 2026-11-21, on the working repo at `66168cf`; `git tag` and `git push` by Luke Hill. No agent prompt in this task.
+
+prompts: none.
+
+review: Commit `7041723` published one run of `green.txt`; a second `npm test` run, committed as `18a4f8d`, produced different worker assignment and timings for the same 43 passing tests, so HEAD and the tag disagreed about which run the repository publishes. The team chose to move the tag rather than leave the older file tagged, because the grader follows `m2-green` and would otherwise read the superseded file; the alternative of leaving the tag and documenting the supersession was rejected for that reason. `main` was not rewritten even though `18a4f8d`'s subject says `66160cf` (a typo for `66168cf`): two teammates already have the branch cloned, and rewriting it was judged worse than the typo. Entry 35's artifact-name typos were corrected in place with no change to any claim, and Entry 34 was inserted to fill the 33→35 numbering gap with the D4c delegation.
+
+checks: `git tag -f m2-green 18a4f8d` -> "Updated tag 'm2-green' (was 7041723)". `git push -f origin m2-green`. `git ls-remote origin refs/tags/m2-green` -> `18a4f8d06e26df38dee990d9ad38e8e6f0d89bcf`. `git ls-remote origin refs/heads/main` -> `18a4f8d…`. `git rev-list -n1 m2-green` -> `18a4f8d…`. `git diff --stat m2-tests-locked m2-green -- frontend/tests/acceptance` -> empty. Both `green.txt` versions record 43 passed, 0 failed.
+
+evidence: S-7, AC-7; Deliverable 4d; `evidence/green.txt`; tags `m2-tests-locked` and `m2-green`.
+
+risk: A force-pushed tag — any clone that fetched `m2-green` before 2026-11-21 still holds `7041723` and will not update without `git fetch --tags --force`, so a cached copy could still show the superseded `green.txt`. `18a4f8d`'s subject keeps the `66160cf` typo. Nothing re-verifies the green run after this point because the repo has no CI, and D4c's review, D4e, D4f and D6 remain open.
