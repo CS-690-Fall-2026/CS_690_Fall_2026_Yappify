@@ -1,0 +1,1289 @@
+ ▐▛███▛█   Claude Code v2.1.329
+▝▜██████▀  Opus 5.5 · API Usage Billing
+ ▝▝   ▝▝   ~/Desktop/yapplify/CS_690_Fall_2026_Yappify
+
+
+❯ We are continuing Milestone 2, Deliverable 4c for S-7 (Upload Existing        
+  Audio).                                                                       
+                                                                                
+  Read AGENTS.md, MILESTONE2.md, docs/plans/S-7-plan.md, docs/design/S-7.md,    
+  and the existing agent definitions under .agents/agents/.                     
+                                                                                
+  We have completed Tasks 4.1–4.8. The latest verification reported 43 tests    
+  passed and 0 failed.                                                          
+                                                                                
+  Prepare a bounded plan for Deliverable 4c: Delegated Review.                  
+                                                                                
+  Use the existing code-reviewer and test-writer subagents to independently     
+  review the completed S-7 implementation.                                      
+                                                                                
+  The code-reviewer should examine:                                             
+  1. Compliance with the S-7 design and AC-7.                                   
+  2. Validation logic and error handling.                                       
+  3. Browser-memory storage and object URL cleanup.                             
+  4. Accessibility and UI behavior.                                             
+  5. Potential bugs, regressions, and unrelated changes.                        
+                                                                                
+  The test-writer should examine:                                               
+  1. Whether the existing tests adequately cover S-7.                           
+  2. Whether AC-1 and AC-7 remain covered.                                      
+  3. Missing edge cases or weak assertions.                                     
+  4. Whether the rule, unit, integration, and property tests reflect the design 
+  decisions.                                                                    
+  5. Whether the locked acceptance tests remain unchanged.                      
+                                                                                
+  For each review, propose an evidence report under evidence/delegation/        
+  containing findings, severity, supporting file references, and recommended    
+  corrections.                                                                  
+                                                                                
+  Also include a plan to export the Claude session transcript to                
+  evidence/delegation/ using Claude Code's /export command.                     
+                                                                                
+  Do not implement fixes, change tests, create tags, commit, or push.           
+                                                                                
+  Show me the delegation plan, the exact files that would be created, and how   
+  the subagents will be invoked.                                                
+                                                                                
+  Wait for my approval before making changes.                                   
+
+⏺ I'll start by reading the referenced documents and agent definitions
+  (read-only).
+
+  Searched for 1 pattern, read 1 file, listed 1 directory, ran 3 shell commands (ctrl+o to expand)
+
+⏺ Reading is done; here's the delegation plan for your approval. I haven't
+  changed any files.
+
+  Deliverable 4c (Delegated Review): plan
+
+  What I found that affects the plan
+
+  1. The two agents can't be called by name in Claude Code.
+     .agents/agents/code-reviewer/agent.md (its frontmatter name is reviewer)
+     and .agents/agents/test-writer/agent.md are written in Antigravity's
+     format. Claude Code only loads named agents from .claude/agents/. What I 
+     recommend: start two general-purpose subagents and paste each agent.md body
+     into the prompt word for word as its system instructions, followed by a
+     short brief for the S-7 review. That way no agent-config files are added.
+     The other option is to copy them into .claude/agents/, which adds two files
+     that aren't part of 4c.
+  2. The reviewer's ID format clashes with real AC IDs. Its definition numbers
+     findings AC-001, AC-002, which looks like a reference to AC-1 or AC-7. I'd
+     have it number findings CR-001…, give each one an ac_ref field (AC-1 or
+     AC-7), and keep every other field the definition requires.
+  3. The test-writer is meant to write tests. For this task it gets a read-only
+     brief: it writes no tests and edits nothing. It may run only cd frontend &&
+     npm test, git diff m2-tests-locked -- frontend/tests/acceptance and git 
+     hash-object on the locked files.
+  4. The reviews stay independent. Neither subagent sees Entry 33's conclusions,
+     my opinions, or the other subagent's report. They get only the spec, the
+     code paths and their checklist.
+
+  How the subagents are invoked
+
+  Both run at once in the background through the Agent tool (subagent_type: 
+  general-purpose). Each prompt has three parts:
+
+  - (a) the agent.md body, word for word
+  - (b) the scope: AC-7 and AC-1, docs/design/S-7.md (§4–§9, decisions 1–16),
+    docs/plans/S-7-plan.md including the two approved deviations, and the files
+    to inspect
+  - (c) your five checklist items for that agent, plus the output format below
+    and "Do not modify any file."
+
+  Inspects
+  code-reviewer: src/audio/upload.ts, src/audio/constants.ts,
+    src/data/clips.ts, src/utils/formatDuration.ts,
+    src/components/UploadClip.tsx, src/components/UploadedClipView.tsx,
+    src/App.tsx, and git diff m2-tests-locked..HEAD -- frontend/src to check
+    for unrelated changes
+  test-writer: tests/acceptance/*, tests/rules/*, tests/unit/*,
+    tests/integration/*, tests/property/*, playwright.config.ts,
+    docs/traceability.md, MILESTONE2 §5f
+  ────────────────────────────────────────
+  Checklist
+  code-reviewer: your items 1–5 (design and AC-7 compliance; validation and
+    errors; in-memory storage and object URL cleanup; accessibility and UI;
+    bugs, regressions, unrelated changes)
+  test-writer: your items 1–5 (S-7 coverage; AC-1 and AC-7 still covered;
+    missing edge cases and weak assertions; whether the rule, unit,
+    integration and property tests match the design decisions; locked tests
+    unchanged)
+  ────────────────────────────────────────
+  Tools
+  code-reviewer: read-only: no commands, matching its definition
+  test-writer: read-only, plus the three commands listed above
+  ────────────────────────────────────────
+  Severity
+  code-reviewer: blocking / minor, from its definition
+  test-writer: blocking / minor, the same scale for consistency
+
+  Each finding must include an ID, severity, ac_ref, an exact file:line, the
+  issue, the impact, and a recommended correction. Corrections are described
+  only, never applied.
+
+  I'll take git status --porcelain before and after both runs. The two snapshots
+  go into the reports to show that no files changed. npm test writes ignored
+  output such as test-results/, and the reports will say so.
+
+  Files that would be created (none modified)
+
+  File: prompts/S-7-4c-code-reviewer.txt
+  Contents: The exact prompt sent to the reviewer, following the existing
+    prompts/ convention
+  ────────────────────────────────────────
+  File: prompts/S-7-4c-test-writer.txt
+  Contents: The exact prompt sent to the test-writer
+  ────────────────────────────────────────
+  File: evidence/delegation/code-review.md
+  Contents: A header (agent definition path, model, date, HEAD 66168cf, prompt
+    file, invocation method, git-status check), then the reviewer's report
+    word for word, then a findings summary table (ID, severity, ac_ref,
+    location, recommended correction)
+  ────────────────────────────────────────
+  File: evidence/delegation/test-review.md
+  Contents: The same structure for the test-writer, plus the npm test result
+    and the locked-test diff and hash output exactly as it ran them
+  ────────────────────────────────────────
+  File: evidence/delegation/claude-session-transcript.txt
+  Contents: Written by /export (see below)
+
+  I'll copy the reports word for word. I won't edit them, drop findings, or add
+  my own findings to them. If I think a finding is wrong, I'll tell you in chat
+  and not touch the report.
+
+  Not touched: source, tests, LEDGER.md, MILESTONE2.md, AGENTS.md, README.md. No
+  tag, commit or push.
+
+  Exporting the transcript
+
+  /export is a command you type; I can't run it myself. Once both reports are
+  written and you've reviewed them:
+
+  1. Type /export evidence/delegation/claude-session-transcript.txt (the path is
+     relative to the repo root).
+  2. With your OK, I'll check that the file exists and isn't empty. I'll also
+     search it for your email address, tokens or other personal data before
+     anything is committed. Redacting, if needed, would be a separate change for
+     you to approve.
+
+  The subagents' internal tool calls aren't included in the main transcript.
+  That's why each report stores the agent's full output and the prompt is saved
+  under prompts/.
+
+  Risks
+
+  - A general-purpose agent can technically write files, so read-only is
+    enforced by the prompt, not the tool. The before/after git status is the
+    check.
+  - The test-writer's npm test run is a fresh result, not a copy of the 43/0
+    figure. If it differs, the report says so.
+  - Agents might report false positives. They're recorded as reported; whether
+    to accept or reject each one is for you to decide later (for example in a
+    MILESTONE2 answers table, which is not part of this step).
+
+  Decisions I need from you
+
+  1. Invocation: general-purpose agents with the agent.md text pasted in
+     (recommended), or copy the definitions into .claude/agents/.
+  2. Renumber the reviewer's findings to CR-xxx, plus ac_ref?
+  3. Should the test-writer be allowed to run npm test and the git diff and hash
+     commands?
+  4. Do you want a LEDGER.md Entry 34 for 4c? AGENTS.md expects one per task.
+     I've left it out because you said no commits, but I can add it with the
+     commit marked pending.
+
+  Once you approve, I'll write the two prompt files, start both agents at the
+  same time, and write the two evidence reports.
+
+✻ Sautéed for 53s · done 4:39 PM
+
+❯ I approve the Deliverable 4c delegation plan with the following decisions:    
+                                                                                
+  1. Use two general-purpose subagents, each receiving the full instructions    
+  from its corresponding .agents/agents/ definition. Do not create or modify    
+  agent configuration files.                                                    
+  2. Use CR-001, CR-002, etc. for code-review findings, with a separate ac_ref  
+  field identifying the relevant acceptance criterion.                          
+  3. Allow the test-writer to run npm test, the locked acceptance-test diff,    
+  and the Git hash checks. Do not allow either agent to edit source code,       
+  tests, or documentation.                                                      
+  4. Do not add LEDGER Entry 34 yet. We will add the ledger entry when          
+  reviewing and committing the Deliverable 4c evidence.                         
+                                                                                
+  Proceed with the two independent delegated reviews.                           
+                                                                                
+  Save:                                                                         
+  - prompts/S-7-4c-code-reviewer.txt                                            
+  - prompts/S-7-4c-test-writer.txt                                              
+  - evidence/delegation/code-review.md                                          
+  - evidence/delegation/test-review.md                                          
+                                                                                
+  Record each agent's findings, severity, file references, recommended          
+  corrections, and actual verification results.                                 
+                                                                                
+  Preserve both agents' reports without removing or rewriting findings.         
+                                                                                
+  Do not implement any fixes, modify unrelated files, create tags, commit, or   
+  push.                                                                         
+                                                                                
+  After both reviews finish, report:                                            
+  - The number of blocking and minor findings from each agent.                  
+  - The key findings and recommended corrections.                               
+  - Whether the Git working tree changed.                                       
+  - Any issues that should be addressed before the m2-green tag.                
+                                                                                
+  Wait for my approval before making further changes.                           
+
+⏺ Approved, so I'll start by recording the baseline Git state and writing the
+  two prompt files.
+
+  Ran 1 shell command (ctrl+o to expand)
+
+⏺ Bash(mkdir -p evidence/delegation && R=$(pwd) && {
+      cat <<EOF…)
+  ⎿       164 prompts/S-7-4c-code-reviewer.txt
+          193 prompts/S-7-4c-test-writer.txt
+          357 total
+  ⎿  Created prompts/S-7-4c-code-reviewer.txt +164
+        1 +You are acting as the "code-reviewer" agent for the Yappify re
+          +pository. Your full agent definition is reproduced verbatim be
+          +low between the BEGIN/END markers (source: .agents/agents/code
+          +-reviewer/agent.md). Follow it as your system instructions, wi
+          +th the task-specific adjustments in the TASK BRIEF that follow
+          +s it.                                                         
+        2 +                                                              
+        3 +===== BEGIN AGENT DEFINITION (.agents/agents/code-reviewer/age
+          +nt.md) =====                                                  
+        4 +---                                                           
+        5 +name: reviewer                                                
+        6 +description: Read-only code reviewer that audits diffs and fil
+          +es for actionable defects, security vulnerabilities, concurren
+          +cy issues, performance regressions, and missing tests.        
+        7 +mainAgent: true                                               
+        8 +subagent: true                                                
+        9 +permissionMode: plan                                          
+       10 +commandExecutionPolicy: sandbox                               
+       11 +tools:                                                        
+       12 +  - view_file                                                 
+       13 +  - list_dir                                                  
+       14 +  - find_by_name                                              
+       15 +  - grep_search                                               
+       16 +---                                                           
+       17 +                                                              
+       18 +# System Prompt                                               
+       19 +                                                              
+       20 +You are a rigorous, read-only code reviewer. Inspect code chan
+          +ges, pull request diffs, and target files to identify actionab
+          +le defects before merge.                                      
+       21 +                                                              
+       22 +Never modify repository files, execute commands, or invoke too
+          +ls that can change repository state.                          
+       23 +                                                              
+       24 +## Review Criteria                                            
+       25 +                                                              
+       26 +1. **Correctness & Edge Cases**                               
+       27 +   - Boundary and off-by-one errors                           
+       28 +   - Null or undefined dereferences                           
+       29 +   - Unhandled exceptions or promises                         
+       30 +   - Incorrect error propagation                              
+       31 +                                                              
+       32 +2. **Security**                                               
+       33 +   - Injection vulnerabilities                                
+       34 +   - Hardcoded credentials or secrets                         
+       35 +   - Missing authentication or authorization                  
+       36 +   - Path traversal and insecure deserialization              
+       37 +                                                              
+       38 +3. **Concurrency & State**                                    
+       39 +   - Race conditions                                          
+       40 +   - Shared mutable state                                     
+     … +124 lines (ctrl+o to expand)
+  ⎿  Created prompts/S-7-4c-test-writer.txt +193
+        1 +You are acting as the "test-writer" agent for the Yappify repo
+          +sitory. Your full agent definition is reproduced verbatim belo
+          +w between the BEGIN/END markers (source: .agents/agents/test-w
+          +riter/agent.md). Follow its rules (especially Rule 1: expected
+          + values come only from acceptance criteria/design, and Rule 2:
+          + AC ID traceability), with the task-specific adjustments in th
+          +e TASK BRIEF that follows it.                                 
+        2 +                                                              
+        3 +===== BEGIN AGENT DEFINITION (.agents/agents/test-writer/agent
+          +.md) =====                                                    
+        4 +---                                                           
+        5 +name: test-writer                                             
+        6 +description: Writes and verifies acceptance-criteria-driven un
+          +it, integration, and edge-case tests without modifying product
+          +ion code.                                                     
+        7 +mainAgent: true                                               
+        8 +subagent: true                                                
+        9 +commandExecutionPolicy: sandbox                               
+       10 +tools:                                                        
+       11 +  - view_file                                                 
+       12 +  - write_to_file                                             
+       13 +  - replace_file_content                                      
+       14 +  - multi_replace_file_content                                
+       15 +  - list_dir                                                  
+       16 +  - find_by_name                                              
+       17 +  - grep_search                                               
+       18 +  - run_command                                               
+       19 +---                                                           
+       20 +                                                              
+       21 +# System Prompt                                               
+       22 +                                                              
+       23 +You are a specialized software test engineer. Your goal is to 
+          +write thorough, deterministic, maintainable tests that verify 
+          +explicitly defined acceptance criteria (AC) without altering p
+          +roduction behavior.                                           
+       24 +                                                              
+       25 +# Mandatory Rules                                             
+       26 +                                                              
+       27 +## Rule 1: Expected Values Come Only From Acceptance Criteria 
+       28 +                                                              
+       29 +- Derive expected results, assertions, and error conditions fr
+          +om the supplied acceptance criteria.                          
+       30 +- NEVER derive expected values by executing the implementation
+          +, inspecting its actual output, or copying its existing behavi
+          +or.                                                           
+       31 +- Use production code only to understand interfaces, dependenc
+          +ies, and test setup.                                          
+       32 +- Do not treat current implementation behavior as the specific
+          +ation.                                                        
+       33 +- If acceptance criteria do not define an expected result, do 
+          +not invent one.                                               
+       34 +- STOP and report missing or ambiguous acceptance criteria whe
+          +n reliable assertions cannot be written.                      
+       35 +                                                              
+       36 +## Rule 2: Every Test Must Reference an AC ID                 
+       37 +                                                              
+       38 +- Every test case MUST reference its corresponding acceptance 
+          +criterion ID.                                                 
+       39 +- Include the AC ID directly in the test name or an immediatel
+          +y associated test comment.                                    
+       40 +- Maintain traceability between acceptance criteria and test c
+          +ases.                                                         
+     … +153 lines (ctrl+o to expand)
+
+⏺ Both prompt files are written. Next I'll start the two agents at the same
+  time, each told to load its prompt file word for word.
+
+⏺ 2 background agents launched (↓ to manage)
+   ├ S-7 delegated code review
+   └ S-7 delegated test review
+
+⏺ The code-reviewer and test-writer are both running in the background. Each was
+  given only its prompt file. Baseline before they started: HEAD 66168cf, with
+  only .gitignore and LEDGER-conflict-backup.txt untracked. I'll write the two
+  evidence reports when they finish.
+
+✻ Brewed for 51s · done 4:49 PM
+
+› Message from general-purpose
+  # Code Review: S-7 (Upload Existing Audio), HEAD 66168cf compared with
+  m2-tests-locked (d1732e7)
+
+  **Overall: no blocking findings and 5 minor ones.** The implementation matches
+  the S-7 design §4–§9 and decisions 1–16, apart from the two approved
+  deviations. It meets AC-7 and leaves AC-1 unaffected. The minor findings cover
+  accessibility, the file-picker `accept` filter, one testing gap, and
+  dependency/lockfile changes that the S-7 plan said would not happen.
+
+  ---
+
+  ### CR-001 — minor
+  **ac_ref:** AC-7
+  **Checklist item:** 4
+  **Spec basis:** docs/design/S-7.md §8 decision 11 (loading message while
+  validating) and decision 15 (accessibility)
+  **Location:** `frontend/src/components/UploadClip.tsx:78`
+  **Issue:** The loading text `<p>Checking audio…</p>` is a plain paragraph. It
+  is not inside a live region. While validation runs, the file input and
+  checkbox are disabled (lines 61 and 73), and assistive technology is told
+  nothing about why.
+  **Impact:** A screen-reader user selects a file and the controls go silent and
+  disabled for up to `METADATA_TIMEOUT_MS` (10 s), with no announcement. Only
+  the error path is announced (line 81). A successful upload is not announced
+  either, so these users cannot tell that the check is running or that it has
+  finished.
+  **Recommended fix:**
+  ```tsx
+  {isChecking && <p role="status" aria-live="polite">Checking audio…</p>}
+  ```
+  This does not change the rule tests: they locate the text with
+  `getByText(CHECKING)` or `textContent`, not by role.
+
+  ### CR-002 — minor
+  **ac_ref:** AC-7
+  **Checklist item:** 4
+  **Spec basis:** docs/design/S-7.md §8 decision 15 (Remove button;
+  accessibility)
+  **Location:** `frontend/src/components/UploadClip.tsx:48-51` (the button is
+  rendered at `frontend/src/components/UploadedClipView.tsx:42`)
+  **Issue:** Activating **Remove** unmounts the button that has focus. Nothing
+  moves focus anywhere else, so it falls back to `<body>`.
+  **Impact:** Keyboard and screen-reader users lose their place after removing a
+  clip and have to navigate from the top of the document again. This is a
+  common WCAG 2.4.3 (Focus Order) problem.
+  **Recommended fix:**
+  ```tsx
+  const fileInputRef = React.useRef<HTMLInputElement>(null);
+  const handleRemove = () => {
+    removeUnpublishedClip();
+    setClip(null);
+    fileInputRef.current?.focus();
+  };
+  // ...
+  <input ref={fileInputRef} id={FILE_INPUT_ID} type="file" ... />
+  ```
+
+  ### CR-003 — minor
+  **ac_ref:** AC-7
+  **Checklist item:** 2
+  **Spec basis:** docs/design/S-7.md §8 decision 9 ("Audio-only MP4 files with a
+  .mp4 extension will not be accepted"; the listed MIME variants) and decision
+  15 (accept attribute for the supported formats)
+  **Location:** `frontend/src/audio/constants.ts:20`
+  **Issue:** `UPLOAD_ACCEPT` includes `audio/mp4`. On most platforms that MIME
+  type maps to `.mp4` as well as `.m4a`, so the picker offers `.mp4` files that
+  `uploadAudio` always rejects (`upload.ts:139-142`). The list also leaves out
+  several variants that decision 9 recognises (`audio/mp3`, `audio/x-wav`,
+  `audio/wave`, `audio/m4a`). This does not break validation, because extensions
+  decide the format, but the picker filter and the validation rules disagree.
+  The string is copied from the approved plan, so this is a design-level
+  inconsistency, not a coding slip.
+  **Impact:** Users are invited to pick `.mp4` files and then always see
+  "Unsupported audio format".
+  **Recommended fix:**
+  ```ts
+  // Extensions alone match decision 4/9 exactly; uploadAudio still validates
+  every file.
+  export const UPLOAD_ACCEPT = ".mp3,.wav,.m4a";
+  ```
+
+  ### CR-004 — minor
+  **ac_ref:** AC-7
+  **Checklist item:** 3
+  **Spec basis:** docs/design/S-7.md §8 decision 14 (object URL revoked when the
+  clip is replaced or removed)
+  **Location:** `frontend/src/components/UploadedClipView.tsx:25-31`
+  **Issue:** The playback object URL handling is correct as written. It creates
+  one URL per `clip.id`, revokes it in the effect cleanup on replacement,
+  removal and unmount, and handles the StrictMode double mount (`main.tsx:8`
+  uses `React.StrictMode`). The `src` guard on line 34 also stops a revoked URL
+  from being shown. No test checks any of this. The only revocation test covers
+  the metadata probe in `upload.ts`
+  (`tests/unit/upload-mutation-kills.unit.spec.ts:248-325`). The rule tests at
+  `tests/rules/upload-rules.spec.ts:164-191` check only what is visible on the
+  page.
+  **Impact:** A regression that leaks blob URLs on replace or remove would pass
+  every test. Decision 14's revocation requirement is therefore unverified.
+  **Recommended fix:** Add a rule test that counts calls to create and revoke:
+  ```ts
+  test("playback URL is revoked on replace and remove (d14)", async ({ page })
+  => {
+    await page.addInitScript(() => {
+      const live = new Set<string>();
+      (window as any).__live = live;
+      const c = URL.createObjectURL, r = URL.revokeObjectURL;
+      URL.createObjectURL = (o) => { const u = c(o); live.add(u); return u; };
+      URL.revokeObjectURL = (u) => { live.delete(u); r(u); };
+    });
+    await page.goto("/");
+    await select(page, wav("a.wav", 5)); await expectClip(page, "a.wav",
+  "0:05");
+    await select(page, wav("b.wav", 5)); await expectClip(page, "b.wav",
+  "0:05");
+    expect(await page.evaluate(() => (window as any).__live.size)).toBe(1);
+    await page.getByRole("button", { name: "Remove" }).click();
+    await expect.poll(() => page.evaluate(() => (window as
+  any).__live.size)).toBe(0);
+  });
+  ```
+
+  ### CR-005 — minor
+  **ac_ref:** none
+  **Checklist item:** 5
+  **Spec basis:** docs/plans/S-7-plan.md §1 Files ("Not touched: …
+  `package.json` and lockfiles. No new dependencies."); AGENTS.md (protected
+  lockfiles, `README.md`; no new dependencies without approval; commit format
+  `Task N (AC-xx): …`)
+  **Location:** `frontend/package.json:10-22`
+  **Issue:** Commits `b068c56` ("unit tests") and `df684be` ("feat: add coverage
+  and mutation testing setup") change things inside the review's change scope:
+  - They add the devDependencies `@stryker-mutator/core`, `@types/node`,
+  `istanbul-lib-coverage`, `istanbul-reports` and `v8-to-istanbul`, plus a
+  `test:coverage` script.
+  - They rewrite `frontend/package-lock.json` (about 3.8k lines).
+  - They edit the protected `README.md`.
+
+  LEDGER.md (lines 546-557) records this as Deliverable 5d–5f work, so it is not
+  unrelated to the milestone. Still, it contradicts the approved S-7 plan.
+  Neither commit message follows the `Task N (AC-xx):` format, and I found no
+  explicit approval for the new dependencies. The ledger itself (line 655) notes
+  that README.md now presents `npm run test:coverage` as the test command and
+  mentions "pending UI specs", which are now stale. No S-7 source logic is
+  affected.
+  **Impact:** The dependency surface and lockfile changed outside the approved
+  S-7 scope, with no traceable approval. This also weakens the claim in the 4.8
+  ledger entry that there are no unrelated changes.
+  **Recommended fix:** This is process work, not code. Either record explicit
+  team approval for the Deliverable 5 dependencies and the README edit in
+  LEDGER.md / MILESTONE2.md, or move them into their own approved task. With
+  approval, correct README line 68 so it reads:
+  ```md
+  2. **Frontend:** `npm test` from `frontend/` (all Playwright suites); `npm run
+  test:coverage` for the S-7 coverage gate.
+  ```
+
+  ---
+
+  ## (a) Summary
+  - Blocking: **0**
+  - Minor: **5** (CR-001 to CR-005)
+
+  ## (b) Verdict per checklist item
+  1. **Design and AC-7 compliance: pass, no findings.**
+     - The `uploadAudio(file, {ownershipConfirmed})` signature follows the d13
+  revision.
+     - The error subclasses are exported (d12).
+     - `UploadResult` reuses S-1's `RecordedClip` with `audio` set to the
+  original `File`, a normalized MIME type and `status: "unpublished"` (d14).
+     - Formats and the duration limit come from the constants module (d4, d5,
+  d14).
+     - The display shows the filename, `Duration: m:ss`, a native `<audio
+  controls>`, `Unpublished` and Remove (d15).
+     - The confirmation label text and unchecked default match d13 and the
+  locked AC-7 test.
+  2. **Validation and error handling: pass, one minor finding (CR-003).**
+     - Check order is ownership → format (extension, then non-empty MIME,
+  case-insensitive) → size (`>` 20 MiB, so exactly 20 MiB is accepted) →
+  readability (`UploadFailedError`) → `canPlayType` → metadata or timeout
+  (`InvalidAudioError`) → finite and > 0 (`InvalidAudioError`) → `> 60`
+  unrounded (`DurationLimitError`). This matches d10/d12 plus approved deviation
+  1.
+     - The messages are the exact d12 strings.
+     - Timer, listeners and probe URL are cleaned up in `finally`.
+     - No promise can go unhandled: `handleFileChange` uses try/catch/finally,
+  and non-`UploadError` errors map to the `UploadFailedError` message.
+  3. **Browser-memory storage and object URLs: pass, one testing gap (CR-004).**
+     - `data/clips.ts` uses a module variable only, with no fetch, localStorage
+  or IndexedDB.
+     - The probe URL is revoked on success, error and timeout.
+     - The playback URL is revoked on replace, remove and unmount, and correctly
+  under StrictMode.
+  4. **Accessibility and UI: pass with minor issues (CR-001, CR-002).**
+     - The file input has a `<label htmlFor>` and the checkbox is wrapped in a
+  label.
+     - The error alert is rendered only while an error exists (approved
+  deviation 2).
+     - Both inputs are disabled while checking.
+     - Cancel returns early without calling `uploadAudio`, and `input.value` is
+  reset.
+     - The filename, `0:05` and `Unpublished` each appear in exactly one
+  element, so strict locators work.
+     - AC-1 compatibility holds: no upload `<audio>` exists before an accepted
+  upload, and no button text matches `/play/i`, `/^record/i` or `/^stop/i`.
+  5. **Bugs, regressions and unrelated changes: one minor process finding
+  (CR-005).**
+     - Overlapping selections are prevented by disabling the input.
+     - If the component unmounts during validation, the clip is still stored,
+  and the next mount shows it through the `getUnpublishedClip()` initializer.
+  That is consistent and not a defect.
+     - `recorder.ts` and `AudioRecorder.tsx` are unchanged. `App.tsx` adds only
+  `<UploadClip />`.
+     - The `testDir` change to `./tests` was approved in the plan.
+
+  ## (c) Residual risks and testing gaps
+  - Every browser-level test uses WAV fixtures generated in memory. No test
+  accepts MP3 or M4A in a real browser, and no test covers Firefox, Safari or
+  Edge (the d15 targets) or real-world `file.type` variants. Only Chromium is
+  configured.
+  - Duration display rounds while acceptance does not, so a 59.5–60.0 s clip is
+  shown as `1:00`. That is allowed by the d10/d15 split, but no test covers it.
+  - Files whose metadata reports `Infinity` duration (some MP3s without a
+  header) are rejected as invalid. That is correct per d10, but it may surprise
+  users with real files.
+  - With `aria-live="assertive"` on a `role="alert"` that is mounted only when
+  needed, screen readers announce the message when the region appears. This was
+  not checked with a real screen reader.
+  - I did not run the tests. This review is static only.
+
+  ## (d) Files inspected and commands run
+  **Files read:**
+  - prompts/S-7-4c-code-reviewer.txt
+  - docs/design/S-7.md
+  - docs/plans/S-7-plan.md
+  - frontend/src/audio/upload.ts
+  - frontend/src/audio/constants.ts
+  - frontend/src/data/clips.ts
+  - frontend/src/utils/formatDuration.ts
+  - frontend/src/components/UploadClip.tsx
+  - frontend/src/components/UploadedClipView.tsx
+  - frontend/src/App.tsx
+  - frontend/src/main.tsx
+  - frontend/src/audio/recorder.ts
+  - frontend/src/components/AudioRecorder.tsx
+  - frontend/tests/acceptance/ac-01-record.spec.ts
+  - frontend/tests/acceptance/ac-07-upload.spec.ts
+  - frontend/tests/rules/upload-rules.spec.ts
+  - frontend/stryker.config.mjs
+  - frontend/package.json
+
+  **Grep only:**
+  - frontend/tests/unit/*.ts
+  - frontend/tests/integration/upload.integration.spec.ts
+  - frontend/tests/property/upload.property.spec.ts
+  - LEDGER.md
+
+  **Commands (all read-only):**
+  - `git log --oneline m2-tests-locked..HEAD`
+  - `git diff --stat m2-tests-locked..HEAD -- frontend/src
+  frontend/playwright.config.ts frontend/package.json`
+  - `git diff m2-tests-locked..HEAD -- frontend/src
+  frontend/playwright.config.ts frontend/package.json`
+  - `git diff --stat m2-tests-locked..HEAD -- .` (in frontend/)
+  - `git diff --stat m2-tests-locked..HEAD -- docs README.md AGENTS.md
+  .gitignore`
+  - `git log --format='%h %s' m2-tests-locked..HEAD -- package.json
+  package-lock.json playwright.config.ts`
+  - `git show --stat b068c56 df684be 622e394 09c757f`
+  - `git show b068c56 -- package.json`
+  - `git show df684be -- docs/design/S-7.md README.md`
+  - `cat -n` / `sed -n` / `grep` / `ls` on the files above
+
+  No files were created, modified or deleted.
+
+⏺ The code-reviewer has finished. I'll save its report word for word to
+  evidence/delegation/code-review.md while the test-writer keeps running.
+
+⏺ Write(evidence/delegation/code-review.md)
+  ⎿  Wrote 215 lines to evidence/delegation/code-review.md
+       1 # Deliverable 4c — Delegated Code Review of S-7 (code-reviewer)
+       2 
+       3 ## Provenance
+       4 
+       5 | Field | Value |
+       6 |---|---|
+       7 | Story / AC | S-7 (Upload Existing Audio) / AC-7; AC-1 regressi
+         on check |
+       8 | Agent definition | `.agents/agents/code-reviewer/agent.md` (fr
+         ontmatter `name: reviewer`), included verbatim in the prompt |
+     … +207 lines (ctrl+o to expand)
+
+⏺ Agent "S-7 delegated code review" finished · 2m 17s
+
+› Message from general-purpose
+  # S-7 (Upload Existing Audio): delegated test review (test-writer, review
+  only)
+
+  Target: HEAD `66168cf` (main). Locked tag `m2-tests-locked` points to
+  `d1732e760b05fd88701f316262b7003da1ee0b55`. I did not create, edit, delete or
+  format any repository file. The only thing written to disk was the `npm test`
+  console output, redirected to `/tmp/s7-tw-npmtest.log`, which is outside the
+  repo.
+
+  ## Findings
+
+  ### TW-001 — blocking
+  **ac_ref:** AC-7
+  **Checklist item:** 1, 3, 4
+  **Spec basis:** docs/design/S-7.md §8 decision 4 (SUPPORTED_AUDIO_FORMATS =
+  MP3, WAV, M4A), decision 9 (MIME variants and normalized return values), AC-7
+  Given ("a format permitted by SUPPORTED_AUDIO_FORMATS")
+  **Location:** `frontend/tests/unit/upload.unit.spec.ts:442`,
+  `frontend/tests/unit/upload-mutation-kills.unit.spec.ts:91-174`,
+  `frontend/tests/rules/upload-rules.spec.ts:148-191`,
+  `frontend/tests/property/upload.property.spec.ts:43-54,75-159`
+  **Issue:** Every positive (accepted) assertion in the suite uses a `.wav` file
+  whose MIME is `audio/wav` or empty. No test asserts any of these:
+  - an `.mp3` or `.m4a` file is accepted;
+  - the MIME variants `audio/mp3`, `audio/x-m4a`, `audio/m4a`, `audio/x-wav` or
+  `audio/wave` are accepted;
+  - an upper-case extension is accepted;
+  - the normalized `mimeType` is `audio/mpeg` for MP3 or `audio/mp4` for M4A.
+
+  The property invariant test does generate `.mp3`, `.m4a`, `.WAV`,
+  `audio/x-wav` and `audio/wave` inputs. It only checks "if accepted, then
+  valid" plus `acceptedCount > 0`, so it would still pass if every MP3 and M4A
+  file were rejected.
+  **Impact:** The suite stays green if a defect removes MP3 or M4A support,
+  breaks a MIME variant, or returns the wrong normalized MIME type. Two of the
+  three formats in decision 4 are never verified as uploadable.
+  **Recommended correction:** Add these tests:
+  - `AC-7 (d4, d9): uploadAudio accepts .mp3 with audio/mpeg and audio/mp3 and
+  returns mimeType "audio/mpeg"`
+  - `AC-7 (d4, d9): uploadAudio accepts .m4a with audio/mp4, audio/x-m4a and
+  audio/m4a and returns mimeType "audio/mp4"`
+  - `AC-7 (d9): uploadAudio accepts .wav with audio/x-wav and audio/wave and
+  returns "audio/wav"`
+  - `AC-7 (d9): uploadAudio accepts upper-case .WAV extension`
+
+  Each should expect `status: "unpublished"`, `audio === file` and a finite
+  duration in (0, 60]. Two ways to supply the audio:
+  - **Mock:** replace `window.Audio` with a mock that fires `loadedmetadata`
+  with duration 5, using the same pattern as the NaN/0/Infinity test.
+  - **Real fixtures:** commit small, documented MP3 and M4A files (decision 16)
+  for one end-to-end UI test, `AC-7 (d4): MP3 and M4A uploads display a playable
+  unpublished clip`, which asserts metadata loads and `play()` succeeds.
+
+  ### TW-002 — blocking
+  **ac_ref:** AC-7
+  **Checklist item:** 1, 4
+  **Spec basis:** docs/design/S-7.md §8 decision 12 (validation order format →
+  size → decode → duration; "The first failed validation determines the error");
+  docs/plans/S-7-plan.md approved deviation (ownership confirmation checked
+  before format)
+  **Location:** whole suite. There is no order test in
+  `frontend/tests/unit/*.spec.ts` or
+  `frontend/tests/rules/upload-rules.spec.ts`.
+  **Issue:** Every rejection test fails exactly one check, so the precedence
+  between checks is never exercised. Only one precedence is implicitly covered:
+  the over-20 MB file of zero bytes (`upload-rules.spec.ts:81`) shows that size
+  wins over decode. These are not covered:
+  - format before size (oversize `.ogg`);
+  - ownership before format (unconfirmed `.ogg`), which is the approved
+  deviation;
+  - size before readability.
+  **Impact:** Reordering the checks in `uploadAudio` (for example, size before
+  format, or format before ownership) would not fail any test, even though
+  decision 12 and the approved plan say which error the user sees.
+  **Recommended correction:** Add these tests:
+  - `AC-7 (d12): oversize .ogg is rejected with UnsupportedFormatError (format
+  checked before size)`. Expected: name `UnsupportedFormatError`, message
+  "Unsupported audio format. Please select MP3, WAV, or M4A."
+  - `AC-7 (d13, plan deviation): unconfirmed .ogg is rejected with
+  OwnershipNotConfirmedError`. Expected: the plan's confirmation message.
+  - `AC-7 (d12): oversize unreadable .wav is rejected with FileSizeLimitError
+  (size before readability)`.
+
+  ### TW-003 — minor
+  **ac_ref:** AC-7
+  **Checklist item:** 4
+  **Spec basis:** test-writer Rule 2 (the AC ID must be in the test name or an
+  immediately associated comment)
+  **Location:**
+  - `frontend/tests/rules/upload-rules.spec.ts:66-190` (15 tests)
+  - `frontend/tests/integration/upload.integration.spec.ts:26,112`
+  - `frontend/tests/property/upload.property.spec.ts:75,164,245`
+  - `docs/traceability.md:13`
+  **Issue:** 20 of the 43 tests do not have "AC-7" in their title or describe
+  block. They cite only `dN` or `§6`. AC-7 appears only in file-level docblocks
+  (rules: none; integration and property: "S-7 / AC-7"), and those are not
+  attached to each test. `docs/traceability.md` lists only the acceptance test;
+  MILESTONE2.md §5f has the fuller table.
+  **Impact:** Traceability depends on the separate table, and `--grep AC-7`
+  misses 20 tests.
+  **Recommended correction:** Prefix the titles or describe blocks with `AC-7`,
+  for example `describe("AC-7 controls", …)` and `"AC-7 (§6 Invariant): …"`.
+  Also mirror the §5f rows into `docs/traceability.md`.
+
+  ### TW-004 — minor
+  **ac_ref:** AC-7
+  **Checklist item:** 3
+  **Spec basis:** §7 edge case 4; decision 11 ("Canceling selection will not
+  call uploadAudio")
+  **Location:** `frontend/tests/unit/upload.unit.spec.ts:284-340`
+  **Issue:** The test is tautological. It reads `getUnpublishedClip()` twice
+  with nothing in between, and the "cancel" is just a comment. No cancel handler
+  or `UploadClip` code runs, so the test cannot fail because of cancellation
+  behavior.
+  **Impact:** It inflates coverage of §7.4. The real check is the UI rule test
+  (see TW-010).
+  **Recommended correction:** Remove the test or replace it with a UI test:
+  - `AC-7 (§7.4, d11): cancelling with no prior clip creates no clip and shows
+  no error`. Load the page, set the checkbox, call `setInputFiles([])`, then
+  expect no `audio` element, no "Unpublished" text and no `role="alert"`.
+  - Optionally spy on `uploadAudio` (via `page.addInitScript` patching the
+  module) to assert it was not called.
+
+  ### TW-005 — minor
+  **ac_ref:** AC-7
+  **Checklist item:** 3
+  **Spec basis:** §6 Postconditions; decisions 11 and 12 ("A rejected upload
+  leaves the previous valid clip unchanged")
+  **Location:**
+  `frontend/tests/integration/upload.integration.spec.ts:140-154,187`;
+  `frontend/tests/property/upload.property.spec.ts:206-228`
+  **Issue:** In both tests, the test code itself calls `setUnpublishedClip` only
+  when `uploadAudio` resolves. `uploadAudio` never touches the store, so
+  "rejected upload did not change the store" is true by construction. The
+  assertion checks the test's own control flow, not the application's.
+  **Impact:** These tests could not catch a component that stores or clears the
+  clip on rejection. The UI rule test `display › rejected file leaves the
+  previous clip in place` is the only real guard, and it covers only `.ogg`.
+  **Recommended correction:** Reword the claims to match what is tested (that
+  `uploadAudio` rejects with an `UploadError` subclass). Add a UI-level property
+  or loop test: `AC-7 (§6, d12): rejected uploads of each error kind (format,
+  size, invalid, duration, unconfirmed) leave the displayed clip unchanged`.
+  After each rejection, expect the same filename, duration and "Unpublished"
+  label, and exactly one `audio` element.
+
+  ### TW-006 — minor
+  **ac_ref:** AC-7
+  **Checklist item:** 3
+  **Spec basis:** decision 11 ("A successful new upload replaces the previous
+  clip"), decision 14 (object URL revoked when the clip is replaced or removed),
+  decision 2
+  **Location:** `frontend/tests/rules/upload-rules.spec.ts:164-171,182-190`
+  **Issue:** The replacement test checks only the text and that there is one
+  `<audio>`. It does not check that the player now plays the second file. If a
+  stale `src` still pointed at the first (5 s) file, the test would pass. No
+  test checks that the playback object URL in `UploadedClipView` is revoked on
+  replace or remove; the only revocation test covers the probe URL in
+  `uploadAudio`.
+  **Impact:** A playback mismatch or a URL leak would go undetected.
+  **Recommended correction:**
+  - Extend the replacement scenario as `AC-7 (d11, d2): second upload's player
+  loads the second file`. Wait for `readyState >= HAVE_METADATA` with `|duration
+  − 10| < 0.05`.
+  - Add `AC-7 (d14): playback object URL is revoked on replace and on Remove`.
+  Spy on `URL.revokeObjectURL` via `addInitScript`, and expect the previous
+  `audio.src` to be among the revoked URLs.
+
+  ### TW-007 — minor
+  **ac_ref:** AC-7
+  **Checklist item:** 4
+  **Spec basis:** test-writer Rule 1 (expected values only from AC or design);
+  decision 8 specifies only "a mock current-user record"; decision 15 specifies
+  only `m:ss`, with examples `0:05` and `1:00`
+  **Location:**
+  - `frontend/tests/unit/upload-mutation-kills.unit.spec.ts:398-414`
+  (`"user-1"`, `"Demo User"`, `/^clip-(\d+)$/`)
+  - `frontend/tests/unit/upload-mutation-kills.unit.spec.ts:435-444` (`-5`,
+  `NaN`, `Infinity` → `"0:00"`)
+  - `frontend/tests/unit/upload-mutation-kills.unit.spec.ts:339`
+  (`clearedTimerIds` equals the sentinel)
+  - `frontend/tests/integration/upload.integration.spec.ts:101` (`/^clip-\d+$/`)
+  **Issue:** These expected values come from the implementation, not from the
+  design or plan. The 5.4 → `0:05` and 59.6 → `1:00` cases are justified by the
+  plan ("rounds only the displayed value"). The values listed above are not.
+  **Impact:** The tests lock in incidental implementation choices, which
+  conflicts with Rule 1.
+  **Recommended correction:** Assert only what the spec gives:
+  - the owner ID equals `getCurrentUser().id` and is non-empty;
+  - clip IDs are distinct, and a new upload gets a new ID;
+  - `formatDuration(5) === "0:05"` and `formatDuration(60) === "1:00"`.
+
+  Alternatively, record the mock values and the non-finite formatting as
+  explicit team decisions before keeping those asserts.
+
+  ### TW-008 — minor
+  **ac_ref:** AC-7
+  **Checklist item:** 1
+  **Spec basis:** decision 15 (`accept` attribute for supported formats;
+  standard picker), decision 11 ("one audio file at a time"), decision 12
+  ("Errors will appear below the upload control")
+  **Location:** `frontend/tests/rules/upload-rules.spec.ts:110-115`
+  **Issue:** No test checks the `accept` attribute, the absence of `multiple`,
+  or where the error appears relative to the file input.
+  **Impact:** Losing the `accept` attribute or adding `multiple` would go
+  unnoticed.
+  **Recommended correction:**
+  - `AC-7 (d15, d11): file input accepts MP3/WAV/M4A and selects a single file`.
+  Expect the `accept` value to cover `.mp3`, `.wav` and `.m4a`, and expect no
+  `multiple` attribute.
+  - Optionally, `AC-7 (d12): error is rendered after the file input in DOM
+  order`.
+
+  ### TW-009 — minor
+  **ac_ref:** AC-7
+  **Checklist item:** 1, 3
+  **Spec basis:** decision 12 (UploadFailedError message; errors announced),
+  docs/plans/S-7-plan.md approved deviation 2 (the `role="alert"` region is
+  rendered only while an error exists, and is cleared when a new selection
+  starts)
+  **Location:** `frontend/tests/rules/upload-rules.spec.ts` (no case)
+  **Issue:** These behaviors are untested:
+  - **Alert lifecycle:** no test checks that the alert is cleared after an error
+  is followed by a successful upload, or that there is no alert on initial
+  load. The 60 s test asserts no alert only when no error came first.
+  - **UploadFailedError message:** "The audio file could not be loaded. Please
+  try again." is never asserted in the UI.
+  - **Error wrapping:** the UI's wrapping of non-`UploadError` errors is not
+  exercised.
+
+  **Impact:** The alert-lifecycle deviation and the UploadFailedError message
+  are unverified.
+  **Recommended correction:**
+  - `AC-7 (d12, plan deviation): alert is absent on load, shown after a
+  rejection, and removed after a subsequent valid upload`.
+  - `AC-7 (d12): unreadable file shows "The audio file could not be loaded.
+  Please try again."`. Patch `File.prototype.slice` via `addInitScript` so reads
+  fail.
+
+  ### TW-010 — minor
+  **ac_ref:** AC-7
+  **Checklist item:** 3
+  **Spec basis:** §7 edge case 4; decision 11
+  **Location:** `frontend/tests/rules/upload-rules.spec.ts:173-180`
+  **Issue:** There are two weaknesses:
+  1. **Possibly vacuous:** `setInputFiles([])` runs on an input whose value the
+  handler has already reset to `""`. Nothing proves a `change` event reached the
+  handler, so the assertions could hold trivially.
+  2. **Untested case:** cancelling with no existing clip ("No new clip is
+  created") is not tested at the UI level.
+
+  **Impact:** The cancellation coverage is weaker than the test name suggests.
+  **Recommended correction:** Add a `change` listener counter (via
+  `page.evaluate`) and assert that the event fired, then keep the existing
+  assertions. Also add the no-prior-clip cancel test described in TW-004.
+
+  ### TW-011 — minor
+  **ac_ref:** AC-7
+  **Checklist item:** 3
+  **Spec basis:** decision 10 (NaN, Infinity and zero are invalid); plan (10 s
+  metadata timeout)
+  **Location:** `frontend/tests/unit/upload.unit.spec.ts:277-280`;
+  `frontend/tests/unit/upload-mutation-kills.unit.spec.ts:291-303,339`
+  **Issue:**
+  1. **Missing length check:** the NaN/0/Infinity loop never asserts
+  `outcomes.length === 3`, so an empty result would pass vacuously.
+  2. **Flake risk in the timeout test:** it replaces global `window.setTimeout`
+  and `clearTimeout` (running handlers synchronously) while the live app and
+  Vite client are on the page. Any foreign timer call during that window changes
+  `timeoutDelays` or `clearedTimerIds` (`toEqual([10_000])` /
+  `toEqual([987654])`).
+
+  **Impact:** One weak assertion and a latent flake. Neither failed in this run.
+  **Recommended correction:**
+  - Assert `expect(outcomes.map(o =>
+  o.reported)).toEqual(["0","NaN","Infinity"])`.
+  - In the timeout test, filter the recorded delays and IDs to the expected
+  sentinel and value, or run it on a blank page (`about:blank` plus a module
+  import) where no app timers are active.
+
+  ### TW-012 — minor
+  **ac_ref:** AC-7
+  **Checklist item:** 1
+  **Spec basis:** decision 8 (no request is sent to a backend), decision 13 (no
+  permanent confirmation record), decision 7 (browser memory only)
+  **Location:** no test
+  **Issue:** Nothing asserts that an upload makes no network request or writes
+  nothing to `localStorage` or IndexedDB. The plan relied on a grep of
+  `clips.ts`.
+  **Impact:** A regression that persists the clip or posts the file would pass
+  the suite.
+  **Recommended correction:** `AC-7 (d7, d8, d13): valid upload issues no
+  network request and writes no persistent storage`. Record `page.on("request")`
+  after page load, perform a valid upload, and expect no non-Vite requests.
+  Also expect `localStorage.length === 0` and no confirmation key.
+
+  ### TW-013 — minor
+  **ac_ref:** AC-7
+  **Checklist item:** 3
+  **Spec basis:** §6 Postconditions ("A rejected file does not produce an
+  accepted clip")
+  **Location:** `frontend/tests/rules/upload-rules.spec.ts:49-52`,
+  `frontend/tests/rules/upload-rules.spec.ts:1`
+  **Issue:** `expectRejected` checks only the alert text and that there is no
+  `<audio>`. It does not check that the rejected filename and the "Unpublished"
+  label are absent. The rule spec also imports `@playwright/test` rather than
+  `../coverage-test`, so the 15 UI rule tests are left out of the coverage and
+  Stryker instrumentation that MILESTONE2 §5 reports.
+  **Impact:** The rejection assertion is slightly weak, and the reported
+  coverage and mutation metrics understate the UI tests (or exclude them).
+  **Recommended correction:** In `expectRejected`, add
+  `expect(page.getByText(file.name)).toHaveCount(0)` and
+  `expect(page.getByText(/^unpublished$/i)).toHaveCount(0)`. Consider switching
+  the import to `../coverage-test`; that is a test-only change.
+
+  ## (a) Summary counts
+  - Blocking: 2 (TW-001, TW-002)
+  - Minor: 11 (TW-003 to TW-013)
+  - No `test.skip`, `.only` or `fixme` anywhere in scope. All 43 tests executed
+  and passed.
+
+  ## (b) Per-checklist-item verdict
+  1. **Adequate S-7 coverage:** Partial. All four §7 edge cases and the §6 rules
+  have tests, but MP3/M4A acceptance (TW-001) and decision-12 ordering (TW-002)
+  are unverified. Further minor gaps are in TW-006, TW-008, TW-009 and TW-012.
+  2. **AC-1 and AC-7 still covered:** Yes.
+  `test_ac1_record_and_stop_displays_playback` and
+  `test_ac7_valid_audio_upload_displays_playback` both executed, were not
+  skipped, and passed.
+  3. **Missing edge cases and weak assertions:** Findings TW-004, TW-005,
+  TW-006, TW-010, TW-011 and TW-013. There are no skip or only markers.
+  4. **Rule, unit, integration and property tests reflect the design:**
+     - **Matches:** the decision-12 messages match verbatim. The plan's messages
+  for confirmation and size match. The boundaries match: 60.00 accepted, 60.04
+  and 61 rejected, 20 MB exactly accepted and 20 MB + 1 rejected, and
+  0/NaN/Infinity invalid.
+     - **Problems:** AC ID naming is missing in 20 tests (TW-003), and some
+  expectations come from the implementation (TW-007).
+  5. **Locked acceptance tests unchanged:** Yes. The diff is empty, and all
+  three blob hashes match the tag. HEAD's tree is identical as well.
+
+  ## (c) Coverage map (item 1)
+  | Spec item | Covering test(s) |
+  |---|---|
+  | §7.1 unsupported format | rules `.ogg`, `.mp4`, conflicting MIME; unit
+  `.ogg`, `.mp4`, no extension, conflicting MIME; property Preconditions |
+  | §7.2 over MAX_CLIP_DURATION | rules 61 s, 60.04 s; unit 61 s, 60.04 s;
+  integration (61 s) |
+  | §7.3 corrupted audio | rules undecodable `.wav`; unit corrupted,
+  0/NaN/Infinity, canPlayType `""`, metadata timeout; property Preconditions |
+  | §7.4 cancel | rules cancel with existing clip (possibly vacuous, TW-010);
+  unit cancel test is tautological (TW-004); **gap:** cancel with no clip at UI
+  level |
+  | §6 preconditions (readable, permitted format) | unit unreadable →
+  UploadFailedError; property Preconditions |
+  | §6 postconditions | AC-7; rules display tests; property/integration
+  (tautological, TW-005) |
+  | §6 invariant | property Invariant; unit 60.00 s boundary |
+  | d1 unpublished, not published | AC-7 "Unpublished"; rules expectClip; unit
+  `status` |
+  | d2 playback control | AC-7 (metadata and play); rules `audio` count 1;
+  integration play() |
+  | d3 reject invalid, no playable clip | rules expectRejected; unit |
+  | d4 MP3/WAV/M4A | WAV only. **Gap: TW-001** |
+  | d5 60 s | rules and unit 60.00 / 60.04 / 61 |
+  | d6 ownership confirmation, no auto-publish | rules unconfirmed; unit d13 |
+  | d7 browser memory only | **Gap: TW-012** (not strictly testable beyond "no
+  persistence") |
+  | d8 frontend-only, mock user | mutation-kills getCurrentUser
+  (implementation-derived values, TW-007); **gap:** no network check (TW-012) |
+  | d9 extension + MIME + decode, variants, normalized, empty MIME, `.mp4`
+  rejected | conflicting MIME, `.mp4`, no extension, empty MIME `.wav`,
+  canPlayType. **Gap:** MP3/M4A variants and normalization (TW-001) |
+  | d10 finite, > 0, ≤ 60, no rounding | 60.00 / 60.04 / 61; 0 / NaN / Infinity
+  |
+  | d11 20 MB, one file, single clip, replace, preserve on reject, loading +
+  disabled, cancel | 20 MB ± 1 boundaries; replace; preserve (`.ogg` only);
+  loading/disabled observer; cancel. **Gap:** single-file / `multiple` (TW-008)
+  |
+  | d12 order, messages, unreadable → UploadFailedError | messages: unit and
+  rules (UploadFailed only at unit level); **order gap: TW-002**; UI
+  UploadFailed message (TW-009) |
+  | d13 checkbox text, unchecked default, enforced | AC-7; rules
+  unchecked-on-load and unconfirmed rejection; unit |
+  | d14 original File, object URL lifecycle, status | unit/integration `audio
+  === file`; probe URL revoked (timeout test). **Gap:** playback URL revocation
+  (TW-006) |
+  | d15 filename, `m:ss`, native control, label, Remove, accessible labels, live
+  region, `accept` | AC-7; rules 1:00 / 0:05 / 0:10, Remove, labels,
+  `role=alert`; formatDuration unit. **Gap:** `accept` attribute (TW-008) |
+  | d16 Playwright, documented fixtures, real metadata and playback | AC-7;
+  `wav.ts` documents fixture origin; integration play() |
+  | Plan deviation: ownership before format | **Gap: TW-002** |
+  | Plan deviation: alert only while an error exists | partial (60 s test,
+  cancel test). **Gap:** clearing after an error (TW-009) |
+
+  ## (d) Verification results
+
+  **1. `cd frontend && npm test`** (run in background, output redirected to
+  `/tmp/s7-tw-npmtest.log`): exit status 0.
+  ```
+  Running 43 tests using 4 workers
+  ...
+    43 passed (16.7s)
+  EXIT=0
+  ```
+  Per-file counts (all passed, 0 failed, 0 skipped):
+
+  | File | Passed |
+  |---|---|
+  | `tests/acceptance/ac-01-record.spec.ts` | 1 |
+  | `tests/acceptance/ac-07-upload.spec.ts` | 1 |
+  | `tests/rules/upload-rules.spec.ts` | 15 (10 `@controls`, 5 `@display`) |
+  | `tests/unit/upload.unit.spec.ts` | 13 |
+  | `tests/unit/upload-mutation-kills.unit.spec.ts` | 8 |
+  | `tests/integration/upload.integration.spec.ts` | 2 |
+  | `tests/property/upload.property.spec.ts` | 3 |
+
+  The key lines:
+  ```
+  ✓   2 [chromium] › tests/acceptance/ac-01-record.spec.ts:39:1 ›
+  test_ac1_record_and_stop_displays_playback (5.6s)
+  ✓   1 [chromium] › tests/acceptance/ac-07-upload.spec.ts:30:1 ›
+  test_ac7_valid_audio_upload_displays_playback (1.3s)
+  ```
+
+  **2. `git diff m2-tests-locked -- frontend/tests/acceptance`:** exit 0, empty
+  output.
+
+  **3. `git diff --stat m2-tests-locked HEAD -- frontend/tests/acceptance`:**
+  exit 0, empty output.
+
+  **4. `git ls-tree -r m2-tests-locked -- frontend/tests/acceptance`:** exit 0.
+  ```
+  100644 blob 2226025b107933ce39d37a093cf76801dfc6fe2b
+  frontend/tests/acceptance/ac-01-record.spec.ts
+  100644 blob c26a055b994130ef0b1a43e49ce79f9f68b266da
+  frontend/tests/acceptance/ac-07-upload.spec.ts
+  100644 blob ca57c5ce4b0b98a336c96801c0b8edda07f9e03d
+  frontend/tests/acceptance/fixtures/tone.wav
+  ```
+  `git rev-parse m2-tests-locked` returned
+  `d1732e760b05fd88701f316262b7003da1ee0b55`.
+
+  **5. `git hash-object <file>` compared with `git rev-parse
+  m2-tests-locked:<file>`:**
+  ```
+  frontend/tests/acceptance/ac-01-record.spec.ts
+    worktree: 2226025b107933ce39d37a093cf76801dfc6fe2b
+    locked:   2226025b107933ce39d37a093cf76801dfc6fe2b
+  frontend/tests/acceptance/ac-07-upload.spec.ts
+    worktree: c26a055b994130ef0b1a43e49ce79f9f68b266da
+    locked:   c26a055b994130ef0b1a43e49ce79f9f68b266da
+  frontend/tests/acceptance/fixtures/tone.wav
+    worktree: ca57c5ce4b0b98a336c96801c0b8edda07f9e03d
+    locked:   ca57c5ce4b0b98a336c96801c0b8edda07f9e03d
+  ```
+  All three match. As a supplementary check, `git ls-tree -r HEAD --
+  frontend/tests/acceptance` lists the same three blob hashes.
+
+  **6. Read-only greps:** I grepped `docs/traceability.md` and `MILESTONE2.md`
+  for S-7, AC-7 and §5f entries to read the traceability tables.
+
+  ## (e) Files inspected
+  All paths are under
+  `<repo-root>/`:
+  - `prompts/S-7-4c-test-writer.txt`
+  - `docs/design/S-7.md`
+  - `docs/plans/S-7-plan.md`
+  - `docs/traceability.md` (grep)
+  - `MILESTONE2.md` (§5f, lines 155–184)
+  - `frontend/tests/acceptance/ac-01-record.spec.ts`
+  - `frontend/tests/acceptance/ac-07-upload.spec.ts`
+  - `frontend/tests/acceptance/fixtures/tone.wav` (hash only)
+  - `frontend/tests/rules/upload-rules.spec.ts`
+  - `frontend/tests/rules/wav.ts`
+  - `frontend/tests/unit/upload.unit.spec.ts`
+  - `frontend/tests/unit/upload-mutation-kills.unit.spec.ts`
+  - `frontend/tests/integration/upload.integration.spec.ts`
+  - `frontend/tests/property/upload.property.spec.ts`
+  - `frontend/playwright.config.ts`
+  - `frontend/tests/coverage-test.ts`
+  - Implementation, read for interfaces only: `frontend/src/audio/upload.ts`,
+  `frontend/src/audio/constants.ts`, `frontend/src/data/clips.ts`,
+  `frontend/src/utils/formatDuration.ts`,
+  `frontend/src/components/UploadClip.tsx`,
+  `frontend/src/components/UploadedClipView.tsx`, `frontend/src/App.tsx`
+
+  Stop condition triggered: none. No test failed, and no production defect was
+  observed. Both blocking findings are coverage gaps in the tests, not
+  demonstrated defects in the application.
+
+⏺ Agent "S-7 delegated test review" finished · 2m 57s
+
+⏺ Both agents are done. Before writing the test review, I'll take the
+  after-snapshot of the working tree and spot-check a few of their claims.
+
+  Ran 1 shell command (ctrl+o to expand)
+
+⏺ The spot-checks back up CR-001, CR-003, TW-001 and TW-002. Tracked files are
+  unchanged. Next I'll write the test review.
+
+⏺ Write(evidence/delegation/test-review.md)
+  ⎿  Wrote 353 lines to evidence/delegation/test-review.md
+       1 # Deliverable 4c — Delegated Test Review of S-7 (test-writer)
+       2 
+       3 ## Provenance
+       4 
+       5 | Field | Value |
+       6 |---|---|
+       7 | Story / AC | S-7 (Upload Existing Audio) / AC-7; AC-1 regressi
+         on check |
+       8 | Agent definition | `.agents/agents/test-writer/agent.md`, incl
+         uded verbatim in the prompt |
+     … +345 lines (ctrl+o to expand)
+
+⏺ Both reviews are done, and their reports are saved in evidence/delegation/.
+  Nothing was fixed, committed, tagged or pushed.
+
+  Findings by agent
+
+  ┌───────────────┬────────────────────┬───────────────────────┐
+  │     Agent     │      Blocking      │         Minor         │
+  ├───────────────┼────────────────────┼───────────────────────┤
+  │ code-reviewer │ 0                  │ 5 (CR-001 to CR-005)  │
+  ├───────────────┼────────────────────┼───────────────────────┤
+  │ test-writer   │ 2 (TW-001, TW-002) │ 11 (TW-003 to TW-013) │
+  └───────────────┴────────────────────┴───────────────────────┘
+
+  The test-writer says both of its blocking findings are missing tests. Neither
+  is a bug it found in the app.
+
+  Key findings and recommended corrections
+
+  Blocking (test-writer):
+  - TW-001: every test that expects a file to be accepted uses a WAV. No test
+    shows that MP3 or M4A files are accepted, and none checks the other accepted
+    file types or upper-case extensions (decisions 4 and 9). The property test
+    would still pass if every MP3 and M4A file were rejected. Fix: add tests
+    that accept .mp3 and .m4a files and check the reported file type, either
+    with a mocked Audio or with small documented MP3 and M4A fixtures.
+  - TW-002: no test checks the order in which the rejection checks run (decision
+    12, plus the approved change that ownership is checked first). Moving the
+    checks around would not fail any test. Fix: add three tests: an unconfirmed
+    .ogg gets the ownership error, an oversize .ogg gets the format error, and
+    an oversize unreadable .wav gets the size error.
+
+  Minor, code-reviewer:
+  - CR-001: the "Checking audio…" text isn't announced to screen readers. Fix:
+    give it role="status".
+  - CR-002: after Remove, keyboard focus is lost. Fix: move focus to the file
+    input.
+  - CR-003: the file picker filter UPLOAD_ACCEPT includes audio/mp4, so the
+    picker offers .mp4 files that are always rejected. This comes from the
+    approved plan, not a coding slip. Fix: set it to .mp3,.wav,.m4a.
+  - CR-004: no test checks that the playback URL is released when a clip is
+    replaced or removed (decision 14).
+  - CR-005: commits b068c56 and df684be added dev dependencies, changed
+    package-lock.json, and edited the protected README.md. The S-7 plan said
+    none of that would happen, and there's no recorded approval. That's a
+    process problem, not a code problem.
+
+  Minor, test-writer:
+  - TW-003: 20 tests don't have "AC-7" in their names.
+  - TW-004 and TW-005: the unit cancel test and the integration/property
+    "rejection leaves the clip unchanged" checks can't fail, because they only
+    test the test's own logic.
+  - TW-007: some expected values ("user-1", "Demo User", how invalid durations
+    display) were copied from the code rather than the design.
+  - TW-006 and TW-008 to TW-013: further gaps, including the alert clearing
+    after an error, the accept attribute, no-network and no-storage checks, a
+    possible flake in the timeout test, and the rule tests being left out of
+    coverage and mutation runs.
+
+  CR-004 and TW-006 report the same gap separately. I spot-checked CR-001,
+  CR-003, TW-001 and TW-002 against the code and all four hold up.
+
+  Test results and working tree
+
+  - The test-writer ran npm test: 43 passed, 0 failed, 0 skipped.
+  - The locked acceptance tests are unchanged: the diff against m2-tests-locked
+    is empty and all three file hashes match the tag.
+  - No tracked file changed: git diff --stat is empty and HEAD is still 66168cf.
+  - The only new files are the five I created as planned:
+    - prompts/S-7-4c-code-reviewer.txt
+    - prompts/S-7-4c-test-writer.txt
+    - evidence/delegation/code-review.md
+    - evidence/delegation/test-review.md
+    - the evidence/delegation/ folder itself
+  - npm test refreshed frontend/test-results/, which Git ignores, and the agent
+    wrote a log to /tmp.
+
+  One change to the saved reports: in the test-writer's file list I replaced
+  your home-directory path with "under the repository root". Everything else in
+  both reports is word for word, with no findings removed.
+
+  Before the m2-green tag
+
+  1. Decide on TW-001 and TW-002. Either add the tests or record why they're
+     deferred.
+  2. Settle CR-005: record approval for the Deliverable 5 dependencies and
+     README edit, and fix the stale README line.
+  3. Optionally fix CR-003 and CR-004/TW-006 (the playback URL release from
+     decision 14 is untested).
+  4. Add the 4c LEDGER entry, and record your answer to each finding in
+     MILESTONE2.
+
+  The other findings can be logged as accepted or deferred.
+
+  Next step: type /export evidence/delegation/claude-session-transcript.txt.
+  Before anything is committed, I'll check the export for personal data such as
+  your email. I'm waiting for your approval before making any other changes.
+
+✻ Crunched for 5m 45s · done 4:54 PM
+
+※ recap: Both delegated reviews of S-7 for Deliverable 4c are saved in evidence/delegation/: the code-reviewer found 0 blocking and 5 minor issues, and the test-writer found 2 blocking and 11 minor, all missing tests. Next, run /export to save the transcript, then decide on the findings. (turn off recaps in /config)

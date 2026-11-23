@@ -798,3 +798,30 @@ checks:
 evidence: S-7, AC-07; `docs/design/S-7.md` §4, §6, §8 decisions 7, 8, 11, 12, 14, 15, 16; `MILESTONE2.md` §5.
 
 risk: Because Tasks 4.6–4.7 (`UploadClip.tsx` and `UploadedClipView.tsx`) do not exist yet, integration with React UI event handlers is not yet covered and full `npm test` remains red on the 16 UI-dependent tests.
+
+## Entry 44
+
+artifact: Deliverable 4c (AC-07) — delegated review of the completed S-7 implementation. New files: `prompts/S-7-4c-code-reviewer.txt`, `prompts/S-7-4c-test-writer.txt`, `evidence/delegation/code-review.md`, `evidence/delegation/test-review.md`, `evidence/delegation/claude-session-transcript.txt`. `MILESTONE2.md` gains a §4c section and an updated Deliverable 4 row.
+
+tool: Claude Code session, model `claude-opus-5-5`, 2026-11-20 (delegation) and 2026-11-22 (finalization). There were two background subagents (`general-purpose`), started in parallel. Each received the full text of its `.agents/agents/` definition (`code-reviewer`, `test-writer`) inside its prompt file. No agent configuration files were created or changed.
+
+prompts: The student's 4c delegation request and approval (2026-11-20; decisions: general-purpose subagents, `CR-xxx` IDs with an `ac_ref` field, the test-writer allowed `npm test` plus the locked-test diff and hash checks, no ledger entry until finalization). The two agent prompts are saved word for word in `prompts/S-7-4c-*.txt`. The student's finalization request and approval are dated 2026-11-22.
+
+review: The reviews were independent. Each agent saw only its prompt file, not Entry 33's conclusions or the other agent's report. Both reports were saved word for word under a provenance header and summary table. The only wording change was in the test-writer's file list, where a local home-directory path was replaced with "the repository root". Results:
+- code-reviewer: 0 blocking, 5 minor (CR-001 to CR-005). Design and AC-7 compliance passed with no findings.
+- test-writer: 2 blocking (TW-001: no test accepts MP3 or M4A or checks the normalized MIME type; TW-002: no test checks the decision-12 validation order or the ownership-first deviation) and 11 minor (TW-003 to TW-013).
+- Student decision: the proposed follow-up remediation Tasks 4.9–4.12 are deferred and not carried out in 4c. TW-001 and TW-002 remain **unresolved blocking test-coverage findings**. Their remediation is deferred by student decision, and they are neither resolved nor downgraded. Every other finding keeps its original severity and is deferred with the reason given in `MILESTONE2.md` §4c. No production code, tests or locked acceptance tests were changed.
+
+checks:
+- Before and after the delegation (2026-11-20): `git rev-parse HEAD` → `66168cf` both times; `git diff --stat` → empty; `git status --porcelain` showed only the expected new untracked files.
+- The test-writer ran `cd frontend && npm test` → exit 0, **43 passed, 0 failed, 0 skipped**. `git diff m2-tests-locked -- frontend/tests/acceptance` → empty. The `git hash-object` values of `ac-01-record.spec.ts`, `ac-07-upload.spec.ts` and `fixtures/tone.wav` match `m2-tests-locked`.
+- Orchestrator: `git diff m2-tests-locked -- frontend/tests/acceptance | wc -c` → `0`. Spot-checks of CR-001, CR-003, TW-001 and TW-002 against the source confirmed each claim.
+- Finalization (2026-11-22): both reports contain every finding heading with its original severity (5 CR, 13 TW). All 72 Issue, Impact, Location and Spec lines were found in the exported transcript. The transcript records both agent launches (lines 370–371), both reports (lines 380 and 674), and both completions (lines 672 and 1166). A scan for secrets and email addresses found none. The local home-directory path in transcript line 1139 and in `prompts/S-7-4c-*.txt` (lines 119 and 146) was replaced with `<repo-root>` before commit; no other text changed. Putting the original path back reproduces each file's pre-redaction SHA-256 exactly. The SHA-256 of `code-review.md` and `test-review.md` did not change. `grep -rnE "/Users/|joshuageorge|/home/" evidence/delegation prompts/S-7-4c-*.txt MILESTONE2.md` → no matches.
+- Finalization test run (2026-11-22, working tree): `cd frontend && npm test` → **43 passed** (14.6 s). `npx playwright test --reporter=line` → exit 0, **43 passed, 0 failed, 0 skipped** (11.4 s). By file: ac-01 1, ac-07 1, upload-rules 15, upload.unit 13, upload-mutation-kills.unit 8, upload.integration 2, upload.property 3. `git diff m2-tests-locked -- frontend/tests/acceptance | wc -c` → `0`, and all three blob hashes match the tag.
+- Not run: `npm run build` (no source changed), coverage, Stryker, backend pytest (there is no backend).
+
+commit: `Task 4c (AC-07): Record delegated review evidence` (SHA recorded by `git log`).
+
+evidence: S-7, AC-7, AC-1; `evidence/delegation/`; `docs/design/S-7.md` §8; `docs/plans/S-7-plan.md`.
+
+risk: TW-001 and TW-002 are open **blocking** test-coverage findings. MP3 and M4A acceptance and the validation order are implemented (code review, checklist items 1–2) but no test protects them. Whether `m2-green` may be tagged while they are open is a team decision. CR-005 records Deliverable 5 dependency, lockfile and README changes that have no explicit approval on record. The protected README line it cites is still stale. The transcript was exported on 2026-11-20 and, by student decision, was not re-exported, so it does not include the 2026-11-20 remediation-planning turn or the 2026-11-22 finalization.

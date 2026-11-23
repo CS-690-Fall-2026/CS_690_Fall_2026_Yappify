@@ -9,7 +9,7 @@ Team deliverable. S-7 (upload existing audio) builds on Milestone 1's design wor
 | 1. Follow-up, story, open questions, gap check | `docs/design/S-7.md`, `docs/design/S-7-gap-check-2.md`, `docs/backlog.md` §4d |
 | 2. Agent setup | `AGENTS.md`, `agent/agy-permissions.json`, `.agents/agents/test-writer/agent.md`, `.agents/agents/code-reviewer/agent.md` |
 | 3. Acceptance tests and lock | `frontend/tests/acceptance/`, `evidence/test-audit.md`, `evidence/red.txt`, tag `m2-tests-locked` |
-| 4. Plan and build | `docs/plans/S-7-plan.md`, task commits `8d6dee4`–`a94bd7d` (Tasks 4.1–4.7), Task 4.8 verification, tag `m2-green` — _in progress: tag `m2-green` and remaining 4c–4f requirements pending_ |
+| 4. Plan and build | `docs/plans/S-7-plan.md`, task commits `8d6dee4`–`a94bd7d` (Tasks 4.1–4.7), Task 4.8 verification, 4c delegated review `evidence/delegation/`, tag `m2-green` — _in progress: tag `m2-green` and 4d–4f pending; TW-001/TW-002 open_ |
 | 5. Test strength | unit/integration/property tests, coverage, mutation — _pending_ |
 | 6. Headless reviewer | `scripts/review_story.sh`, `agent/review-schema.json`, `evidence/headless-review.json` — _pending_ |
 | 7. Provenance ledger | `LEDGER.md`, `prompts/` |
@@ -97,6 +97,41 @@ The corrected plan is saved in docs/plans/S-7-plan.md.
 **Approved deviations from the plan:** (1) ownership confirmation is checked before format (plan open item 1); (2) the error `role="alert"` region is rendered only while an error exists, not permanently, because the `@display` tests expect no alert after a successful or cancelled selection (LEDGER Entry 30).
 
 **Final verification (Task 4.8, 2026-11-20, at `a94bd7d`):** `npm ci` from the lockfile in a fresh clone, `npm run build` passed, and `npm test` gave **43 passed, 0 failed**: AC-1 1, AC-7 1, rule tests 15, unit 13, mutation-kill unit 8, integration 2, property 3. A strict `tsc --noEmit` on the S-7 source and components passed. `git diff m2-tests-locked -- frontend/tests/acceptance` is empty. Details are in LEDGER Entry 33. Deliverable 4 is not yet complete: the `m2-green` tag and the remaining 4c–4f requirements are pending.
+
+## 4c. Delegated review
+
+The main Claude Code agent handed the completed S-7 implementation (HEAD `66168cf`) to two independent subagents. They ran in parallel, and each received the full instructions from its own `.agents/agents/` definition. Neither saw the other's report or our own verification notes. The code-reviewer was read-only. The test-writer could also run `npm test` and the locked-test diff and hash checks. Neither changed any file.
+
+| Agent | Prompt | Report | Blocking | Minor |
+|---|---|---|---|---|
+| code-reviewer | `prompts/S-7-4c-code-reviewer.txt` | `evidence/delegation/code-review.md` | 0 | 5 |
+| test-writer | `prompts/S-7-4c-test-writer.txt` | `evidence/delegation/test-review.md` | 2 | 11 |
+
+Transcript of the main agent's delegation: `evidence/delegation/claude-session-transcript.txt` (Claude Code `/export`). The test-writer's run: 43 passed, 0 failed. The locked acceptance tests are unchanged (empty diff against `m2-tests-locked`, and the blob hashes match). LEDGER Entry 44.
+
+The proposed follow-up remediation Tasks 4.9–4.12 have been **deferred by student decision** and were not carried out in 4c. Severities are the reviewers' originals.
+
+| Finding | Severity | Status | Reason |
+|---|---|---|---|
+| TW-001 no test accepts MP3/M4A or checks the normalized MIME type | blocking | **Unresolved blocking test-coverage finding; remediation deferred by student decision** (proposed follow-up Task 4.9) | Severity kept. Decisions 4 and 9 for MP3/M4A have no test |
+| TW-002 no test of validation order | blocking | **Unresolved blocking test-coverage finding; remediation deferred by student decision** (proposed follow-up Task 4.10) | Severity kept. The decision-12 order and the ownership-first deviation have no test |
+| CR-001 "Checking audio…" not in a live region | minor | Deferred | Decision 15 requires a live region only for errors; AC-7 behavior is unaffected |
+| CR-002 focus lost after Remove | minor | Deferred | Focus handling is not specified in the S-7 design |
+| CR-003 `UPLOAD_ACCEPT` admits `.mp4` in the picker | minor | Deferred by student decision (proposed follow-up Task 4.11) | The fix changes production code and departs from the plan's value; `uploadAudio` still rejects `.mp4` |
+| CR-004 / TW-006 playback object URL release untested | minor | Deferred by student decision (proposed follow-up Task 4.12) | The reviewer found the code correct; the gap is in the tests only |
+| CR-005 Deliverable 5 dependencies, lockfile and README outside the S-7 plan | minor | Deferred | Recorded in LEDGER Entries 29 and 32. Explicit approval and the README correction (a protected file) need a separate approved change |
+| TW-003 20 tests lack "AC-7" in their names | minor | Deferred | Renaming would break the test names cited in §5f, which keeps the traceability |
+| TW-004 cancel unit test cannot fail | minor | Deferred | Cancel is exercised by the UI rule test (see TW-010) |
+| TW-005 integration/property preservation checks are true by construction | minor | Deferred | Preservation is guarded by `display › rejected file leaves the previous clip in place` |
+| TW-007 some expected values come from the implementation | minor | Deferred | They kill specific mutants (§5e); to be recorded as accepted mock values |
+| TW-008 `accept` / `multiple` / error position untested | minor | Deferred | Would be partly covered by proposed follow-up Task 4.11 |
+| TW-009 alert clearing and the on-page UploadFailedError message untested | minor | Deferred | Approved deviation 2's clearing behavior is unverified by tests |
+| TW-010 cancel rule test may not trigger a change event | minor | Deferred | To be handled together with TW-004 |
+| TW-011 no outcome-count check; possible flaky timeout test | minor | Deferred | No flake seen in any recorded 43/43 run |
+| TW-012 no check for network requests or persistent storage | minor | Deferred | Decisions 7 and 8 are confirmed by code review but not by a test |
+| TW-013 weak `expectRejected`; rule tests left out of coverage | minor | Deferred | Changing the import alters the coverage figures and needs a re-measure |
+
+Two blocking test-coverage findings (TW-001, TW-002) stay open. They should be weighed before `m2-green` is tagged.
 
 
 ## 5. Test strength
