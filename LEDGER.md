@@ -843,3 +843,23 @@ commit: `Task 4.14 (AC-01, AC-07): add Try the story section and screenshots` (S
 evidence: S-1, AC-1; S-7, AC-7; Deliverable 4f; `evidence/screens/`; `README.md` "Try the story".
 
 risk: Every screenshot comes from automated, simulated input. None shows a real microphone, a real browser permission prompt, or a user-picked file, so 04 and 05 in particular depict states produced by DevTools settings, not natural use. The README's Tech stack table still lists the planned Python/FastAPI backend, as a description, not an instruction. TW-001 and TW-002 remain open blocking test-coverage findings.
+
+## Entry 46
+
+artifact: Correction note recovering missing prompt records for Milestone 2. New: `prompts/S-7-task-4.1-plan.txt` (Task 4.1, `docs/plans/S-7-plan.md`, commit `8d6dee4`), `prompts/S-7-task-4.8.txt` (Task 4.8, commit `66168cf`, supports Entries 32 and 33), `prompts/S-7-4f-try-the-story.txt` (Deliverable 4f, commit `755a973` "Task 4.14", supports Entry 45). Changed: `MILESTONE2.md` §4c (one clarification of the Task 4.9–4.12 numbering). Earlier entries are left unchanged; this entry adds to their `prompts:` fields and does not replace any claim.
+
+tool: Claude Code session, model `claude-opus-5-5`, 2026-11-23. No subagents.
+
+prompts: The student's requests (2026-11-23) to recover the original prompts verbatim from the local Claude Code session logs, keep one original task prompt per file, mark each file as recovered after the fact with its original date and session ID, redact absolute paths to `<repo-root>`, copy no raw logs, and invent no prompts.
+
+review: Each file contains exactly one original task prompt, copied verbatim from the local Claude Code session log: Task 4.1, session `31c528a5-570a-47c6-889c-5b75e8d51801`, 2026-11-20 02:00 UTC (the plan request); Task 4.8, session `fbb993e8-4c41-41be-b82c-6546796ad2ea`, 2026-11-20 20:33 UTC (the final-verification plan request); Deliverable 4f, session `63e28710-4e55-4e2b-89c5-90d9a5016e51`, 2026-11-23 19:01 UTC (the 4f implementation approval, with its approved scope, requirements, restrictions and verification steps). Only Claude Code's `<pasted_content>` wrapper was removed. No absolute paths appeared, so nothing was redacted. By student decision, later follow-up prompts (plan revisions, approvals, documentation corrections, commit instructions, and the 4d–4f audit request that came before the 4f approval) were not saved; they remain only in the local session logs. The exported transcript `evidence/delegation/claude-session-transcript.txt` contains only the two 4c turns from 2026-11-20 and none of these prompts.
+Task 4.12 (`6bb8d6d`, `906386d`, `b0d18fd`, by a teammate using Antigravity): original prompts **not recovered**. This machine's Antigravity CLI holds no conversation history (no `history.jsonl`, empty `conversations/`, empty summaries database). Task 4.12 has no ledger entry, and the numbering skips Entry 38.
+Numbering conflict: the 4c delegation (2026-11-20) proposed remediation Tasks 4.9–4.12 (TW-001, TW-002, CR-003, CR-004/TW-006). Commits on 2026-11-21 then used Task 4.9 for the green run, 4.10 for the reviewer-delegation record, 4.11 for the refactor and 4.12 for the headless-review script. Entry 44 still says "proposed follow-up Tasks 4.9–4.12", and `MILESTONE2.md` §4c now says the numbers were reused. Those remediation tasks were never carried out and remain deferred; any commit labelled Task 4.9–4.12 is the work named in its subject, not that remediation.
+
+checks: Each of the three prompt bodies was verified as an exact substring of its source log message (3 of 3). `grep -c /Users` on the three new files → 0. `git diff --check` → no output. `git diff --stat -- frontend/src frontend/tests` → empty. `git diff m2-tests-locked -- frontend/tests/acceptance | wc -c` → `0`. No tests were run, because no code or tests changed.
+
+commit: `Task 4.15 (AC-01, AC-07): recover prompt records for Tasks 4.1, 4.8 and 4f` (SHA recorded by `git log`).
+
+evidence: S-7, AC-7; S-1, AC-1 (4f); Deliverables 4b, 4f and 7.
+
+risk: The prompts were saved after the fact from local logs that are not in the repository, so graders cannot check them against the source. Each file keeps only the task-initiating prompt, so the later approvals and corrections that shaped Tasks 4.1 and 4.8 are summarized in Entries 32, 33 and 45 but not saved in full. Task 4.12's prompts and its ledger entry are still missing unless the teammate's Antigravity history supplies them.

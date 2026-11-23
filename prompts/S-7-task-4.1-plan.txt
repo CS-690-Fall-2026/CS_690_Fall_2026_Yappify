@@ -1,0 +1,32 @@
+# Task 4.1 (AC-07): S-7 implementation plan: original task prompt
+# Recovered after the fact on 2026-11-23, verbatim, from the local Claude Code session log. Not saved when the task ran.
+# Original date: 2026-11-19 (2026-11-20 02:00 UTC)
+# Source session ID: 31c528a5-570a-47c6-889c-5b75e8d51801
+
+Read AGENTS.md, MILESTONE2.md, docs/design/S-7.md,
+and the existing frontend code and locked acceptance tests
+in frontend/tests/acceptance/.
+
+Create an implementation plan for S-7 (Upload Existing Audio).
+
+Include:
+
+1. A How section describing:
+   - Which files will be created or modified
+   - The TypeScript interfaces and data structures
+   - How audio formats, duration, and file size are validated
+   - How errors are handled
+   - How uploaded audio is stored and played back
+   - How the upload UI integrates with the existing application
+
+2. Numbered implementation tasks, each tied to an
+   acceptance criterion.
+   - Identify the exact files for each task.
+   - Specify the test or check that determines completion.
+
+Follow the settled S-7 requirements and locked tests.
+Do not change the locked acceptance tests.
+
+Do not implement anything yet.
+Do not modify files.
+Only present the plan and wait for team review.

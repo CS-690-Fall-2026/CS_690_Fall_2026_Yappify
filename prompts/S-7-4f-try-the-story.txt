@@ -1,0 +1,39 @@
+# Deliverable 4f (AC-01, AC-07): Try the story: original task prompt (the 4f implementation approval)
+# Recovered after the fact on 2026-11-23, verbatim, from the local Claude Code session log. Not saved when the task ran.
+# Original date: 2026-11-23 (19:01:49 UTC)
+# Source session ID: 63e28710-4e55-4e2b-89c5-90d9a5016e51
+
+I approve the Deliverable 4f plan with the following decisions:
+
+1. Use Playwright to capture the proposed screenshots under evidence/screens/.
+2. Approve adding a "Try the story" section to README.md for AC-1 and AC-7.
+3. Approve correcting the outdated README instructions:
+   - Remove the backend startup instructions for the nonexistent backend.
+   - Update the main test command to npm test.
+   - Remove outdated references to pending UI tests.
+4. Approve updating MILESTONE2.md to reflect completed Deliverables 4d and 4e and the evidence for 4f.
+5. Approve appending a new LEDGER.md entry for this work.
+
+Implement only Deliverable 4f.
+
+Requirements:
+- Capture screenshots of the initial state, AC-1 recording and playback, and AC-7 successful upload.
+- Capture relevant error states, including ownership confirmation and unsupported formats.
+- Include additional screenshots for microphone denial, upload validation loading, and excessive duration if they can be reproduced reliably.
+- Use real application behavior. Do not fabricate or alter screenshots to make tests appear successful.
+- Save screenshots under evidence/screens/.
+- Include screenshot references and clear steps in the README.
+- Record which screenshots used Playwright's simulated microphone or permission settings.
+
+After implementation:
+1. Confirm every screenshot accurately shows its claimed state.
+2. Run npm run build.
+3. Run npm test and report the exact results.
+4. Confirm locked acceptance tests remain unchanged.
+5. Review the Git diff and list all modified files.
+
+Do not change application source code or acceptance tests.
+Do not create or move Git tags.
+Do not commit or push yet.
+
+Show me the results and wait for approval before committing.

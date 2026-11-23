@@ -109,7 +109,7 @@ The main Claude Code agent handed the completed S-7 implementation (HEAD `66168c
 
 Transcript of the main agent's delegation: `evidence/delegation/claude-session-transcript.txt` (Claude Code `/export`). The test-writer's run: 43 passed, 0 failed. The locked acceptance tests are unchanged (empty diff against `m2-tests-locked`, and the blob hashes match). LEDGER Entry 44.
 
-The proposed follow-up remediation Tasks 4.9–4.12 have been **deferred by student decision** and were not carried out in 4c. Severities are the reviewers' originals.
+The proposed follow-up remediation Tasks 4.9–4.12 have been **deferred by student decision** and were not carried out in 4c. Severities are the reviewers' originals. Those task numbers were later reused for different completed work: Task 4.9 the green run, 4.10 the reviewer-delegation record, 4.11 the refactor, 4.12 the headless-review script. The remediation numbered 4.9–4.12 below is still deferred (LEDGER Entry 46).
 
 | Finding | Severity | Status | Reason |
 |---|---|---|---|

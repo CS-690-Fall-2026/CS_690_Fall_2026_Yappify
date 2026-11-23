@@ -1,0 +1,24 @@
+# Task 4.8 (AC-07): Final verification: original task prompt
+# Recovered after the fact on 2026-11-23, verbatim, from the local Claude Code session log. Not saved when the task ran.
+# Original date: 2026-11-20 (20:33 UTC)
+# Source session ID: fbb993e8-4c41-41be-b82c-6546796ad2ea
+
+We are continuing Milestone 2, Deliverable 4 for S-7.
+
+Read AGENTS.md, docs/plans/S-7-plan.md, docs/design/S-7.md, and MILESTONE2.md before doing anything.
+
+Prepare a bounded plan for Task 4.8: Final Verification.
+
+Verify:
+1. The frontend dependencies install from the lockfile.
+2. npm run build passes.
+3. npm test passes, including AC-1, AC-7, and all additional tests.
+4. The locked acceptance tests remain unchanged from m2-tests-locked.
+5. The implementation follows the approved S-7 requirements.
+6. No unrelated files were modified.
+
+Review the requirements for Deliverable 4c, 4d, 4e, and 4f in MILESTONE2.md and AGENTS.md. Identify which evidence, reviews, screenshots, tags, or documentation are still missing.
+
+Do not modify files, create tags, commit, or push yet.
+
+Show me the verification plan and outstanding requirements, then wait for approval.
