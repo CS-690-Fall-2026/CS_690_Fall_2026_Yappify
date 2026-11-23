@@ -9,7 +9,7 @@ Team deliverable. S-7 (upload existing audio) builds on Milestone 1's design wor
 | 1. Follow-up, story, open questions, gap check | `docs/design/S-7.md`, `docs/design/S-7-gap-check-2.md`, `docs/backlog.md` §4d |
 | 2. Agent setup | `AGENTS.md`, `agent/agy-permissions.json`, `.agents/agents/test-writer/agent.md`, `.agents/agents/code-reviewer/agent.md` |
 | 3. Acceptance tests and lock | `frontend/tests/acceptance/`, `evidence/test-audit.md`, `evidence/red.txt`, tag `m2-tests-locked` |
-| 4. Plan and build | `docs/plans/S-7-plan.md`, task commits `8d6dee4`–`a94bd7d` (Tasks 4.1–4.7), Task 4.8 verification, 4c delegated review `evidence/delegation/`, tag `m2-green` — _in progress: tag `m2-green` and 4d–4f pending; TW-001/TW-002 open_ |
+| 4. Plan and build | `docs/plans/S-7-plan.md`, task commits `8d6dee4`–`a94bd7d` (Tasks 4.1–4.7), Task 4.8 verification, 4c delegated review `evidence/delegation/`, 4d tag `m2-green` (`18a4f8d`) and `evidence/green.txt`, 4e refactor `692e7ff` and `evidence/refactor.txt`, 4f README "Try the story" and `evidence/screens/` — _TW-001/TW-002 remain open_ |
 | 5. Test strength | unit/integration/property tests, coverage, mutation — _pending_ |
 | 6. Headless reviewer | `scripts/review_story.sh`, `agent/review-schema.json`, `evidence/headless-review.json` — _pending_ |
 | 7. Provenance ledger | `LEDGER.md`, `prompts/` |
@@ -96,7 +96,7 @@ The corrected plan is saved in docs/plans/S-7-plan.md.
 
 **Approved deviations from the plan:** (1) ownership confirmation is checked before format (plan open item 1); (2) the error `role="alert"` region is rendered only while an error exists, not permanently, because the `@display` tests expect no alert after a successful or cancelled selection (LEDGER Entry 30).
 
-**Final verification (Task 4.8, 2026-11-20, at `a94bd7d`):** `npm ci` from the lockfile in a fresh clone, `npm run build` passed, and `npm test` gave **43 passed, 0 failed**: AC-1 1, AC-7 1, rule tests 15, unit 13, mutation-kill unit 8, integration 2, property 3. A strict `tsc --noEmit` on the S-7 source and components passed. `git diff m2-tests-locked -- frontend/tests/acceptance` is empty. Details are in LEDGER Entry 33. Deliverable 4 is not yet complete: the `m2-green` tag and the remaining 4c–4f requirements are pending.
+**Final verification (Task 4.8, 2026-11-20, at `a94bd7d`):** `npm ci` from the lockfile in a fresh clone, `npm run build` passed, and `npm test` gave **43 passed, 0 failed**: AC-1 1, AC-7 1, rule tests 15, unit 13, mutation-kill unit 8, integration 2, property 3. A strict `tsc --noEmit` on the S-7 source and components passed. `git diff m2-tests-locked -- frontend/tests/acceptance` is empty. Details are in LEDGER Entry 33. The remaining Deliverable 4 parts are covered in §4c–§4f below.
 
 ## 4c. Delegated review
 
@@ -131,7 +131,42 @@ The proposed follow-up remediation Tasks 4.9–4.12 have been **deferred by stud
 | TW-012 no check for network requests or persistent storage | minor | Deferred | Decisions 7 and 8 are confirmed by code review but not by a test |
 | TW-013 weak `expectRejected`; rule tests left out of coverage | minor | Deferred | Changing the import alters the coverage figures and needs a re-measure |
 
-Two blocking test-coverage findings (TW-001, TW-002) stay open. They should be weighed before `m2-green` is tagged.
+Two blocking test-coverage findings (TW-001, TW-002) stay open. The team tagged `m2-green` with them open (LEDGER Entries 35–36); they are still unresolved.
+
+## 4d. Green
+
+- **Tests:** `evidence/green.txt` is the raw `npm test` output for the code at `66168cf`: **43 passed**, no failures. It includes `ac-01-record.spec.ts › test_ac1_record_and_stop_displays_playback` (S-1, AC-1) and `ac-07-upload.spec.ts › test_ac7_valid_audio_upload_displays_playback` (S-7, AC-7).
+- **Tag:** `m2-green` points to `18a4f8d` locally and on `origin` (`git ls-remote --tags origin`). `18a4f8d` changes only `LEDGER.md` and `evidence/green.txt` relative to `66168cf`. Its subject says `66160cf`, a typo for `66168cf` (LEDGER Entry 36).
+- **Lock:** `git diff m2-tests-locked m2-green -- frontend/tests/acceptance` is empty.
+- LEDGER Entries 35–36.
+
+## 4e. Refactor after green
+
+- **Refactor:** `692e7ff` "Task 4.11 (AC-07): extract upload validation guards". Antigravity CLI (Gemini 3.8 Flash) did it from `prompts/S-7-task-4.11-refactor.txt`: the validation chain in `uploadAudio` was split into six named guards with the same order, error classes and messages. Only `frontend/src/audio/upload.ts` changed in the source.
+- **After green:** `692e7ff` is a descendant of `m2-green` (`git merge-base --is-ancestor m2-green 692e7ff`), committed 2026-11-21 22:30, after the 19:49 green commit.
+- **Tests:** `evidence/refactor.txt` shows **43 passed**, no failures. Nothing under `frontend/` has changed since `692e7ff`.
+- LEDGER Entry 37.
+
+## 4f. Try the story
+
+- `README.md` has a **Try the story** section. It gives the start command (`cd frontend && npm run dev`) and step-by-step demonstrations of AC-1 (record, then play back) and AC-7 (confirm ownership, choose a file, then play the unpublished clip), plus the error states.
+- Screenshots in `evidence/screens/`, one per visible outcome:
+
+| Screenshot | Outcome |
+|---|---|
+| `01-empty-state.png` | Empty state on first load |
+| `02-ac1-recording.png` | AC-1: recording in progress |
+| `03-ac1-playback.png` | AC-1: completed recording with playback |
+| `04-ac1-mic-denied.png` | AC-1 error: microphone access denied |
+| `05-ac7-checking.png` | AC-7: "Checking audio…" with the controls disabled |
+| `06-ac7-uploaded.png` | AC-7: playable unpublished clip (`tone.wav`, 0:05) |
+| `07-ac7-no-ownership.png` | AC-7 error: ownership not confirmed |
+| `08-ac7-unsupported-format.png` | AC-7 error: unsupported `.ogg` format |
+| `09-ac7-too-long.png` | AC-7 error: clip longer than 60 s |
+
+- `frontend/scripts/capture-screens.mjs` captured all nine with Playwright from the unmodified app, and checks the page before each capture. Simulated inputs: 02–03 use Chromium's fake microphone (`tone.wav`) with permission granted, 04 sets the microphone permission to "denied" through the DevTools protocol, 05 uses 50× CPU throttling, and 06–09 upload generated WAV files. The README table gives the details.
+- The screenshots show two existing display issues that were left alone because source changes are outside 4f: the page title "Yappify" appears twice (once from `index.html` and once from `App.tsx`), and in `03` the browser's player reads `0:01` while the app's own label says `Duration: 2.1s`.
+- LEDGER Entry 45.
 
 
 ## 5. Test strength
